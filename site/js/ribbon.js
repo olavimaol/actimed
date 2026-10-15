@@ -37,8 +37,7 @@ const productUrl = (p) => `product.html?id=${encodeURIComponent(p.id)}`;
 const pad = (n) => String(n).padStart(2, '0');
 
 function go(p) {
-  document.documentElement.classList.add('is-leaving');
-  setTimeout(() => { location.href = productUrl(p); }, reduceMotion ? 0 : 260);
+  location.href = productUrl(p);
 }
 
 // Обычные ссылки на товары: для клавиатуры и экранного диктора, а без WebGL — видимая лента

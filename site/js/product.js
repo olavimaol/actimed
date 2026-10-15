@@ -2,8 +2,7 @@
   Страница товара в духе Agrumea: product.html?id=<id товара>.
 
   • Огромное название, по бокам — категория и форма выпуска.
-  • Упаковка стоит внизу первого экрана и при прокрутке взлетает вверх
-    с наклоном, перекрывая название.
+  • Под названием — упаковка, она стоит неподвижно.
   • Описание с ромбами-разделителями, три колонки (как принимать, фасовка,
     срок годности), цена и «В корзину».
   • Лента картинок едет вбок при прокрутке, ниже — «Другие товары».
@@ -140,7 +139,6 @@
   window.addEventListener('resize', fitTitle);
 
   /* ---------- Движение от прокрутки ---------- */
-  var product = main.querySelector('[data-pd-product]');
   var gallery = main.querySelector('[data-pd-gallery]');
   var track = main.querySelector('[data-pd-track]');
   var raf = 0;
@@ -162,12 +160,6 @@
     var vh = window.innerHeight, vw = window.innerWidth;
     updateHeader(vh);
 
-    // упаковка взлетает с наклоном, как банка у Agrumea
-    var p1 = Math.min(1.6, Math.max(0, window.scrollY / (vh * 0.9)));
-    var e = 1 - Math.pow(1 - Math.min(1, p1), 2);
-    product.style.transform =
-      'translate3d(-50%,' + (-(e * 44 + Math.max(0, p1 - 1) * 40)) + 'vh,0) rotate(' + (e * 16) + 'deg) scale(' + (1 - e * 0.1) + ')';
-
     // лента картинок едет вбок
     var r = gallery.getBoundingClientRect();
     if (r.bottom > -100 && r.top < vh + 100) {
@@ -179,7 +171,6 @@
   function request() { if (!raf) raf = requestAnimationFrame(update); }
 
   if (reduceMotion) {
-    product.style.transform = 'translate3d(-50%,0,0)';
     track.style.transform = 'none';
     gallery.classList.add('is-static');
     window.addEventListener('scroll', function () { updateHeader(window.innerHeight); }, { passive: true });

@@ -1,5 +1,5 @@
 /* =========================================================
-   Actimed — онлайн-аптека
+   Actimed
    Правило проекта: никаких анимаций при наведении (hover).
    Движение — от прокрутки, перетаскивания и по клику (меню).
    ========================================================= */
@@ -55,9 +55,6 @@ a, button { transition: none; }
   position: absolute !important; width: 1px; height: 1px; overflow: hidden;
   clip: rect(0 0 0 0); white-space: nowrap; border: 0; padding: 0; margin: -1px;
 }
-
-/* уход со страницы по клику на карточку */
-html.is-leaving body { opacity: 0; transition: opacity .25s ease; }
 
 /* =========================================================
    Шапка (как у Agrumea)
@@ -221,48 +218,47 @@ a.round-btn:hover { background: var(--hdr); color: var(--hdr-on); }
 }
 .pd { --c: var(--primary); }
 
-/* ----- первый экран ----- */
-.pd-hero { position: relative; height: 100vh; min-height: 640px; }
+/* ----- первый экран: название, под ним упаковка, по бокам подписи ----- */
+.pd-hero {
+  position: relative; padding: max(150px, 21vh) var(--gutter) 0;
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; column-gap: 2vw;
+}
 .pd-hero__title {
-  position: absolute; left: var(--gutter); right: var(--gutter); top: max(150px, 22vh);
-  display: flex; flex-direction: column; align-items: center; text-align: center;
+  grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; text-align: center;
   font-family: var(--font-display); font-weight: 400; font-size: clamp(56px, 11.2vw, 200px); line-height: .86;
   text-transform: uppercase; letter-spacing: -.005em; color: var(--primary);
 }
 .pd-hero__title span { white-space: nowrap; }
 .pd-hero__side {
-  position: absolute; top: 74vh; max-width: 13ch;
-  font-family: var(--font-display); font-size: clamp(20px, 2.5vw, 38px); line-height: 1.04; color: var(--primary);
+  max-width: 13ch; font-family: var(--font-display); font-size: clamp(20px, 2.5vw, 38px); line-height: 1.04; color: var(--primary);
 }
-.pd-hero__side--l { left: 10vw; }
-.pd-hero__side--r { right: 10vw; text-align: right; }
+.pd-hero__side--l { grid-column: 1; grid-row: 2; justify-self: start; padding-left: 8vw; }
+.pd-hero__side--r { grid-column: 3; grid-row: 2; justify-self: end; text-align: right; padding-right: 8vw; }
 .pd-hero__product {
-  position: absolute; left: 50%; top: 58vh; z-index: 2; height: auto;
-  transform: translate3d(-50%, 0, 0); transform-origin: 50% 30%; will-change: transform;
+  grid-column: 2; grid-row: 2; height: auto; margin-top: 1vh;
   filter: drop-shadow(0 40px 40px rgba(11, 46, 51, .18));
 }
-.pd-hero__product--box { width: min(42vw, 640px); }
-.pd-hero__product--bottle { width: min(30vw, 440px); }
-.pd-hero__product--tube { width: min(28vw, 420px); }
-.pd-hero__product--device { width: min(40vw, 600px); }
-.pd-hero__product--thermo { width: min(16vw, 240px); }
-.pd-hero--empty { height: 80vh; }
-.pd-empty { position: absolute; left: 0; right: 0; top: 62vh; text-align: center; }
+.pd-hero__product--box { width: min(40vw, 600px); }
+.pd-hero__product--bottle { width: min(28vw, 420px); }
+.pd-hero__product--tube { width: min(26vw, 400px); }
+.pd-hero__product--device { width: min(38vw, 560px); }
+.pd-hero__product--thermo { width: min(15vw, 230px); }
+.pd-hero--empty { display: block; padding-bottom: 20vh; }
+.pd-empty { margin-top: 8vh; text-align: center; }
 @media (max-width: 700px) {
-  .pd-hero { height: 92vh; }
-  .pd-hero__title { top: 140px; }
-  .pd-hero__side { top: auto; bottom: 8vh; font-size: 18px; }
-  .pd-hero__side--l { left: var(--gutter); }
-  .pd-hero__side--r { right: var(--gutter); }
-  .pd-hero__product { top: 46vh; }
-  .pd-hero__product--box, .pd-hero__product--device { width: 78vw; }
+  .pd-hero { grid-template-columns: 1fr 1fr; padding-top: 130px; row-gap: 12px; }
+  .pd-hero__product { grid-column: 1 / -1; justify-self: center; }
+  .pd-hero__side { grid-row: 3; padding: 0; font-size: 18px; }
+  .pd-hero__side--l { grid-column: 1; }
+  .pd-hero__side--r { grid-column: 2; }
+  .pd-hero__product--box, .pd-hero__product--device { width: 80vw; }
   .pd-hero__product--bottle, .pd-hero__product--tube { width: 52vw; }
-  .pd-hero__product--thermo { width: 30vw; }
+  .pd-hero__product--thermo { width: 28vw; }
 }
 
 /* ----- описание ----- */
 .pd-about {
-  position: relative; z-index: 3; max-width: 820px; margin: 0 auto; padding: 18vh var(--gutter) 6vh;
+  position: relative; max-width: 820px; margin: 0 auto; padding: 8vh var(--gutter) 6vh;
   display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center;
 }
 .pd-diamond { width: 11px; height: 11px; background: var(--primary); transform: rotate(45deg); }
@@ -365,7 +361,7 @@ a.round-btn:hover { background: var(--hdr); color: var(--hdr-on); }
 
 /* без анимаций по системной настройке */
 @media (prefers-reduced-motion: reduce) {
-  .site-menu, .site-menu__item > span, html.is-leaving body { transition: none !important; }
+  .site-menu, .site-menu__item > span { transition: none !important; }
 }
 
 /* ---------- Футер (по образцу String-tune) ---------- */
