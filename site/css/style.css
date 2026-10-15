@@ -115,10 +115,22 @@ a.round-btn:hover { background: var(--hdr); color: var(--hdr-on); }
 .is-menu-open .menu-btn__cross { display: block; }
 .menu-btn:hover .menu-btn__label { background: var(--hdr); color: var(--hdr-on); }
 
+/* «Оставить заявку» — залитая кнопка рядом с телефоном */
+.lead-btn {
+  height: 38px; display: inline-flex; align-items: center; padding: 0 20px;
+  border: 1.5px solid var(--hdr); border-radius: 999px; background: var(--hdr); color: var(--hdr-on);
+  font-weight: 700; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap;
+}
+.lead-btn:hover { background: none; color: var(--hdr); }
+.lead-btn__short { display: none; }
+
 @media (max-width: 600px) {
   .site-header { padding-top: 16px; }
   .round-btn, .menu-btn__dot { width: 34px; height: 34px; }
   .menu-btn__label { height: 34px; padding: 0 14px; }
+  .lead-btn { height: 34px; padding: 0 14px; }
+  .lead-btn__long { display: none; }
+  .lead-btn__short { display: inline; }
   .brand__mark { width: 42px; height: 39px; }
   .brand__name { font-size: 12px; }
   .site-header__side .round-btn:first-child { display: none; }
@@ -163,7 +175,8 @@ a.round-btn:hover { background: var(--hdr); color: var(--hdr-on); }
   display: flex; flex-wrap: wrap; gap: 10px 32px; margin-top: 4px; padding-top: 16px;
   border-top: 1px solid rgba(255, 255, 255, .3); font-weight: 600; font-size: 14px;
 }
-.site-menu__foot a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.site-menu__foot a:hover, .site-menu__lead:hover { text-decoration: underline; text-underline-offset: 4px; }
+.site-menu__lead { padding: 0; border: 0; background: none; color: inherit; font-weight: inherit; font-size: inherit; }
 @media (max-width: 600px) {
   .site-menu { padding-top: 110px; }
   .site-menu__item--2 { padding-left: 10%; }
@@ -298,7 +311,6 @@ a.round-btn:hover { background: var(--hdr); color: var(--hdr-on); }
   border: 0; border-radius: 999px; background: var(--primary); color: #fff; font-weight: 700; font-size: 16px;
 }
 .pd-buy__btn:hover { background: var(--primary-2); }
-.pd-buy__btn.is-added { background: var(--mint); color: var(--deep); }
 .pd-buy__note { max-width: 46ch; font-size: 14px; color: var(--muted); }
 
 /* ----- лента картинок ----- */
@@ -359,9 +371,140 @@ a.round-btn:hover { background: var(--hdr); color: var(--hdr-on); }
 .pd-card__price { font-size: 15px; color: var(--muted); }
 .pd-card:hover .pd-card__name { text-decoration: underline; text-underline-offset: 4px; }
 
+/* =========================================================
+   Заявка (js/lead.js): карточка как в ленте — слева описание,
+   справа форма. Влетает по волне ленты; пока летит, вместо неё
+   видны полосы-копии (.lead__strip), сама форма скрыта.
+   ========================================================= */
+.lead { position: fixed; inset: 0; z-index: 90; }
+.lead[hidden] { display: none; }
+.lead:focus { outline: none; }
+.lead__backdrop {
+  position: absolute; inset: 0; background: rgba(3, 21, 24, .7);
+  opacity: 0; transition: opacity .35s var(--ease-out);
+}
+.lead.is-open .lead__backdrop { opacity: 1; }
+@media (min-width: 1024px) {
+  .lead__backdrop { -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+}
+.lead__stage { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.lead__strip { position: absolute; left: 0; top: 0; overflow: hidden; transform-origin: 0 0; will-change: transform; }
+.lead__shade { position: absolute; inset: 0; will-change: opacity; }
+
+.lead__wrap {
+  position: absolute; inset: 0; display: flex; padding: 24px;
+  overflow-y: auto; overscroll-behavior: contain; pointer-events: none;
+}
+.lead__card {
+  position: relative; display: grid; grid-template-columns: 40fr 60fr;
+  width: min(1120px, 100%); min-height: min(600px, calc(100vh - 48px)); margin: auto;
+  border-radius: 28px; overflow: hidden; background: #EEF5F3; color: var(--ink);
+}
+.lead__card--live { pointer-events: auto; }
+.lead.is-moving .lead__card--live { visibility: hidden; }
+.lead__card--copy { position: absolute; top: 0; margin: 0; }
+
+.lead__info {
+  display: flex; flex-direction: column; gap: 22px; padding: 52px 48px 44px;
+  background: linear-gradient(180deg, #F7FBFA 0%, #E8F1EE 100%);
+}
+.lead__caps {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-mono); font-weight: 500; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: #6B7F82;
+}
+.lead__ring { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid #9DB0B2; }
+.lead__title {
+  display: flex; flex-direction: column; margin-top: 14px;
+  font-weight: 800; font-size: clamp(40px, 4.6vw, 66px); line-height: .98; letter-spacing: -.035em; color: #15292C;
+}
+.lead__title em { font-family: var(--font-italic); font-style: italic; font-weight: 500; letter-spacing: -.01em; }
+.lead__text { max-width: 30ch; font-size: 16px; line-height: 1.5; color: #4A5E62; }
+.lead__contact { margin-top: auto; display: flex; flex-direction: column; gap: 2px; font-size: 13px; color: #6B7F82; }
+.lead__contact a { font-weight: 800; font-size: 20px; color: var(--primary); }
+.lead__contact a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+.lead__side {
+  position: relative; display: flex; flex-direction: column; justify-content: center;
+  padding: 64px 56px 44px; color: #fff;
+  border-left: 1px solid #fff;          /* тонкая белая линия, как в карточках ленты */
+  background:
+    radial-gradient(80% 70% at 75% 15%, rgba(126, 214, 190, .34) 0%, rgba(126, 214, 190, 0) 70%),
+    linear-gradient(160deg, #1D8F82 0%, #0E6E6E 55%, #0A5459 100%);
+}
+.lead__form { display: flex; flex-direction: column; gap: 16px; }
+.lead__form[hidden], .lead__done[hidden] { display: none; }
+.lead__field { display: flex; flex-direction: column; gap: 8px; }
+.lead__label {
+  font-family: var(--font-mono); font-weight: 500; font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(234, 246, 243, .78);
+}
+.lead__field input, .lead__field textarea {
+  width: 100%; padding: 14px 18px; border: 1px solid rgba(255, 255, 255, .38); border-radius: 14px;
+  background: rgba(255, 255, 255, .1); color: #fff; font: inherit; font-size: 16px; font-weight: 500;
+  outline: none; resize: none;
+}
+.lead__field input { height: 54px; }
+.lead__field textarea { height: 104px; line-height: 1.45; }
+.lead__field ::placeholder { color: rgba(234, 246, 243, .5); opacity: 1; }
+.lead__field input:focus, .lead__field textarea:focus { border-color: #fff; background: rgba(255, 255, 255, .16); }
+.lead__field [aria-invalid="true"] { border-color: #FFC1B3; }
+.lead__hint { font-size: 13px; color: #FFD7CC; }
+.lead__hint:empty, .lead__fail:empty { display: none; }
+.lead__fail { font-size: 14px; color: #FFD7CC; }
+
+.lead__row { display: flex; align-items: center; gap: 22px; margin-top: 8px; }
+.lead__submit {
+  flex: none; display: inline-flex; align-items: center; gap: 16px; height: 60px; padding: 0 8px 0 28px;
+  border: 0; border-radius: 999px; background: #fff; color: var(--deep); font-weight: 800; font-size: 15px;
+}
+.lead__submit:hover { background: var(--mint); }
+.lead__submit[disabled] { cursor: progress; opacity: .75; }
+.lead__submit--plain { padding: 0 32px; }
+.lead__go { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--primary); color: #fff; }
+.lead__go svg { width: 24px; height: 24px; }
+.lead__note { max-width: 30ch; font-size: 12px; line-height: 1.4; color: rgba(234, 246, 243, .62); }
+
+.lead__done { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+.lead__done:focus { outline: none; }
+.lead__check { position: relative; width: 64px; height: 64px; border-radius: 50%; border: 1.5px solid rgba(255, 255, 255, .85); }
+.lead__check::after {
+  content: ""; position: absolute; left: 50%; top: 45%; width: 22px; height: 11px;
+  border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: translate(-50%, -50%) rotate(-45deg);
+}
+.lead__done-title { font-family: var(--font-italic); font-style: italic; font-weight: 500; font-size: clamp(34px, 3.2vw, 48px); line-height: 1.05; }
+.lead__done-text { max-width: 34ch; font-size: 17px; line-height: 1.5; color: rgba(234, 246, 243, .88); }
+
+.lead__close {
+  position: absolute; top: 22px; right: 22px; z-index: 2; width: 44px; height: 44px; padding: 0;
+  border: 1.5px solid rgba(255, 255, 255, .85); border-radius: 50%; background: none; color: #fff;
+}
+.lead__close::before, .lead__close::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 16px; height: 1.6px; background: currentColor;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.lead__close::after { transform: translate(-50%, -50%) rotate(-45deg); }
+.lead__close:hover { background: #fff; color: var(--primary); }
+
+@media (max-width: 860px) {
+  .lead__wrap { padding: 12px; }
+  .lead__card { grid-template-columns: 1fr; min-height: 0; border-radius: 22px; }
+  .lead__info { gap: 12px; padding: 26px 22px 22px; }
+  .lead__title { flex-direction: row; flex-wrap: wrap; gap: 0 .24em; margin-top: 6px; font-size: clamp(34px, 9.6vw, 48px); }
+  .lead__text { font-size: 15px; }
+  .lead__contact { margin-top: 4px; flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+  .lead__contact a { font-size: 17px; }
+  .lead__side { padding: 22px; border-left: 0; border-top: 1px solid #fff; }
+  .lead__field textarea { height: 80px; }
+  .lead__row { flex-direction: column; align-items: stretch; gap: 12px; }
+  .lead__submit { justify-content: space-between; }
+  .lead__note { max-width: none; }
+  .lead__close { top: 14px; right: 14px; width: 40px; height: 40px; border-color: rgba(14, 110, 110, .45); color: var(--primary); }
+  .lead__close:hover { background: var(--primary); color: #fff; }
+}
+
 /* без анимаций по системной настройке */
 @media (prefers-reduced-motion: reduce) {
-  .site-menu, .site-menu__item > span { transition: none !important; }
+  .site-menu, .site-menu__item > span, .lead__backdrop { transition: none !important; }
 }
 
 /* ---------- Футер (по образцу String-tune) ---------- */

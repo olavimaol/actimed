@@ -14,6 +14,10 @@ window.ACTIMED = {
   phone: '+998 71 200-00-00',
   phoneHref: 'tel:+998712000000',
   telegram: 'https://t.me/',
+  // Куда отправлять заявки из формы «Оставить заявку» (POST, JSON:
+  // name, phone, message, product, productName, page, sentAt).
+  // Пока пусто — форма показывает «Заявка принята», но заявка никуда не уходит.
+  leadEndpoint: '',
 
   groups: [
     { id: 'all', name: 'Главная', label: 'Все товары' },

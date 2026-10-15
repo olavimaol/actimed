@@ -354,7 +354,8 @@ function init() {
   let lastInput = 0;
   let pointer = null;
   const pxToWorld = () => (2 * fitHalf) / canvas.clientWidth * 1.1;
-  const menuOpen = () => window.actimedMenu && window.actimedMenu.isOpen();
+  // пока открыто меню или форма заявки, лента не реагирует на колесо и клавиши
+  const menuOpen = () => (window.actimedMenu && window.actimedMenu.isOpen()) || (window.actimedLead && window.actimedLead.isOpen());
 
   function nudge(delta) {
     target += delta;

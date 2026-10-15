@@ -84,8 +84,8 @@
     '<section class="pd-buy" aria-label="Купить">' +
       (p.rx ? '<p class="pd-buy__rx">Отпускается по рецепту врача</p>' : '') +
       '<p class="pd-buy__price">' + price(p.price) + '</p>' +
-      '<button type="button" class="pd-buy__btn" data-add>В корзину</button>' +
-      '<p class="pd-buy__note" data-add-note aria-live="polite">Перед применением прочитайте инструкцию.</p>' +
+      '<button type="button" class="pd-buy__btn" data-lead-open data-lead-product="' + esc(p.id) + '">Оставить заявку</button>' +
+      '<p class="pd-buy__note">Фармацевт перезвонит, ответит на вопросы и оформит доставку. Перед применением прочитайте инструкцию.</p>' +
     '</section>' +
 
     '<section class="pd-gallery" data-pd-gallery aria-label="Как выглядит товар">' +
@@ -111,16 +111,6 @@
         }).join('') +
       '</ul>' +
     '</section>';
-
-  /* ---------- В корзину ---------- */
-  var addBtn = main.querySelector('[data-add]');
-  var addNote = main.querySelector('[data-add-note]');
-  addBtn.addEventListener('click', function () {
-    var n = window.actimedCart ? window.actimedCart.add(1) : 1;
-    addBtn.textContent = 'Добавлено ✓';
-    addBtn.classList.add('is-added');
-    addNote.textContent = 'В корзине товаров: ' + n + '. Оформить заказ поможет фармацевт: ' + D.phone + '.';
-  });
 
   /* ---------- Название подгоняем по ширине экрана ---------- */
   var title = main.querySelector('[data-pd-title]');

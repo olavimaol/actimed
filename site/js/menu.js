@@ -4,6 +4,7 @@
     data-theme="dark"  — светлые надписи (главная с тёмной лентой)
     data-theme="light" — бирюзовые надписи (страница товара)
     data-back          — слева кнопка «назад к ленте» вместо телефона
+  Рядом — «Оставить заявку» (форму открывает js/lead.js).
   Меню открывается по клику: слой во весь экран, крупные пункты лесенкой.
   Анимаций при наведении нет.
 */
@@ -17,28 +18,6 @@
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var theme = host.getAttribute('data-theme') || 'light';
   var withBack = host.hasAttribute('data-back');
-
-  /* ---------- Корзина (в браузере посетителя) ---------- */
-  var CART_KEY = 'actimed-cart';
-  function readCart() {
-    try { return Math.max(0, parseInt(localStorage.getItem(CART_KEY), 10) || 0); } catch (e) { return 0; }
-  }
-  var cartCount = readCart();
-  function renderCart() {
-    document.querySelectorAll('[data-cart-count]').forEach(function (el) { el.textContent = cartCount; });
-    document.querySelectorAll('[data-cart-label]').forEach(function (el) {
-      el.setAttribute('aria-label', 'В корзине товаров: ' + cartCount);
-    });
-  }
-  window.actimedCart = {
-    add: function (n) {
-      cartCount += n || 1;
-      try { localStorage.setItem(CART_KEY, String(cartCount)); } catch (e) { /* без сохранения */ }
-      renderCart();
-      return cartCount;
-    },
-    count: function () { return cartCount; }
-  };
 
   /* ---------- Активный пункт ---------- */
   var params = new URLSearchParams(location.search);
@@ -55,7 +34,9 @@
   host.outerHTML =
     '<header class="site-header site-header--' + theme + '" data-header>' +
       '<div class="site-header__side">' + left +
-        '<span class="round-btn round-btn--fill" role="status" data-cart-label><span data-cart-count>0</span></span>' +
+        '<button class="lead-btn" type="button" data-lead-open aria-label="Оставить заявку">' +
+          '<span class="lead-btn__long">Оставить заявку</span><span class="lead-btn__short">Заявка</span>' +
+        '</button>' +
       '</div>' +
       '<a class="brand" href="index.html" aria-label="Actimed — на главную">' +
         '<span class="brand__mark" aria-hidden="true"></span>' +
@@ -80,11 +61,9 @@
       '<div class="site-menu__foot">' +
         '<a href="' + D.phoneHref + '">' + D.phone + '</a>' +
         '<a href="' + D.telegram + '" target="_blank" rel="noopener">Telegram ↗</a>' +
-        '<span>Корзина · <span data-cart-count>0</span></span>' +
+        '<button class="site-menu__lead" type="button" data-lead-open>Оставить заявку ↗</button>' +
       '</div>' +
     '</div>';
-
-  renderCart();
 
   /* ---------- Открыть / закрыть ---------- */
   var header = document.querySelector('[data-header]');
@@ -134,7 +113,7 @@
     if (e.key === 'Escape') { e.preventDefault(); close(true); return; }
     if (e.key === 'Tab') {
       // фокус не выходит за пределы меню и кнопки «Закрыть»
-      var items = [toggle].concat(Array.prototype.slice.call(menu.querySelectorAll('a')));
+      var items = [toggle].concat(Array.prototype.slice.call(menu.querySelectorAll('a, button')));
       var i = items.indexOf(document.activeElement);
       if (e.shiftKey && i <= 0) { e.preventDefault(); items[items.length - 1].focus(); }
       else if (!e.shiftKey && i === items.length - 1) { e.preventDefault(); items[0].focus(); }
