@@ -7,7 +7,7 @@
   <meta name="description" content="Actimed — онлайн-аптека: лекарства, витамины и товары для здоровья с доставкой за 2 часа.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -139,16 +139,18 @@
       </div>
     </section>
 
-    <!-- Лента карточек категорий в 3D (идея — Jesper) -->
-    <section class="ribbon" id="categories" data-ribbon>
+    <!-- Лента карточек категорий в 3D (по мотивам Jesper) -->
+    <section class="ribbon" id="categories" data-ribbon aria-labelledby="ribbon-title">
       <div class="ribbon__sticky">
         <canvas class="ribbon__canvas" data-ribbon-canvas aria-hidden="true"></canvas>
-        <div class="ribbon__ui container">
-          <h2 class="ribbon__title">Популярные категории</h2>
-          <p class="ribbon__hint">Прокручивайте страницу или тяните ленту</p>
+        <div class="ribbon__hud">
+          <h2 class="ribbon__title" id="ribbon-title">Популярные категории</h2>
+          <p class="ribbon__hint">Листайте страницу или тяните ленту</p>
+          <p class="ribbon__counter" data-ribbon-counter aria-hidden="true">01 / 08</p>
+          <a class="ribbon__all" href="#catalog">Весь каталог →</a>
         </div>
-        <!-- Запасной вариант, если WebGL недоступен -->
-        <ul class="ribbon__fallback container" data-ribbon-fallback></ul>
+        <!-- Ссылки на категории: для клавиатуры и экранного диктора, и как запасной вариант без WebGL -->
+        <ul class="ribbon__fallback" data-ribbon-fallback></ul>
       </div>
     </section>
 
@@ -176,47 +178,54 @@
 
   </main>
 
-  <!-- Футер с поднимающимся куполом (идея — String-tune) -->
+  <!-- Футер по образцу String-tune: тёмная гора поднимается снизу (js/footer.js) -->
   <footer class="footer" id="contacts" data-footer>
-    <div class="footer__cap" data-footer-cap aria-hidden="true">
-      <svg viewBox="0 0 1 1" preserveAspectRatio="none"><path data-footer-shape d=""/></svg>
-    </div>
-    <div class="footer__body">
-      <svg class="footer__octa-line" viewBox="0 0 8 8" preserveAspectRatio="none" aria-hidden="true">
-        <polygon points="4 0 6 0.5359 7.4641 2 8 4 7.4641 6 6 7.4641 4 8 2 7.4641 0.5359 6 0 4 0.5359 2 2 0.5359" vector-effect="non-scaling-stroke"/>
+    <span class="footer__overlay" aria-hidden="true">
+      <svg class="footer__mountain" viewBox="0 0 1 1" preserveAspectRatio="none"><path data-footer-shape d="M 0 1 Z"/></svg>
+    </span>
+    <svg class="footer__octa-line" viewBox="0 0 8 8" preserveAspectRatio="none" aria-hidden="true">
+      <polygon points="4 0 6 0.5359 7.4641 2 8 4 7.4641 6 6 7.4641 4 8 2 7.4641 0.5359 6 0 4 0.5359 2 2 0.5359" vector-effect="non-scaling-stroke"/>
+    </svg>
+    <div class="footer__grid">
+      <svg class="footer__string" data-footer-string-svg viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true">
+        <path data-footer-string d="M 0 0.5 L 1 0.5" vector-effect="non-scaling-stroke"/>
       </svg>
-      <div class="footer__grid container">
-        <span class="footer__heading footer__heading--l">Здоровье</span>
-        <span class="footer__heading footer__heading--r">под защитой.</span>
-        <svg class="footer__string" viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true">
-          <path data-footer-string d="M0,60 Q500,60 1000,60"/>
-        </svg>
-        <p class="footer__statement footer__statement--1">Только сертифицированные препараты.</p>
-        <p class="footer__statement footer__statement--2">Доставка за 2 часа по городу.</p>
-        <p class="footer__statement footer__statement--3">Консультация фармацевта бесплатно.</p>
-        <a class="footer__more" href="#about">Как мы работаем</a>
-        <nav class="footer__nav" aria-label="Связаться">
-          <a class="btn btn--mint footer__btn-main" href="#catalog">Перейти в каталог</a>
-          <span class="footer__divider"></span>
-          <a class="btn btn--ghost" href="tel:+998712000000">Позвонить</a>
-          <a class="btn btn--ghost" href="https://t.me/" target="_blank" rel="noopener">Telegram</a>
-        </nav>
-        <span class="footer__name">Actimed<sup>©</sup></span>
-        <span class="footer__sub footer__sub--1">© Actimed, онлайн-аптека</span>
-        <span class="footer__sub footer__sub--2">Лицензия на фармацевтическую деятельность № 0000000</span>
-        <span class="footer__sub footer__sub--3">Ташкент, ул. Примерная, 1 · ежедневно 8:00–23:00</span>
-        <span class="footer__sub footer__sub--4">‘<span data-year-short>26</span></span>
-        <div class="footer__octa" data-footer-octa aria-hidden="true">
-          <span class="logo__mark logo__mark--big"></span>
-        </div>
-        <p class="footer__warning">Имеются противопоказания. Перед применением проконсультируйтесь со специалистом.</p>
+      <span class="footer__heading footer__heading--l">Здоровье</span>
+      <span class="footer__heading footer__heading--r">под защитой.</span>
+      <p class="footer__statement footer__statement--1">Только сертифицированные препараты.</p>
+      <p class="footer__statement footer__statement--2">Доставка за 2 часа по Ташкенту.</p>
+      <p class="footer__statement footer__statement--3">Фармацевт на связи круглосуточно.</p>
+      <a class="footer__more" href="#about">Как мы работаем</a>
+      <nav class="footer__nav" aria-label="Связаться с аптекой">
+        <a class="footer__btn footer__btn--main" href="#catalog">Каталог лекарств</a>
+        <span class="footer__divider" aria-hidden="true"></span>
+        <a class="footer__btn footer__btn--icon" href="tel:+998712000000" aria-label="Позвонить: +998 71 200-00-00">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5h3l1.4 4.2-2 1.4a12 12 0 0 0 5.9 5.9l1.4-2 4.2 1.4v3a2 2 0 0 1-2.2 2A17.5 17.5 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2z"/></svg>
+        </a>
+        <a class="footer__btn footer__btn--icon" href="https://t.me/" target="_blank" rel="noopener" aria-label="Написать в Telegram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 3.6 2.9 10.8c-.9.4-.9 1.6.1 1.9l4.6 1.5 1.8 5.6c.3.8 1.3 1 1.9.4l2.6-2.5 4.7 3.5c.7.5 1.7.1 1.9-.8L23 4.9c.2-1-.7-1.7-1.5-1.3zM9.6 14.6l8.5-7.6-6.6 8.7-.3 2.9-1.6-4z"/></svg>
+        </a>
+      </nav>
+      <span class="footer__name" aria-hidden="true">Actimed</span>
+      <span class="footer__mark" aria-hidden="true"><span class="logo__mark"></span>аптека</span>
+      <span class="footer__sub footer__sub--1">© Actimed, онлайн-аптека</span>
+      <span class="footer__sub footer__sub--2">Лицензия на фармдеятельность № 0000000</span>
+      <span class="footer__sub footer__sub--3">Ташкент · ежедневно 8:00–23:00</span>
+      <span class="footer__sub footer__sub--4">‘<span data-year-short>26</span></span>
+      <div class="footer__octa" string="progress" string-id="footer-octa" aria-hidden="true">
+        <img src="img/footer/octagon.jpg" alt="" loading="lazy" width="960" height="960">
+        <span class="logo__mark"></span>
       </div>
+      <figure class="footer__blisters" string="parallax" string-parallax="-0.2" aria-hidden="true">
+        <img src="img/footer/blisters.png" alt="" loading="lazy" width="2400" height="364">
+      </figure>
+      <p class="footer__warning">Имеются противопоказания. Перед применением проконсультируйтесь со специалистом.</p>
     </div>
   </footer>
 
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
-  <script src="js/footer.js"></script>
+  <script type="module" src="js/footer.js"></script>
   <script type="module" src="js/ribbon.js"></script>
 </body>
 </html>

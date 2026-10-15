@@ -10,6 +10,30 @@
   var header = document.querySelector('.header');
   var hero = document.querySelector('[data-hero]');
 
+  /* ---------- Прокрутка к блоку ----------
+     Плавную прокрутку на компьютере ведёт StringTune (js/footer.js),
+     поэтому переходы по якорям идут через неё. Без неё — обычный переход. */
+  function scrollToEl(el) {
+    if (!el) return;
+    var offset = -(header.offsetHeight + 8);
+    if (window.actimedTune) {
+      window.actimedTune.scrollTo({ element: el, offset: offset, immediate: reduceMotion });
+    } else {
+      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY + offset, behavior: 'auto' });
+    }
+  }
+  window.actimedScrollTo = scrollToEl;
+
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href^="#"]');
+    if (!a || a.hasAttribute('data-filter-link') || a.hasAttribute('data-cat-link')) return;
+    var id = a.getAttribute('href').slice(1);
+    var target = id ? document.getElementById(id) : null;
+    if (!target) return;
+    e.preventDefault();
+    scrollToEl(target);
+  });
+
   /* ---------- Главный экран: упаковки и кольцо двигаются от прокрутки ---------- */
   var heroItems = Array.prototype.slice.call(document.querySelectorAll('.hero__item'));
   var ring = document.querySelector('[data-hero-ring]');
@@ -126,7 +150,7 @@
     state.cat = 'all';
     renderChips();
     renderProducts();
-    document.getElementById('catalog').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+    scrollToEl(document.getElementById('catalog'));
   });
 
   // Переключатель «Плитка / Список»
@@ -148,7 +172,7 @@
     state.query = '';
     searchInput.value = '';
     setCategory(id);
-    document.getElementById('catalog').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+    scrollToEl(document.getElementById('catalog'));
   };
   document.querySelectorAll('[data-filter-link]').forEach(function (a) {
     a.addEventListener('click', function (e) {

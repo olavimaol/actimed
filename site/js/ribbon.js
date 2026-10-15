@@ -1,26 +1,37 @@
 /*
-  Лента категорий в духе Jesper Landberg:
-  карточки изгибаются по дуге над сеткой-полом, лента едет от прокрутки
-  страницы или перетаскивания. Наведение мыши ничего не анимирует.
+  Лента категорий по мотивам Jesper Landberg.
+
+  Как устроено:
+  • Карточки стоят вплотную и едут сквозь неподвижную «волну» глубины.
+    Волна меняет только z, поэтому контур карточки изгибается за счёт
+    перспективы (ближняя часть крупнее, дальняя мельче), а не перекоса.
+  • Гребень волны сдвинут левее центра: ближняя карточка стоит на склоне.
+  • Лента слегка повёрнута вдоль своей оси; при быстрой прокрутке её края
+    приподнимаются и закручиваются в разные стороны, в покое всё ровно.
+  • Движение берётся из прокрутки страницы (секция закреплена) и перетаскивания.
+  • Наведение мыши ничего не анимирует — меняется только курсор.
 */
 import * as THREE from '../vendor/three.module.min.js';
 
 const section = document.querySelector('[data-ribbon]');
 const canvas = document.querySelector('[data-ribbon-canvas]');
 const fallback = document.querySelector('[data-ribbon-fallback]');
+const counter = document.querySelector('[data-ribbon-counter]');
 const categories = window.ACTIMED.categories.filter((c) => c.id !== 'all');
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const DEEP = '#0B2E33';
+const imageOf = (cat) => `img/categories/${cat.id}.jpg`;
+const pad = (n) => String(n).padStart(2, '0');
 
 function openCategory(id) {
   if (window.actimedOpenCategory) window.actimedOpenCategory(id);
 }
 
-function buildFallback() {
-  section.classList.add('no-webgl');
+// Обычные ссылки на категории: для клавиатуры и экранного диктора,
+// а без WebGL — видимая лента картинок.
+function fillLinks() {
   fallback.innerHTML = categories.map((c) =>
-    `<li><a href="#catalog" data-cat-link="${c.id}" style="--c:${c.color}">${c.name}<small>${c.count} товаров</small></a></li>`
+    `<li><a href="#catalog" data-cat-link="${c.id}"><img src="${imageOf(c)}" alt="${c.name}" loading="lazy" width="1600" height="900"></a></li>`
   ).join('');
   fallback.addEventListener('click', (e) => {
     const a = e.target.closest('[data-cat-link]');
@@ -30,7 +41,11 @@ function buildFallback() {
   });
 }
 
-function hasWebGL() {
+function buildFallback() {
+  section.classList.add('no-webgl');
+}
+
+function webglAvailable() {
   try {
     const c = document.createElement('canvas');
     return !!(c.getContext('webgl2') || c.getContext('webgl'));
@@ -39,247 +54,255 @@ function hasWebGL() {
   }
 }
 
-/* ---------- Рисуем картинку карточки на canvas ---------- */
-function mix(hexA, hexB, t) {
-  const a = parseInt(hexA.slice(1), 16), b = parseInt(hexB.slice(1), 16);
-  const ch = (s) => Math.round(((a >> s) & 255) * (1 - t) + ((b >> s) & 255) * t);
-  return `rgb(${ch(16)},${ch(8)},${ch(0)})`;
-}
+/* ---------- Параметры сцены ---------- */
+const CARD_W = 36;
+const CARD_H = CARD_W * 9 / 16;
+const GAP = 0.9;
+const STEP = CARD_W + GAP;
+const TOTAL = STEP * categories.length;
+const CENTER_Y = -0.4;
+const FLOOR_Y = -14;
 
-function drawShape(ctx, type, cx, cy, s) {
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.fillStyle = 'rgba(255,255,255,0.92)';
-  ctx.strokeStyle = 'rgba(255,255,255,0.92)';
-  ctx.lineWidth = s * 0.07;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  switch (type) {
-    case 'pill': {
-      ctx.rotate(-0.6);
-      const w = s * 1.5, h = s * 0.6;
-      ctx.beginPath(); ctx.roundRect(-w / 2, -h / 2, w, h, h / 2); ctx.fill();
-      ctx.fillStyle = 'rgba(255,255,255,0.55)';
-      ctx.beginPath(); ctx.roundRect(0, -h / 2, w / 2, h, [0, h / 2, h / 2, 0]); ctx.fill();
-      break;
-    }
-    case 'cross': {
-      const a = s * 1.2, b = s * 0.38;
-      ctx.beginPath(); ctx.roundRect(-a / 2, -b / 2, a, b, b * 0.25); ctx.fill();
-      ctx.beginPath(); ctx.roundRect(-b / 2, -a / 2, b, a, b * 0.25); ctx.fill();
-      break;
-    }
-    case 'dots': {
-      [[-0.35, -0.3, 0.42], [0.42, -0.1, 0.3], [-0.05, 0.45, 0.25]].forEach(([x, y, r]) => {
-        ctx.beginPath(); ctx.arc(x * s, y * s, r * s, 0, Math.PI * 2); ctx.fill();
-      });
-      break;
-    }
-    case 'heart': {
-      const k = s * 0.62;
-      ctx.beginPath();
-      ctx.moveTo(0, k * 0.9);
-      ctx.bezierCurveTo(-k * 1.6, -k * 0.1, -k * 0.7, -k * 1.3, 0, -k * 0.45);
-      ctx.bezierCurveTo(k * 0.7, -k * 1.3, k * 1.6, -k * 0.1, 0, k * 0.9);
-      ctx.fill();
-      break;
-    }
-    case 'leaf': {
-      ctx.rotate(0.5);
-      ctx.beginPath();
-      ctx.moveTo(0, -s * 0.8);
-      ctx.quadraticCurveTo(s * 0.75, 0, 0, s * 0.8);
-      ctx.quadraticCurveTo(-s * 0.75, 0, 0, -s * 0.8);
-      ctx.fill();
-      ctx.strokeStyle = 'rgba(0,0,0,0.12)';
-      ctx.beginPath(); ctx.moveTo(0, -s * 0.6); ctx.lineTo(0, s * 0.7); ctx.stroke();
-      break;
-    }
-    case 'drop': {
-      ctx.beginPath();
-      ctx.moveTo(0, -s * 0.85);
-      ctx.bezierCurveTo(s * 0.35, -s * 0.35, s * 0.6, 0, s * 0.6, s * 0.25);
-      ctx.arc(0, s * 0.25, s * 0.6, 0, Math.PI);
-      ctx.bezierCurveTo(-s * 0.6, 0, -s * 0.35, -s * 0.35, 0, -s * 0.85);
-      ctx.fill();
-      break;
-    }
-    case 'pulse': {
-      ctx.beginPath();
-      ctx.moveTo(-s, 0); ctx.lineTo(-s * 0.4, 0); ctx.lineTo(-s * 0.2, -s * 0.6);
-      ctx.lineTo(s * 0.1, s * 0.6); ctx.lineTo(s * 0.3, -s * 0.2); ctx.lineTo(s * 0.45, 0); ctx.lineTo(s, 0);
-      ctx.stroke();
-      break;
-    }
-  }
-  ctx.restore();
-}
+// Форма ленты (в покое)
+const shape = {
+  amp: 6.5,                 // глубина волны
+  k: Math.PI * 0.9 / 33,    // меньше половины периода на полэкрана — одна длинная дуга
+  x0: -14,                  // гребень левее центра
+  depth: -3.5,
+  slope: -0.06,             // вся лента чуть уходит вглубь вправо
+  bank: -0.05,              // наклон вдоль оси ленты
+  half: 34,
+  // Реакция на скорость
+  rearY: 2.2,
+  rearZ: 2.0,
+  twist: 0.12,
+  lean: 0.025
+};
 
-function drawCard(cat) {
-  const W = 1260, H = 840;
-  const c = document.createElement('canvas');
-  c.width = W; c.height = H;
-  const ctx = c.getContext('2d');
-
-  const g = ctx.createLinearGradient(0, 0, W, H);
-  g.addColorStop(0, mix(cat.color, '#FFFFFF', 0.12));
-  g.addColorStop(1, mix(cat.color, DEEP, 0.45));
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, W, H);
-
-  // мягкий блик
-  const glow = ctx.createRadialGradient(W * 0.72, H * 0.38, 10, W * 0.72, H * 0.38, H * 0.7);
-  glow.addColorStop(0, 'rgba(255,255,255,0.28)');
-  glow.addColorStop(1, 'rgba(255,255,255,0)');
-  ctx.fillStyle = glow;
-  ctx.fillRect(0, 0, W, H);
-
-  drawShape(ctx, cat.shape, W * 0.72, H * 0.4, H * 0.28);
-
-  ctx.fillStyle = 'rgba(255,255,255,0.8)';
-  ctx.font = '700 30px Unbounded, Manrope, sans-serif';
-  ctx.fillText('ACTIMED', 64, 92);
-
-  ctx.fillStyle = '#FFFFFF';
-  ctx.font = '800 78px Manrope, sans-serif';
-  ctx.fillText(cat.name, 64, H - 132);
-  ctx.fillStyle = 'rgba(255,255,255,0.82)';
-  ctx.font = '600 36px Manrope, sans-serif';
-  ctx.fillText(`${cat.count} товаров`, 64, H - 72);
-
-  // круглая стрелка
-  ctx.fillStyle = '#FFFFFF';
-  ctx.beginPath(); ctx.arc(W - 110, H - 100, 50, 0, Math.PI * 2); ctx.fill();
-  ctx.strokeStyle = DEEP;
-  ctx.lineWidth = 6; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-  ctx.beginPath();
-  ctx.moveTo(W - 132, H - 100); ctx.lineTo(W - 88, H - 100);
-  ctx.moveTo(W - 106, H - 118); ctx.lineTo(W - 88, H - 100); ctx.lineTo(W - 106, H - 82);
-  ctx.stroke();
-
-  const tex = new THREE.CanvasTexture(c);
-  tex.anisotropy = 4;
-  tex.generateMipmaps = true;
-  tex.minFilter = THREE.LinearMipmapLinearFilter;
-  return tex;
-}
-
-/* ---------- Шейдеры карточки ---------- */
 const vertexShader = /* glsl */ `
-  uniform float uCurve;
   uniform float uVel;
+  uniform float uAmp;
+  uniform float uK;
+  uniform float uX0;
+  uniform float uDepth;
+  uniform float uSlope;
+  uniform float uBank;
+  uniform float uHalf;
+  uniform float uRearY;
+  uniform float uRearZ;
+  uniform float uTwist;
+  uniform float uLean;
   varying vec2 vUv;
-  varying float vDepth;
+  varying float vFacing;
+  varying float vDist;
+
+  float surfaceZ(float x) { return uDepth + uAmp * cos(uK * (x - uX0)) + uSlope * x; }
+  float surfaceDz(float x) { return -uAmp * uK * sin(uK * (x - uX0)) + uSlope; }
+
   void main() {
     vUv = uv;
-    vec4 wp = modelMatrix * vec4(position, 1.0);
-    float x = wp.x;
-    // дуга: чем дальше от центра, тем глубже карточка
-    wp.z -= x * x * uCurve;
-    // волна от скорости — лента «прогибается» при движении
-    wp.y += sin(x * 0.42) * uVel * 0.9;
-    wp.z += cos(uv.y * 3.14159) * uVel * 0.6;
-    vDepth = wp.z;
-    gl_Position = projectionMatrix * viewMatrix * wp;
+    vec4 w = modelMatrix * vec4(position, 1.0);
+    float dy = position.y;                 // высота над осью ленты
+    float side = w.x - uX0;
+    float edge = smoothstep(0.25, 1.0, abs(side) / uHalf);
+    float speed = abs(uVel);
+
+    float x = w.x + uLean * uVel * dy;     // лёгкий наклон по ходу движения
+    float theta = uBank * sin(uK * side) + uTwist * uVel * edge * sign(side);
+
+    w.x = x;
+    w.y = (w.y - dy) + dy * cos(theta) + uRearY * speed * edge;
+    w.z = surfaceZ(x) - dy * sin(theta) + uRearZ * speed * edge;
+
+    vFacing = normalize(vec3(-surfaceDz(x), 0.0, 1.0)).z;
+    vec4 mv = viewMatrix * w;
+    vDist = -mv.z;
+    gl_Position = projectionMatrix * mv;
   }
 `;
 
 const fragmentShader = /* glsl */ `
   uniform sampler2D uMap;
+  uniform float uHasMap;
+  uniform vec3 uColor;
   uniform vec2 uSize;
   uniform float uRadius;
-  uniform vec3 uBg;
+  uniform float uFogNear;
+  uniform float uFogFar;
   varying vec2 vUv;
-  varying float vDepth;
+  varying float vFacing;
+  varying float vDist;
+
   void main() {
     vec2 p = (vUv - 0.5) * uSize;
-    vec2 q = abs(p) - uSize * 0.5 + uRadius;
+    vec2 q = abs(p) - (uSize * 0.5 - uRadius);
     float d = length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - uRadius;
-    float alpha = 1.0 - smoothstep(-0.012, 0.012, d);
-    if (alpha < 0.01) discard;
-    vec3 col = texture2D(uMap, vUv).rgb;
-    float fade = clamp(-vDepth * 0.045, 0.0, 0.7);
-    col = mix(col, uBg, fade);
-    gl_FragColor = vec4(col, alpha);
+    float aa = max(fwidth(d), 1e-4);
+    float alpha = 1.0 - smoothstep(-aa, aa, d);
+    if (alpha <= 0.0) discard;
+
+    vec3 col = mix(uColor, texture2D(uMap, vUv).rgb, uHasMap);
+    col *= mix(0.62, 1.0, pow(clamp(vFacing, 0.0, 1.0), 3.0));   // повёрнутое от нас темнее
+    float fog = smoothstep(uFogNear, uFogFar, vDist);
+    gl_FragColor = vec4(col, alpha * (1.0 - fog));
   }
 `;
 
-async function init() {
-  if (!hasWebGL()) { buildFallback(); return; }
+const gridVertex = /* glsl */ `
+  varying vec3 vWorld;
+  varying float vDist;
+  void main() {
+    vec4 w = modelMatrix * vec4(position, 1.0);
+    vWorld = w.xyz;
+    vec4 mv = viewMatrix * w;
+    vDist = -mv.z;
+    gl_Position = projectionMatrix * mv;
+  }
+`;
 
-  THREE.ColorManagement.enabled = false;
+const gridFragment = /* glsl */ `
+  uniform float uShift;
+  uniform float uCell;
+  uniform vec3 uColor;
+  uniform float uNear;
+  uniform float uFar;
+  varying vec3 vWorld;
+  varying float vDist;
+  void main() {
+    vec2 c = vec2(vWorld.x + uShift, vWorld.z) / uCell;
+    vec2 g = abs(fract(c - 0.5) - 0.5) / max(fwidth(c), vec2(1e-4));
+    float line = 1.0 - min(min(g.x, g.y), 1.0);
+    float fade = (1.0 - smoothstep(uNear + 20.0, uFar, vDist)) * smoothstep(uNear - 20.0, uNear - 10.0, vDist);
+    gl_FragColor = vec4(uColor, line * 0.42 * fade);
+  }
+`;
+
+function init() {
+  fillLinks();
+  if (!webglAvailable()) { buildFallback(); return; }
 
   let renderer;
   try {
-    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   } catch (e) {
     buildFallback();
     return;
   }
+  THREE.ColorManagement.enabled = false;
   renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setClearColor(new THREE.Color(DEEP), 1);
+  renderer.setClearColor(0x000000, 0);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(new THREE.Color(DEEP), 10, 34);
-
-  const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
+  const camera = new THREE.PerspectiveCamera(75, 1, 1, 800);
 
   // Пол-сетка
-  const grid = new THREE.GridHelper(120, 60, 0x2C7A74, 0x2C7A74);
-  grid.material.transparent = true;
-  grid.material.opacity = 0.55;
-  grid.material.fog = true;
-  grid.position.y = -2.4;
+  const grid = new THREE.Mesh(
+    new THREE.PlaneGeometry(900, 900),
+    new THREE.ShaderMaterial({
+      vertexShader: gridVertex,
+      fragmentShader: gridFragment,
+      transparent: true,
+      depthWrite: false,
+      extensions: { derivatives: true },
+      uniforms: {
+        uShift: { value: 0 },
+        uCell: { value: 6 },
+        uColor: { value: new THREE.Color('#6FC2AE') },
+        uNear: { value: 27 },
+        uFar: { value: 260 }
+      }
+    })
+  );
+  grid.rotation.x = -Math.PI / 2;
+  grid.position.set(0, FLOOR_Y, -300);
+  grid.renderOrder = 0;
   scene.add(grid);
 
-  // Ждём шрифты, чтобы надписи на карточках были нужным шрифтом
-  try {
-    await Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 2500))]);
-  } catch (e) { /* шрифты не критичны */ }
-
-  const CARD_W = 4.2, CARD_H = 2.8, GAP = 0.6;
-  const STEP = CARD_W + GAP;
-  const TOTAL = STEP * categories.length;
-  const geometry = new THREE.PlaneGeometry(CARD_W, CARD_H, 48, 12);
+  // Карточки
   const shared = {
-    uCurve: { value: 0.028 },
     uVel: { value: 0 },
+    uAmp: { value: shape.amp },
+    uK: { value: shape.k },
+    uX0: { value: shape.x0 },
+    uDepth: { value: shape.depth },
+    uSlope: { value: shape.slope },
+    uBank: { value: shape.bank },
+    uHalf: { value: shape.half },
+    uRearY: { value: shape.rearY },
+    uRearZ: { value: shape.rearZ },
+    uTwist: { value: shape.twist },
+    uLean: { value: shape.lean },
     uSize: { value: new THREE.Vector2(CARD_W, CARD_H) },
-    uRadius: { value: 0.22 },
-    uBg: { value: new THREE.Color(DEEP) }
+    uRadius: { value: 1.1 },
+    uFogNear: { value: 40 },
+    uFogFar: { value: 95 }
   };
 
-  const meshes = categories.map((cat, i) => {
+  const geometry = new THREE.PlaneGeometry(CARD_W, CARD_H, 96, 16);
+  const loader = new THREE.TextureLoader();
+  const maxAniso = renderer.capabilities.getMaxAnisotropy();
+
+  const cards = categories.map((cat, i) => {
     const material = new THREE.ShaderMaterial({
-      vertexShader, fragmentShader, transparent: true,
-      uniforms: { ...shared, uMap: { value: drawCard(cat) } }
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+      depthWrite: false,
+      extensions: { derivatives: true },
+      uniforms: {
+        ...shared,
+        uMap: { value: null },
+        uHasMap: { value: 0 },
+        uColor: { value: new THREE.Color(cat.color) }
+      }
+    });
+    loader.load(imageOf(cat), (tex) => {
+      tex.anisotropy = maxAniso;
+      tex.minFilter = THREE.LinearMipmapLinearFilter;
+      material.uniforms.uMap.value = tex;
+      material.uniforms.uHasMap.value = 1;
+      requestRender();
     });
     const mesh = new THREE.Mesh(geometry, material);
-    mesh.userData = { cat: cat.id, base: i * STEP };
+    mesh.position.y = CENTER_Y;
+    mesh.renderOrder = 1;
+    mesh.userData = { cat: cat.id, index: i };
     scene.add(mesh);
     return mesh;
   });
 
-  /* ---------- Размеры ---------- */
+  /* ---------- Размер и камера ---------- */
+  let fitHalf = 0;
   function resize() {
     const w = canvas.clientWidth, h = canvas.clientHeight;
+    if (!w || !h) return;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    // на узких экранах отодвигаем камеру, чтобы карточка помещалась
-    const halfW = Math.max(CARD_W * 0.62, 7.2 * Math.min(1, camera.aspect / 1.6));
-    const z = halfW / (Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.aspect);
-    camera.position.set(0, 0.9, Math.max(11, z));
-    camera.lookAt(0, -0.1, 0);
+    camera.fov = camera.aspect < 1 ? 60 : 75;
+    const tanHalf = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+    // на узком экране отодвигаем камеру, чтобы карточка поместилась по ширине
+    const needHalfW = CARD_W * (camera.aspect < 1 ? 0.54 : 0.6);
+    const z = Math.max(27, needHalfW / (tanHalf * camera.aspect));
+    camera.position.set(0, 0, z);
+    camera.lookAt(0, 1.6, 0);
     camera.updateProjectionMatrix();
-    shared.uCurve.value = camera.aspect < 1 ? 0.05 : 0.028;
+    fitHalf = z * tanHalf * camera.aspect;
+    // туман и сетка считаются от реального расстояния камеры
+    shared.uFogNear.value = z + 13;
+    shared.uFogFar.value = z + 68;
+    grid.material.uniforms.uNear.value = z;
+    grid.material.uniforms.uFar.value = z + 233;
+    shared.uHalf.value = Math.max(shape.half, fitHalf);
+    requestRender();
   }
-  window.addEventListener('resize', resize);
-  resize();
+  new ResizeObserver(resize).observe(canvas);
 
-  /* ---------- Управление: прокрутка + перетаскивание ---------- */
+  /* ---------- Управление ---------- */
   let dragOffset = 0;
-  let offset = 0, target = 0, prev = 0;
+  let offset = 0;
+  let prevOffset = 0;
+  let vel = 0;
   let pointer = null;
 
   function scrollProgress() {
@@ -287,21 +310,64 @@ async function init() {
     const range = r.height - window.innerHeight;
     return range > 0 ? Math.min(1, Math.max(0, -r.top / range)) : 0;
   }
+  const targetOffset = () => scrollProgress() * (categories.length - 1) * STEP + dragOffset;
 
-  function worldPerPixel() {
-    const dist = camera.position.z;
-    const visibleH = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * dist;
-    return visibleH / canvas.clientHeight;
+  function wrap(x) {
+    return ((((x + TOTAL / 2) % TOTAL) + TOTAL) % TOTAL) - TOTAL / 2;
   }
 
-  const raycaster = new THREE.Raycaster();
-  const ndc = new THREE.Vector2();
-  function pickCard(ev) {
+  // Та же деформация, что в шейдере, — чтобы клик попадал в изогнутую карточку
+  const tmp = new THREE.Vector3();
+  function deformed(x, dy, v) {
+    const side = x - shape.x0;
+    const t = Math.min(1, Math.max(0, (Math.abs(side) / shared.uHalf.value - 0.25) / 0.75));
+    const edge = t * t * (3 - 2 * t);
+    const xx = x + shape.lean * v * dy;
+    const theta = shape.bank * Math.sin(shape.k * side) + shape.twist * v * edge * Math.sign(side);
+    const z = shape.depth + shape.amp * Math.cos(shape.k * (xx - shape.x0)) + shape.slope * xx;
+    return tmp.set(
+      xx,
+      CENTER_Y + dy * Math.cos(theta) + shape.rearY * Math.abs(v) * edge,
+      z - dy * Math.sin(theta) + shape.rearZ * Math.abs(v) * edge
+    );
+  }
+
+  function pickCard(clientX, clientY) {
     const r = canvas.getBoundingClientRect();
-    ndc.set(((ev.clientX - r.left) / r.width) * 2 - 1, -((ev.clientY - r.top) / r.height) * 2 + 1);
-    raycaster.setFromCamera(ndc, camera);
-    const hit = raycaster.intersectObjects(meshes, false)[0];
-    return hit ? hit.object.userData.cat : null;
+    const px = ((clientX - r.left) / r.width) * 2 - 1;
+    const py = -((clientY - r.top) / r.height) * 2 + 1;
+    const v = shared.uVel.value;
+    const cols = 12, rows = 2;
+    let best = null, bestDepth = Infinity;
+    for (const mesh of cards) {
+      const cx = mesh.position.x;
+      const pts = [];
+      for (let j = 0; j <= rows; j++) {
+        const row = [];
+        for (let i = 0; i <= cols; i++) {
+          const p = deformed(cx + (i / cols - 0.5) * CARD_W, (j / rows - 0.5) * CARD_H, v).clone();
+          const depth = p.distanceTo(camera.position);
+          p.project(camera);
+          row.push({ x: p.x, y: p.y, depth });
+        }
+        pts.push(row);
+      }
+      for (let j = 0; j < rows; j++) {
+        for (let i = 0; i < cols; i++) {
+          const a = pts[j][i], b = pts[j][i + 1], c = pts[j + 1][i + 1], d = pts[j + 1][i];
+          if (inTri(px, py, a, b, c) || inTri(px, py, a, c, d)) {
+            if (a.depth < bestDepth) { bestDepth = a.depth; best = mesh.userData.cat; }
+          }
+        }
+      }
+    }
+    return best;
+  }
+  function inTri(px, py, a, b, c) {
+    const s1 = (b.x - a.x) * (py - a.y) - (b.y - a.y) * (px - a.x);
+    const s2 = (c.x - b.x) * (py - b.y) - (c.y - b.y) * (px - b.x);
+    const s3 = (a.x - c.x) * (py - c.y) - (a.y - c.y) * (px - c.x);
+    return (s1 >= 0 && s2 >= 0 && s3 >= 0) || (s1 <= 0 && s2 <= 0 && s3 <= 0);
   }
 
   canvas.addEventListener('pointerdown', (ev) => {
@@ -316,61 +382,79 @@ async function init() {
         pointer.moved = true;
         canvas.classList.add('is-dragging');
       }
-      dragOffset -= dx * worldPerPixel();
-      wake();
+      // пиксели → мировые единицы на глубине гребня
+      dragOffset -= dx * (2 * fitHalf) / canvas.clientWidth * 1.1;
+      requestRender();
     } else if (ev.pointerType === 'mouse') {
-      // только смена курсора, без анимаций
-      canvas.classList.toggle('is-pointer', !!pickCard(ev));
+      canvas.classList.toggle('is-pointer', !!pickCard(ev.clientX, ev.clientY));
     }
   });
   function endPointer(ev) {
     if (!pointer || ev.pointerId !== pointer.id) return;
-    const wasClick = !pointer.moved && Math.abs(ev.clientY - pointer.startY) < 6;
+    const click = !pointer.moved && Math.abs(ev.clientY - pointer.startY) < 6;
     canvas.classList.remove('is-dragging');
     pointer = null;
-    if (wasClick && ev.type === 'pointerup') {
-      const id = pickCard(ev);
+    if (click && ev.type === 'pointerup') {
+      const id = pickCard(ev.clientX, ev.clientY);
       if (id) openCategory(id);
     }
   }
   canvas.addEventListener('pointerup', endPointer);
   canvas.addEventListener('pointercancel', endPointer);
-
-  /* ---------- Кадр ---------- */
-  function wrap(x) {
-    return ((((x + TOTAL / 2) % TOTAL) + TOTAL) % TOTAL) - TOTAL / 2;
+  function currentIndex() {
+    const i = Math.round(offset / STEP) % categories.length;
+    return (i + categories.length) % categories.length;
   }
 
-  let visible = false, rafId = 0;
+  /* ---------- Кадр ---------- */
+  let visible = false, rafId = 0, last = 0, lastCounter = -1;
 
-  function frame() {
+  function frame(now) {
     rafId = 0;
-    target = scrollProgress() * TOTAL + dragOffset - STEP * 0.5;
-    offset += (target - offset) * (reduceMotion ? 1 : 0.085);
-    const vel = offset - prev;
-    prev = offset;
-    shared.uVel.value += (Math.max(-0.6, Math.min(0.6, vel * 1.4)) - shared.uVel.value) * 0.12;
+    const dt = Math.min(0.05, last ? (now - last) / 1000 : 1 / 60);
+    last = now;
 
-    meshes.forEach((m) => { m.position.x = wrap(m.userData.base - offset); });
-    grid.position.x = -(offset % 2);
+    const target = targetOffset();
+    const follow = reduceMotion ? 1 : 1 - Math.exp(-dt * 7);
+    offset += (target - offset) * follow;
+    if (Math.abs(target - offset) < 0.001) offset = target;
+
+    const rawVel = dt > 0 ? (offset - prevOffset) / dt : 0;   // единиц в секунду
+    prevOffset = offset;
+    const vTarget = reduceMotion ? 0 : Math.tanh(rawVel / 240);   // мягкое насыщение
+    vel += (vTarget - vel) * (1 - Math.exp(-dt * 6));
+    if (Math.abs(vel) < 0.0005 && vTarget === 0) vel = 0;
+    shared.uVel.value = vel;
+
+    for (const mesh of cards) {
+      mesh.position.x = wrap(mesh.userData.index * STEP - offset) + shape.x0;
+    }
+    grid.material.uniforms.uShift.value = offset;
 
     renderer.render(scene, camera);
 
-    const settling = Math.abs(target - offset) > 0.0005 || Math.abs(shared.uVel.value) > 0.0005;
-    if (visible && settling) rafId = requestAnimationFrame(frame);
+    const idx = currentIndex();
+    if (counter && idx !== lastCounter) {
+      lastCounter = idx;
+      counter.textContent = `${pad(idx + 1)} / ${pad(categories.length)}`;
+    }
+
+    const moving = offset !== target || vel !== 0;
+    if (visible && moving) rafId = requestAnimationFrame(frame);
+    else last = 0;
   }
 
-  function wake() {
+  function requestRender() {
     if (visible && !rafId) rafId = requestAnimationFrame(frame);
   }
 
   new IntersectionObserver((entries) => {
     visible = entries[0].isIntersecting;
-    if (visible) { resize(); wake(); }
-  }, { rootMargin: '100px' }).observe(section);
+    if (visible) { resize(); requestRender(); }
+  }, { rootMargin: '200px 0px' }).observe(section);
 
-  window.addEventListener('scroll', wake, { passive: true });
-  window.addEventListener('resize', wake);
+  window.addEventListener('scroll', requestRender, { passive: true });
+  resize();
 }
 
 init();
