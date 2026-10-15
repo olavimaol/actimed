@@ -446,8 +446,9 @@ function init() {
   /* ---------- Кадр ---------- */
   let rafId = 0, last = 0, lastCounter = -1;
 
-  function frame(now) {
+  function frame() {
     rafId = 0;
+    const now = performance.now();   // те же часы, что и у событий ввода
     const dt = Math.min(0.05, last ? (now - last) / 1000 : 1 / 60);
     last = now;
 
