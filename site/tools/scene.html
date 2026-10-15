@@ -8,7 +8,7 @@
   ?card=<id товара>    — карточка ленты 1600×900: 40% описание на «стекле», белая полоса, 60% картинка
   ?cutout=<id товара>  — упаковка на прозрачном фоне (страница товара)
   ?octagon             — картинка для восьмиугольника в футере 960×960
-  ?blisters            — блистеры поверх восьмиугольника 2400×364 (прозрачный фон)
+  ?figure              — объёмный знак над восьмиугольником 900×900 (прозрачный фон)
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,16 +43,18 @@
   .heading__a { font-family: "Inter Tight", Inter, sans-serif; font-weight: 500; letter-spacing: -.035em; }
   .heading__b { font-family: "Playfair Display", serif; font-style: italic; font-weight: 600; letter-spacing: -.01em; margin-top: 2px; }
   .sub { margin-top: 44px; font-family: Inter, sans-serif; font-size: 31px; line-height: 1.42; color: #5C656A; }
-  .bottom { position: absolute; left: 66px; right: 66px; bottom: 64px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+  .bottom { position: absolute; left: 66px; right: 66px; bottom: 64px; display: flex; align-items: flex-end; }
+  /* стрелка «открыть» — круглая стеклянная кнопка в правом нижнем углу фото
+     (стиль .project-open: тонкая белая обводка, лёгкая заливка, размытие фона) */
   .go {
-    width: 100px; height: 100px; border-radius: 50%; display: grid; place-items: center; flex: none;
-    background: rgba(72, 80, 82, .46);
-    -webkit-backdrop-filter: blur(18px) saturate(1.2); backdrop-filter: blur(18px) saturate(1.2);
-    border: 2px solid rgba(255, 255, 255, .6);
-    box-shadow: inset 0 2px 0 rgba(255, 255, 255, .35), 0 16px 30px -16px rgba(20, 30, 32, .55);
+    position: absolute; right: 52px; bottom: 52px; z-index: 2;
+    width: 136px; height: 136px; border-radius: 50%; display: grid; place-items: center;
+    border: 2.5px solid rgba(255, 255, 255, .44);
+    background: rgba(255, 255, 255, .07);
+    -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
   }
-  .go svg { width: 42px; height: 42px; fill: none; stroke: #fff; stroke-width: 3.6; stroke-linecap: round; stroke-linejoin: round; }
-  .price { font-family: Inter, sans-serif; font-weight: 600; font-size: 31px; color: #2F3437; white-space: nowrap; text-align: right; }
+  .go svg { width: 66px; height: 66px; fill: none; stroke: #fff; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  .price { font-family: Inter, sans-serif; font-weight: 600; font-size: 31px; color: #2F3437; white-space: nowrap; }
   .price small { display: block; font-weight: 500; font-size: 19px; color: #A0672A; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
 
   /* белая полоса */
@@ -171,34 +173,9 @@
   }
   .octa svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 
-  /* ================= Блистеры ================= */
-  .blisters { position: relative; width: 2400px; height: 364px; }
-  .strip {
-    position: absolute; display: flex; align-items: center; justify-content: space-evenly;
-    border-radius: 26px;
-    background: linear-gradient(180deg, #F4F7F8 0%, #C9D3D6 18%, #EEF2F3 40%, #B7C3C6 72%, #E3E9EA 100%);
-    box-shadow: 0 40px 50px -24px rgba(0, 0, 0, .55), inset 0 2px 0 rgba(255, 255, 255, .9), inset 0 -3px 0 rgba(0, 0, 0, .12);
-  }
-  .strip::before { content: ""; position: absolute; left: 18px; right: 18px; top: 50%; border-top: 3px dashed rgba(90, 110, 113, .35); }
-  .strip--long { left: 10px; top: 24px; width: 1980px; height: 200px; transform: rotate(-1.4deg); }
-  .strip--short { left: 560px; top: 238px; width: 1080px; height: 116px; transform: rotate(-.8deg); }
-  .cell {
-    position: relative; z-index: 1; border-radius: 999px;
-    background: radial-gradient(60% 70% at 40% 30%, rgba(255, 255, 255, .95), rgba(214, 226, 228, .55) 60%, rgba(160, 178, 182, .5));
-    box-shadow: inset 0 -6px 10px rgba(0, 0, 0, .12), 0 3px 0 rgba(255, 255, 255, .8);
-    display: grid; place-items: center;
-  }
-  .strip--long .cell { width: 150px; height: 132px; }
-  .strip--short .cell { width: 150px; height: 82px; }
-  .pill-in { border-radius: 999px; }
-  .strip--long .pill-in {
-    width: 118px; height: 58px; background: linear-gradient(90deg, #0E6E6E 0 50%, #F4FBF8 50% 100%);
-    box-shadow: inset 0 -10px 12px rgba(0, 0, 0, .18), inset 0 8px 10px rgba(255, 255, 255, .45);
-  }
-  .strip--short .pill-in {
-    width: 70px; height: 52px; background: radial-gradient(70% 70% at 40% 30%, #FFFFFF, #E5EFEC 70%, #C9D9D5);
-    box-shadow: inset 0 -6px 8px rgba(0, 0, 0, .12);
-  }
+  /* ================= Объёмный знак ================= */
+  .figure { width: 900px; height: 900px; }
+  .figure canvas { width: 900px; height: 900px; }
 </style>
 </head>
 <body>
@@ -253,12 +230,13 @@
         '<p class="caps">' + esc(cat.short) + '</p>' +
         '<h1 class="heading"><span class="heading__a" data-fit>' + esc(p.title) + '</span><span class="heading__b" data-fit>' + esc(p.accent) + '</span></h1>' +
         '<p class="sub">' + esc(p.short[0]) + '<br>' + esc(p.short[1]) + '</p>' +
-        '<div class="bottom"><span class="go"><svg viewBox="0 0 40 40"><path d="M12 28 28 12M15 12h13v13"/></svg></span><span class="price">' + (p.rx ? '<small>Рецепт</small>' : '') + priceText(p.price) + '</span></div>' +
+        '<div class="bottom"><span class="price">' + (p.rx ? '<small>Рецепт</small>' : '') + priceText(p.price) + '</span></div>' +
       '</div>' +
       '<span class="card__strip"></span>' +
       '<div class="card__right"><span class="card__floor"></span>' +
         '<div class="card__stage">' + packHtml(p, 'transform:rotate(' + rot + 'deg) scale(' + SCALE[p.type] + ')') + '</div>' +
         '<span class="card__brand"><img src="../img/logo-mark.svg" alt="">ACTIMED</span>' +
+        '<span class="go"><svg viewBox="0 0 40 40"><path d="M13 27 27 13M15.5 13H27v11.5"/></svg></span>' +
       '</div>' +
     '</div>';
   }
@@ -280,25 +258,43 @@
   }
 
   function octagon() {
-    var leaves = '';
-    [[210, 640, -38, 1.25, .5], [330, 720, -12, 1.0, .42], [690, 260, 145, 1.1, .36],
-     [760, 520, 118, .9, .3], [470, 830, -70, .85, .4], [150, 300, 20, .7, .25]].forEach(function (l) {
-      leaves += '<g transform="translate(' + l[0] + ' ' + l[1] + ') rotate(' + l[2] + ') scale(' + l[3] + ')" opacity="' + l[4] + '">' +
-        '<path d="M0 0 C 60 -90 170 -110 260 -80 C 200 -10 110 40 0 0 Z" fill="#0B4A4C"/>' +
-        '<path d="M0 0 C 90 -45 170 -70 250 -78" stroke="#E6F5EF" stroke-width="3" fill="none" opacity=".55"/></g>';
+    // вместо листьев — «+», как на полу ленты: разного размера, часть размыта
+    var grid = '';
+    for (var gx = 60; gx < 960; gx += 120) {
+      for (var gy = 60; gy < 960; gy += 120) {
+        grid += '<path d="M' + (gx - 9) + ' ' + gy + 'h18M' + gx + ' ' + (gy - 9) + 'v18"/>';
+      }
+    }
+    var plus = '';
+    [[205, 615, 170, 20, '#0B4A4C', .4, 0], [360, 770, 92, 13, '#0B4A4C', .32, 0], [705, 265, 128, 16, '#0B4A4C', .28, 0],
+     [775, 560, 76, 11, '#FFFFFF', .62, 0], [485, 845, 62, 10, '#0B4A4C', .36, 0], [150, 300, 84, 12, '#FFFFFF', .55, 0],
+     [610, 420, 250, 30, '#FFFFFF', .2, 8], [855, 770, 120, 16, '#0B4A4C', .22, 4], [330, 150, 54, 9, '#0B4A4C', .3, 0],
+     [560, 660, 40, 7, '#FFFFFF', .7, 0]].forEach(function (q) {
+      var h = q[2] / 2;
+      plus += '<path d="M' + (q[0] - h) + ' ' + q[1] + 'H' + (q[0] + h) + 'M' + q[0] + ' ' + (q[1] - h) + 'V' + (q[1] + h) + '"' +
+        ' stroke="' + q[4] + '" stroke-width="' + q[3] + '" opacity="' + q[5] + '"' + (q[6] ? ' filter="url(#blur' + q[6] + ')"' : '') + '/>';
     });
     var dots = '';
-    [[620, 150, 70], [820, 330, 34], [270, 180, 46], [560, 640, 22], [860, 760, 58], [120, 520, 28]].forEach(function (d) {
-      dots += '<circle cx="' + d[0] + '" cy="' + d[1] + '" r="' + d[2] + '" fill="#FFFFFF" opacity=".22"/>';
+    [[620, 150, 70], [860, 330, 34], [120, 520, 28]].forEach(function (d) {
+      dots += '<circle cx="' + d[0] + '" cy="' + d[1] + '" r="' + d[2] + '" fill="#FFFFFF" opacity=".2"/>';
     });
-    return '<div class="octa" id="shot"><svg viewBox="0 0 960 960">' + dots + leaves + '</svg></div>';
+    return '<div class="octa" id="shot"><svg viewBox="0 0 960 960">' +
+      '<defs><filter id="blur4" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>' +
+      '<filter id="blur8" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="8"/></filter></defs>' +
+      dots + '<g stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" opacity=".32">' + grid + '</g>' +
+      '<g fill="none" stroke-linecap="round">' + plus + '</g></svg></div>';
   }
 
-  function blisters() {
-    var long = '', short = '';
-    for (var i = 0; i < 10; i++) long += '<span class="cell"><span class="pill-in"></span></span>';
-    for (var j = 0; j < 6; j++) short += '<span class="cell"><span class="pill-in"></span></span>';
-    return '<div class="blisters" id="shot"><div class="strip strip--long">' + long + '</div><div class="strip strip--short">' + short + '</div></div>';
+  // Объёмный знак — неподвижная картинка на случай без WebGL (js/logo3d.js)
+  function figure() {
+    var html = '<div class="figure" id="shot"><canvas></canvas></div>';
+    import('../js/logo3d.js').then(function (m) {
+      var f = m.createFigure(document.querySelector('.figure canvas'));
+      f.resize(900, window.devicePixelRatio || 1);
+      f.render(-0.32, 0.12, 0.015, 0);
+      window.figureReady = true;
+    });
+    return html;
   }
 
   var q = new URLSearchParams(location.search);
@@ -306,7 +302,7 @@
   if (q.has('card')) root.innerHTML = card(q.get('card'));
   else if (q.has('cutout')) root.innerHTML = cutout(q.get('cutout'));
   else if (q.has('octagon')) root.innerHTML = octagon();
-  else if (q.has('blisters')) root.innerHTML = blisters();
+  else if (q.has('figure')) root.innerHTML = figure();
   document.fonts.ready.then(fitHeading);
   window.fitHeading = fitHeading;
 </script>

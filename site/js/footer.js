@@ -10,9 +10,11 @@
     и после перезагрузки страницы внизу, и после мгновенного перехода.
   • Струна между заголовками дёргается, когда пересекает середину экрана,
     и затухает как пружина. Курсор её не трогает — анимаций при наведении нет.
-  • Блистеры поверх восьмиугольника едут с параллаксом (модуль StringParallax).
+  • Над восьмиугольником — объёмный знак Actimed (js/logo3d.js, three.js):
+    при прокрутке плавно поворачивается и чуть «парит». Модуль грузится,
+    только когда футер близко; без WebGL остаётся картинка.
 */
-import StringTune, { StringProgress, StringParallax } from '../vendor/string-tune.mjs';
+import StringTune, { StringProgress } from '../vendor/string-tune.mjs';
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -21,7 +23,6 @@ const tune = StringTune.getInstance();
 tune.scrollDesktopMode = reduceMotion ? 'default' : 'smooth';
 tune.scrollMobileMode = 'default';
 tune.use(StringProgress);
-tune.use(StringParallax);
 tune.start(0);
 window.actimedTune = tune;
 
@@ -124,4 +125,56 @@ if (stringSvg && stringPath) {
     if (!ticking) { ticking = true; requestAnimationFrame(check); }
   }, { passive: true });
   check();
+}
+
+/* ---------- Объёмный знак ---------- */
+const figure = document.querySelector('[data-footer-figure]');
+const desktop = window.matchMedia('(min-width: 1024px)');
+
+if (figure && !reduceMotion) {
+  const near = new IntersectionObserver((entries) => {
+    if (!entries.some((e) => e.isIntersecting) || !desktop.matches) return;
+    near.disconnect();
+    import('./logo3d.js').then((m) => runFigure(m.createFigure)).catch(() => { /* остаётся картинка */ });
+  }, { rootMargin: '900px 0px' });
+  near.observe(figure);
+}
+
+function runFigure(createFigure) {
+  const canvas = figure.querySelector('canvas');
+  let fig;
+  try { fig = createFigure(canvas); } catch (e) { return; }      // нет WebGL — остаётся картинка
+  let size = 0, raf = 0, last = 0, visible = false, pose = null;
+  const t0 = performance.now();
+
+  function frame(now) {
+    raf = 0;
+    const s = Math.round(figure.clientWidth);
+    if (!s) return;
+    if (s !== size) { size = s; fig.resize(size, Math.min(2, window.devicePixelRatio || 1)); }
+    // p: 0 — знак у нижнего края экрана, 1 — у верхнего
+    const r = figure.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const p = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
+    const t = (now - t0) / 1000;
+    const target = {
+      yaw: (p - 0.5) * 1.25 + Math.sin(t * 0.45) * 0.07,   // поворот вслед за прокруткой
+      pitch: 0.18 - p * 0.14 + Math.sin(t * 0.6) * 0.025,
+      roll: Math.sin(t * 0.5) * 0.02,
+      lift: (0.5 - p) * 14 + Math.sin(t * 0.8) * 2.5        // лёгкий параллакс и «парение»
+    };
+    const dt = Math.min(0.05, last ? (now - last) / 1000 : 1 / 60);
+    last = now;
+    if (!pose) pose = { ...target };
+    const k = 1 - Math.exp(-dt * 3.2);                      // догоняет мягко, без рывков
+    for (const key in target) pose[key] += (target[key] - pose[key]) * k;
+    fig.render(pose.yaw, pose.pitch, pose.roll, pose.lift);
+    figure.classList.add('is-live');
+    if (visible) raf = requestAnimationFrame(frame);
+  }
+
+  new IntersectionObserver((entries) => {
+    visible = entries.some((e) => e.isIntersecting);
+    if (visible && !raf) { last = 0; raf = requestAnimationFrame(frame); }
+  }).observe(figure);
 }

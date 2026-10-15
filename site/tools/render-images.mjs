@@ -4,10 +4,11 @@
 //
 //   img/cards/<id>.webp    — карточки ленты на главной (левая часть полупрозрачная)
 //   img/products/<id>.webp — упаковки на прозрачном фоне для страниц товаров
-//   img/footer/…           — восьмиугольник и блистеры в футере
+//   img/footer/…           — восьмиугольник и объёмный знак в футере
 import path from 'node:path';
 import fs from 'node:fs';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import http from 'node:http';
+import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 
@@ -22,11 +23,23 @@ async function loadPlaywright() {
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const site = path.resolve(here, '..');
-const scene = pathToFileURL(path.join(here, 'scene.html')).href;
 const only = process.argv[2];   // можно перерисовать один товар: node tools/render-images.mjs ibuprofen
 
+// Шаблон открываем через локальный сервер: модули (js/logo3d.js) с file:// не грузятся
+const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css',
+  '.svg': 'image/svg+xml', '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg' };
+const server = http.createServer((req, res) => {
+  const file = path.join(site, decodeURIComponent(new URL(req.url, 'http://x').pathname));
+  if (!file.startsWith(site) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) { res.writeHead(404); res.end(); return; }
+  res.writeHead(200, { 'Content-Type': TYPES[path.extname(file)] || 'application/octet-stream' });
+  fs.createReadStream(file).pipe(res);
+});
+await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+const scene = `http://127.0.0.1:${server.address().port}/tools/scene.html`;
+
 const { chromium } = await loadPlaywright();
-const browser = await chromium.launch();
+// WebGL без видеокарты — для объёмного знака
+const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
 const page = await browser.newPage({ viewport: { width: 2400, height: 1000 }, deviceScaleFactor: 1 });
 const hiDpi = await browser.newPage({ viewport: { width: 1400, height: 1000 }, deviceScaleFactor: 2 });
 
@@ -72,8 +85,11 @@ for (const id of ids) {
 if (!only) {
   await open(page, 'octagon');
   save(path.join(site, 'img/footer/octagon.jpg'), await page.locator('#shot').screenshot({ type: 'jpeg', quality: 86 }));
-  await open(page, 'blisters');
-  save(path.join(site, 'img/footer/blisters.png'), await page.locator('#shot').screenshot({ omitBackground: true }));
+  await open(hiDpi, 'figure');
+  await hiDpi.waitForFunction(() => window.figureReady, null, { timeout: 60000 });
+  const figurePng = await hiDpi.locator('#shot').screenshot({ omitBackground: true });
+  save(path.join(site, 'img/footer/figure.webp'), await toWebp(hiDpi, figurePng, 0.9));
 }
 
 await browser.close();
+server.close();
