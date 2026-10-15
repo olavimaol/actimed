@@ -168,14 +168,41 @@ const gridFragment = /* glsl */ `
   uniform vec3 uColor;
   uniform float uNear;
   uniform float uFar;
+  uniform float uTime;
+  uniform float uBoost;
   varying vec3 vWorld;
   varying float vDist;
+
+  float hash(vec2 p) {
+    vec3 p3 = fract(vec3(p.xyx) * 0.1031);
+    p3 += dot(p3, p3.yzx + 33.33);
+    return fract((p3.x + p3.y) * p3.z);
+  }
+
   void main() {
     vec2 c = vec2(vWorld.x + uShift, vWorld.z) / uCell;
-    vec2 g = abs(fract(c - 0.5) - 0.5) / max(fwidth(c), vec2(1e-4));
-    float line = 1.0 - min(min(g.x, g.y), 1.0);
+    vec2 w = max(fwidth(c), vec2(1e-4));
+    vec2 id = floor(c + 0.5);            // ближайший угол клетки
+    vec2 f = abs(c - id);                // 0 … 0.5
+
+    // от клетки остаётся только «+» в углу
+    float arm = 0.13;
+    vec2 thick = w * 0.6;
+    float bx = (1.0 - smoothstep(thick.y, thick.y + w.y, f.y)) * (1.0 - smoothstep(arm - w.x, arm, f.x));
+    float by = (1.0 - smoothstep(thick.x, thick.x + w.x, f.x)) * (1.0 - smoothstep(arm - w.y, arm, f.y));
+    float plus = max(bx, by);
+    float halo = exp(-dot(f, f) / 0.018);
+
+    // у каждого плюса свой ритм мерцания, по полу медленно идёт волна света
+    vec2 key = vec2(mod(id.x, 256.0), id.y);
+    float tw = 0.5 + 0.5 * sin(uTime * (0.45 + hash(key) * 1.3) + hash(key + 19.19) * 6.2832);
+    float wave = pow(0.5 + 0.5 * sin(uTime * 0.8 - id.x * 0.2208932 - id.y * 0.31), 12.0);
+    float glow = 0.15 + 0.85 * tw * tw + 1.2 * wave + uBoost;
+
     float fade = (1.0 - smoothstep(uNear + 20.0, uFar, vDist)) * smoothstep(uNear - 20.0, uNear - 10.0, vDist);
-    gl_FragColor = vec4(uColor, line * 0.42 * fade);
+    fade *= 1.0 - smoothstep(0.12, 0.3, max(w.x, w.y));   // у горизонта плюсы мельче пикселя — гасим
+    float a = (plus * (0.4 + 0.6 * min(glow, 1.0)) + halo * 0.32 * glow) * fade;
+    gl_FragColor = vec4(uColor, min(a, 1.0));
   }
 `;
 
@@ -198,7 +225,8 @@ function init() {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, 1, 1, 800);
 
-  // Пол-сетка
+  // Пол: светящиеся «+» в углах клеток
+  const CELL = 6;
   const grid = new THREE.Mesh(
     new THREE.PlaneGeometry(900, 900),
     new THREE.ShaderMaterial({
@@ -206,18 +234,23 @@ function init() {
       fragmentShader: gridFragment,
       transparent: true,
       depthWrite: false,
+      blending: THREE.AdditiveBlending,
       extensions: { derivatives: true },
       uniforms: {
         uShift: { value: 0 },
-        uCell: { value: 6 },
-        uColor: { value: new THREE.Color('#6FC2AE') },
+        uCell: { value: CELL },
+        uColor: { value: new THREE.Color('#3DF2B4') },
         uNear: { value: 27 },
-        uFar: { value: 260 }
+        uFar: { value: 260 },
+        uTime: { value: 0 },
+        uBoost: { value: 0 }
       }
     })
   );
   grid.rotation.x = -Math.PI / 2;
   grid.position.set(0, FLOOR_Y, -300);
+  // пол рисуется после карточек и не просвечивает сквозь их полупрозрачную часть
+  grid.renderOrder = 1;
   scene.add(grid);
 
   // Карточки
@@ -267,7 +300,7 @@ function init() {
       vertexShader,
       fragmentShader,
       transparent: true,
-      depthWrite: false,
+      depthWrite: true,     // заслоняет пол (см. grid.renderOrder)
       extensions: { derivatives: true },
       uniforms: { ...shared, uMap: { value: null }, uHasMap: { value: 0 }, uColor: { value: new THREE.Color('#F2F6F5') } }
     });
@@ -306,7 +339,8 @@ function init() {
     shared.uHalf.value = Math.max(shape.half, fitHalf);
     shared.uFogNear.value = z + 13;
     shared.uFogFar.value = z + 68;
-    grid.material.uniforms.uNear.value = z;
+    // на телефоне камера дальше — пол начинаем ближе, чтобы плюсы доходили до низа экрана
+    grid.material.uniforms.uNear.value = Math.min(z, 30);
     grid.material.uniforms.uFar.value = z + 233;
     requestRender();
   }
@@ -450,7 +484,10 @@ function init() {
   }
 
   /* ---------- Кадр ---------- */
-  let rafId = 0, last = 0, lastCounter = -1;
+  let rafId = 0, last = 0, lastCounter = -1, lastDraw = 0;
+  const clockStart = performance.now();
+  // сдвиг пола берём по модулю 256 клеток — узор плюсов и волна от этого не прыгают
+  const FLOOR_PERIOD = CELL * 256;
 
   function frame() {
     rafId = 0;
@@ -475,14 +512,23 @@ function init() {
     const vTarget = reduceMotion ? 0 : Math.tanh(rawVel / 240);
     vel += (vTarget - vel) * (1 - Math.exp(-dt * 6));
     if (Math.abs(vel) < 0.0005 && vTarget === 0) vel = 0;
-    shared.uVel.value = vel;
 
-    for (const mesh of cards) {
-      mesh.position.x = wrap(mesh.userData.index * STEP - offset) + shape.x0 + focusShift;
+    const snapped = target === Math.round(target / STEP) * STEP;
+    const moving = offset !== target || vel !== 0 || !snapped || !!pointer;
+
+    // плюсы на полу светятся всё время; пока лента стоит, хватает ~30 кадров в секунду
+    if (moving || now - lastDraw > 30) {
+      lastDraw = now;
+      shared.uVel.value = vel;
+      for (const mesh of cards) {
+        mesh.position.x = wrap(mesh.userData.index * STEP - offset) + shape.x0 + focusShift;
+      }
+      const floor = grid.material.uniforms;
+      floor.uShift.value = ((offset % FLOOR_PERIOD) + FLOOR_PERIOD) % FLOOR_PERIOD;
+      floor.uTime.value = reduceMotion ? 0 : (now - clockStart) / 1000;
+      floor.uBoost.value = Math.min(1, Math.abs(vel) * 1.4);
+      renderer.render(scene, camera);
     }
-    grid.material.uniforms.uShift.value = offset;
-
-    renderer.render(scene, camera);
 
     const idx = currentIndex() % products.length;
     if (counter && idx !== lastCounter) {
@@ -490,9 +536,7 @@ function init() {
       counter.textContent = `${pad(idx + 1)} / ${pad(products.length)}`;
     }
 
-    const snapped = target === Math.round(target / STEP) * STEP;
-    const moving = offset !== target || vel !== 0 || !snapped || !!pointer;
-    if (moving) rafId = requestAnimationFrame(frame);
+    if (moving || !reduceMotion) rafId = requestAnimationFrame(frame);
     else last = 0;
   }
 
