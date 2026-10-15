@@ -43,17 +43,16 @@
   .heading__a { font-family: "Inter Tight", Inter, sans-serif; font-weight: 500; letter-spacing: -.035em; }
   .heading__b { font-family: "Playfair Display", serif; font-style: italic; font-weight: 600; letter-spacing: -.01em; margin-top: 2px; }
   .sub { margin-top: 44px; font-family: Inter, sans-serif; font-size: 31px; line-height: 1.42; color: #5C656A; }
-  .bottom { position: absolute; left: 66px; right: 66px; bottom: 64px; display: flex; align-items: flex-end; }
-  /* стрелка «открыть» — круглая стеклянная кнопка в правом нижнем углу фото
-     (стиль .project-open: тонкая белая обводка, лёгкая заливка, размытие фона) */
+  .bottom { position: absolute; left: 66px; right: 66px; bottom: 64px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  /* стрелка «открыть» справа от цены — круглая стеклянная кнопка в стиле .project-open
+     (тонкая обводка, едва заметная заливка, размытие фона); на светлом стекле — тёмная */
   .go {
-    position: absolute; right: 52px; bottom: 52px; z-index: 2;
-    width: 136px; height: 136px; border-radius: 50%; display: grid; place-items: center;
-    border: 2.5px solid rgba(255, 255, 255, .44);
-    background: rgba(255, 255, 255, .07);
+    flex: none; width: 128px; height: 128px; border-radius: 50%; display: grid; place-items: center;
+    border: 2.5px solid rgba(47, 52, 55, .3);
+    background: rgba(47, 52, 55, .05);
     -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
   }
-  .go svg { width: 66px; height: 66px; fill: none; stroke: #fff; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  .go svg { width: 62px; height: 62px; fill: none; stroke: #2F3437; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
   .price { font-family: Inter, sans-serif; font-weight: 600; font-size: 31px; color: #2F3437; white-space: nowrap; }
   .price small { display: block; font-weight: 500; font-size: 19px; color: #A0672A; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
 
@@ -230,13 +229,13 @@
         '<p class="caps">' + esc(cat.short) + '</p>' +
         '<h1 class="heading"><span class="heading__a" data-fit>' + esc(p.title) + '</span><span class="heading__b" data-fit>' + esc(p.accent) + '</span></h1>' +
         '<p class="sub">' + esc(p.short[0]) + '<br>' + esc(p.short[1]) + '</p>' +
-        '<div class="bottom"><span class="price">' + (p.rx ? '<small>Рецепт</small>' : '') + priceText(p.price) + '</span></div>' +
+        '<div class="bottom"><span class="price">' + (p.rx ? '<small>Рецепт</small>' : '') + priceText(p.price) + '</span>' +
+          '<span class="go"><svg viewBox="0 0 40 40"><path d="M13 27 27 13M15.5 13H27v11.5"/></svg></span></div>' +
       '</div>' +
       '<span class="card__strip"></span>' +
       '<div class="card__right"><span class="card__floor"></span>' +
         '<div class="card__stage">' + packHtml(p, 'transform:rotate(' + rot + 'deg) scale(' + SCALE[p.type] + ')') + '</div>' +
         '<span class="card__brand"><img src="../img/logo-mark.svg" alt="">ACTIMED</span>' +
-        '<span class="go"><svg viewBox="0 0 40 40"><path d="M13 27 27 13M15.5 13H27v11.5"/></svg></span>' +
       '</div>' +
     '</div>';
   }

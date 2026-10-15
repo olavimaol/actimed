@@ -163,7 +163,6 @@ const gridVertex = /* glsl */ `
 `;
 
 const gridFragment = /* glsl */ `
-  uniform float uShift;
   uniform float uCell;
   uniform vec3 uColor;
   uniform float uNear;
@@ -179,29 +178,33 @@ const gridFragment = /* glsl */ `
     return fract((p3.x + p3.y) * p3.z);
   }
 
+  float box(vec2 p, vec2 b) {
+    vec2 d = abs(p) - b;
+    return length(max(d, 0.0)) + min(max(d.x, d.y), 0.0);
+  }
+
   void main() {
-    vec2 c = vec2(vWorld.x + uShift, vWorld.z) / uCell;
+    vec2 c = vec2(vWorld.x, vWorld.z) / uCell;   // пол неподвижен — лента едет над ним
     vec2 w = max(fwidth(c), vec2(1e-4));
     vec2 id = floor(c + 0.5);            // ближайший угол клетки
-    vec2 f = abs(c - id);                // 0 … 0.5
+    vec2 f = c - id;                     // -0.5 … 0.5
 
-    // от клетки остаётся только «+» в углу
-    float arm = 0.13;
-    vec2 thick = w * 0.6;
-    float bx = (1.0 - smoothstep(thick.y, thick.y + w.y, f.y)) * (1.0 - smoothstep(arm - w.x, arm, f.x));
-    float by = (1.0 - smoothstep(thick.x, thick.x + w.x, f.x)) * (1.0 - smoothstep(arm - w.y, arm, f.y));
-    float plus = max(bx, by);
-    float halo = exp(-dot(f, f) / 0.018);
+    // от клетки остаётся медицинский «+»: перекладины толщиной в треть креста,
+    // углы чуть скруглены
+    float arm = 0.16, bar = 0.054, rad = 0.014;
+    float d = min(box(f, vec2(arm, bar) - rad), box(f, vec2(bar, arm) - rad)) - rad;
+    float aa = max(fwidth(d), 1e-4);
+    float plus = 1.0 - smoothstep(-aa, aa, d);
+    float halo = exp(-dot(f, f) / 0.03);
 
     // у каждого плюса свой ритм мерцания, по полу медленно идёт волна света
-    vec2 key = vec2(mod(id.x, 256.0), id.y);
-    float tw = 0.5 + 0.5 * sin(uTime * (0.45 + hash(key) * 1.3) + hash(key + 19.19) * 6.2832);
-    float wave = pow(0.5 + 0.5 * sin(uTime * 0.8 - id.x * 0.2208932 - id.y * 0.31), 12.0);
+    float tw = 0.5 + 0.5 * sin(uTime * (0.45 + hash(id) * 1.3) + hash(id + 19.19) * 6.2832);
+    float wave = pow(0.5 + 0.5 * sin(uTime * 0.8 - id.x * 0.22 - id.y * 0.31), 12.0);
     float glow = 0.15 + 0.85 * tw * tw + 1.2 * wave + uBoost;
 
     float fade = (1.0 - smoothstep(uNear + 20.0, uFar, vDist)) * smoothstep(uNear - 20.0, uNear - 10.0, vDist);
     fade *= 1.0 - smoothstep(0.12, 0.3, max(w.x, w.y));   // у горизонта плюсы мельче пикселя — гасим
-    float a = (plus * (0.4 + 0.6 * min(glow, 1.0)) + halo * 0.32 * glow) * fade;
+    float a = (plus * (0.42 + 0.58 * min(glow, 1.0)) + halo * 0.3 * glow) * fade;
     gl_FragColor = vec4(uColor, min(a, 1.0));
   }
 `;
@@ -225,7 +228,7 @@ function init() {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, 1, 1, 800);
 
-  // Пол: светящиеся «+» в углах клеток
+  // Пол: светящиеся медицинские «+» в углах клеток; пол стоит на месте
   const CELL = 6;
   const grid = new THREE.Mesh(
     new THREE.PlaneGeometry(900, 900),
@@ -237,7 +240,6 @@ function init() {
       blending: THREE.AdditiveBlending,
       extensions: { derivatives: true },
       uniforms: {
-        uShift: { value: 0 },
         uCell: { value: CELL },
         uColor: { value: new THREE.Color('#3DF2B4') },
         uNear: { value: 27 },
@@ -487,8 +489,6 @@ function init() {
   /* ---------- Кадр ---------- */
   let rafId = 0, last = 0, lastCounter = -1, lastDraw = 0;
   const clockStart = performance.now();
-  // сдвиг пола берём по модулю 256 клеток — узор плюсов и волна от этого не прыгают
-  const FLOOR_PERIOD = CELL * 256;
 
   function frame() {
     rafId = 0;
@@ -525,7 +525,6 @@ function init() {
         mesh.position.x = wrap(mesh.userData.index * STEP - offset) + shape.x0 + focusShift;
       }
       const floor = grid.material.uniforms;
-      floor.uShift.value = ((offset % FLOOR_PERIOD) + FLOOR_PERIOD) % FLOOR_PERIOD;
       floor.uTime.value = reduceMotion ? 0 : (now - clockStart) / 1000;
       floor.uBoost.value = Math.min(1, Math.abs(vel) * 1.4);
       renderer.render(scene, camera);
