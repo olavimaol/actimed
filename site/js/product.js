@@ -138,9 +138,11 @@
     var hdr = document.querySelector('[data-header]');
     if (!hdr) return;
     var footerTop = footer ? footer.getBoundingClientRect().top : Infinity;
-    // над тёмным футером шапка белая, над светлой страницей — с мягкой подложкой
+    // над тёмным футером шапка белая, над светлой страницей — с мягкой подложкой.
+    // Обычно это делает js/footer.js точно по краю футера (has-ghost);
+    // здесь — запасной вариант, если модуль футера не загрузился.
     var mountain = footer && footer.classList.contains('is-mountain') && window.matchMedia('(min-width: 1024px)').matches;
-    var onDark = footerTop < 90 && (mountain ? footerTop < -vh * 0.2 : true);
+    var onDark = !hdr.classList.contains('has-ghost') && footerTop < 90 && (mountain ? footerTop < -vh * 0.2 : true);
     hdr.classList.toggle('is-on-dark', onDark);
     hdr.classList.toggle('is-scrolled', !onDark && window.scrollY > 40);
   }

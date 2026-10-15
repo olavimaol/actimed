@@ -77,6 +77,19 @@ a, button { transition: none; }
 }
 .site-header.is-scrolled::before { opacity: 1; }
 .site-header.is-menu-open::before { opacity: 0; }
+/* над тёмным футером светлая подложка обрезается по его краю (js/footer.js) */
+.site-header::before { clip-path: var(--light-clip, none); }
+
+/* Тёмная копия шапки поверх обычной, обрезанная по контуру тёмного футера.
+   Сама не кликается и не получает фокус — это делает обычная шапка под ней. */
+.site-header--ghost { --hdr: #fff; --hdr-on: var(--deep); z-index: 71; visibility: hidden; }
+.site-header--ghost, .site-header--ghost * { pointer-events: none !important; }
+.site-header--ghost::before {
+  opacity: 1; clip-path: none;
+  background: linear-gradient(180deg, var(--deep) calc(100% - 46px), rgba(11, 46, 51, 0) 100%);
+}
+.site-header.is-menu-open + .site-header--ghost { display: none; }
+.site-header--ghost .is-focus-ring { outline: 2px solid var(--accent); outline-offset: 3px; }
 
 .site-header__side { display: flex; align-items: center; gap: 6px; }
 .site-header__side--right { justify-content: flex-end; }
@@ -87,7 +100,7 @@ a, button { transition: none; }
 }
 .round-btn svg { width: 18px; height: 18px; }
 .round-btn--fill { background: var(--hdr); color: var(--hdr-on); }
-a.round-btn:hover { background: var(--hdr); color: var(--hdr-on); }
+a.round-btn:hover, .site-header--ghost a.round-btn.is-hover { background: var(--hdr); color: var(--hdr-on); }
 
 .brand { display: flex; flex-direction: column; align-items: center; gap: 9px; padding-top: 2px; }
 .brand__mark {
@@ -113,7 +126,7 @@ a.round-btn:hover { background: var(--hdr); color: var(--hdr-on); }
 .menu-btn__cross::after { transform: translate(-50%, -50%) rotate(-45deg); }
 .is-menu-open .menu-btn__diamond { display: none; }
 .is-menu-open .menu-btn__cross { display: block; }
-.menu-btn:hover .menu-btn__label { background: var(--hdr); color: var(--hdr-on); }
+.menu-btn:hover .menu-btn__label, .site-header--ghost .menu-btn.is-hover .menu-btn__label { background: var(--hdr); color: var(--hdr-on); }
 
 /* «Оставить заявку» — залитая кнопка рядом с телефоном */
 .lead-btn {
@@ -121,7 +134,7 @@ a.round-btn:hover { background: var(--hdr); color: var(--hdr-on); }
   border: 1.5px solid var(--hdr); border-radius: 999px; background: var(--hdr); color: var(--hdr-on);
   font-weight: 700; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap;
 }
-.lead-btn:hover { background: none; color: var(--hdr); }
+.lead-btn:hover, .site-header--ghost .lead-btn.is-hover { background: none; color: var(--hdr); }
 .lead-btn__short { display: none; }
 
 @media (max-width: 600px) {

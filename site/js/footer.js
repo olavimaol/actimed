@@ -29,36 +29,95 @@ window.actimedTune = tune;
 /* ---------- Тёмная гора ---------- */
 const footer = document.querySelector('[data-footer]');
 const shape = document.querySelector('[data-footer-shape]');
+const desktop = window.matchMedia('(min-width: 1024px)');
 const f = (n) => (Math.round(n * 10000) / 10000).toString();
 
-function drawMountain(progress) {
-  if (!shape) return;
+// Контур горы в масштабе w×h (1×1 — для SVG, ширина×высота экрана — для шапки)
+function mountainPath(progress, w, h) {
   const a = Math.min(1, Math.max(0, progress));
-  const top = 1 - a;                       // высота вершины
+  const top = (1 - a) * h;                 // высота вершины
   const half = Math.pow(a, 8) * 0.5;       // плоская вершина расширяется только в самом конце
   const pull = 1 - Math.pow(a, 4);         // плечи «стекают» к углам и распрямляются
-  shape.setAttribute('d',
-    `M ${f(0.5 - half)} ${f(top)}` +
-    ` C ${f(0.3 * pull)} ${f(top)} ${f(0.4 * pull)} ${f(top)} 0 1` +
-    ' L 1 1' +
-    ` C ${f(1 - 0.4 * pull)} ${f(top)} ${f(1 - 0.3 * pull)} ${f(top)} ${f(0.5 + half)} ${f(top)} Z`
-  );
+  return `M ${f((0.5 - half) * w)} ${f(top)}` +
+    ` C ${f(0.3 * pull * w)} ${f(top)} ${f(0.4 * pull * w)} ${f(top)} 0 ${f(h)}` +
+    ` L ${f(w)} ${f(h)}` +
+    ` C ${f((1 - 0.4 * pull) * w)} ${f(top)} ${f((1 - 0.3 * pull) * w)} ${f(top)} ${f((0.5 + half) * w)} ${f(top)} Z`;
 }
-let mountainRaf = 0;
-function updateMountain() {
-  mountainRaf = 0;
-  const vh = window.innerHeight;
+
+/* ---------- Шапка над футером ----------
+   Где под шапкой тёмный футер (гора или сплошной блок), шапка белая: поверх
+   обычной шапки лежит её тёмная копия, обрезанная ровно по контуру тёмного
+   (clip-path), а светлая подложка обычной шапки обрезана по остальному.
+   Граница цветов идёт точно по краю горы. Копия не ловит клики и фокус —
+   их получает обычная шапка; рамка фокуса и наведение повторяются на копии. */
+const header = document.querySelector('[data-header]');
+let ghost = null;
+if (header && footer) {
+  ghost = header.cloneNode(true);
+  ghost.className = 'site-header site-header--ghost';
+  ghost.setAttribute('aria-hidden', 'true');
+  ghost.inert = true;
+  [ghost, ...ghost.querySelectorAll('*')].forEach((el) => {
+    [...el.attributes].forEach((attr) => { if (attr.name.startsWith('data-') || attr.name === 'id') el.removeAttribute(attr.name); });
+  });
+  header.after(ghost);
+  header.classList.add('has-ghost');
+  const twins = (el) => {
+    const list = [...header.querySelectorAll('a, button')];
+    return ghost.querySelectorAll('a, button')[list.indexOf(el.closest('a, button'))];
+  };
+  header.addEventListener('focusin', (e) => {
+    const twin = twins(e.target);
+    if (twin && e.target.matches(':focus-visible')) twin.classList.add('is-focus-ring');
+  });
+  header.addEventListener('focusout', () => ghost.querySelectorAll('.is-focus-ring').forEach((el) => el.classList.remove('is-focus-ring')));
+  header.addEventListener('pointerover', (e) => {
+    ghost.querySelectorAll('.is-hover').forEach((el) => el.classList.remove('is-hover'));
+    const twin = e.target.closest('a, button') && twins(e.target);
+    if (twin) twin.classList.add('is-hover');
+  });
+  header.addEventListener('pointerleave', () => ghost.querySelectorAll('.is-hover').forEach((el) => el.classList.remove('is-hover')));
+}
+
+let darkShown = false;
+function clipHeader(darkPath, vw, vh) {
+  if (!ghost) return;
+  if (!darkPath) {
+    if (darkShown) {
+      darkShown = false;
+      ghost.style.visibility = 'hidden';
+      header.style.removeProperty('--light-clip');
+    }
+    return;
+  }
+  darkShown = true;
+  ghost.style.visibility = 'visible';
+  ghost.style.clipPath = `path('${darkPath}')`;
+  header.style.setProperty('--light-clip', `path(evenodd, 'M 0 0 H ${f(vw)} V ${f(vh)} H 0 Z ${darkPath}')`);
+}
+
+let viewRaf = 0;
+function updateView() {
+  viewRaf = 0;
+  const vh = window.innerHeight, vw = document.documentElement.clientWidth;
   const top = footer.getBoundingClientRect().top;
-  drawMountain((vh - top) / (vh * 1.25));
+  const progress = (vh - top) / (vh * 1.25);
+  const mountain = footer.classList.contains('is-mountain') && desktop.matches;
+  if (mountain && shape) shape.setAttribute('d', mountainPath(progress, 1, 1));
+  // до шапки (вместе с её подложкой) тёмное ещё не дошло — копия не нужна
+  const zone = header ? header.offsetHeight + 46 : 0;
+  if (mountain) clipHeader(progress > 0 && (1 - Math.min(1, progress)) * vh < zone ? mountainPath(progress, vw, vh) : null, vw, vh);
+  else clipHeader(top < zone ? `M 0 ${f(Math.max(0, top))} H ${f(vw)} V ${f(vh)} H 0 Z` : null, vw, vh);
 }
-const requestMountain = () => { if (!mountainRaf) mountainRaf = requestAnimationFrame(updateMountain); };
+const requestView = () => { if (!viewRaf) viewRaf = requestAnimationFrame(updateView); };
 
 // Без анимаций (системная настройка) футер остаётся сплошным тёмным блоком.
-if (footer && shape && !reduceMotion) {
-  footer.classList.add('is-mountain');
-  window.addEventListener('scroll', requestMountain, { passive: true });
-  window.addEventListener('resize', requestMountain);
-  updateMountain();
+if (footer && shape && !reduceMotion) footer.classList.add('is-mountain');
+if (footer) {
+  window.addEventListener('scroll', requestView, { passive: true });
+  window.addEventListener('resize', requestView);
+  desktop.addEventListener('change', requestView);
+  updateView();
 }
 
 /* ---------- Струна ---------- */
@@ -129,7 +188,6 @@ if (stringSvg && stringPath) {
 
 /* ---------- Объёмный знак ---------- */
 const figure = document.querySelector('[data-footer-figure]');
-const desktop = window.matchMedia('(min-width: 1024px)');
 
 if (figure && !reduceMotion) {
   const near = new IntersectionObserver((entries) => {
