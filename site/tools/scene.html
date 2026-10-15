@@ -21,23 +21,13 @@
   /* ================= Карточка ленты ================= */
   .card {
     --c: #2FA36B;
-    position: relative; width: 1600px; height: 900px; overflow: hidden; background: #fff;
+    position: relative; width: 1600px; height: 900px; overflow: hidden; background: transparent;
   }
-  /* левая часть: ровный светлый фон, поверх него полупрозрачная панель с описанием */
+  /* левая часть: один полупрозрачный блок с описанием (прозрачность видна в 3D-ленте) */
   .card__left {
     position: absolute; left: 0; top: 0; width: 640px; height: 900px; overflow: hidden;
-    background: #EEF2F2;
-  }
-  .glass {
-    position: absolute; left: 34px; top: 34px; right: 34px; bottom: 34px; border-radius: 48px;
-    background: rgba(255, 255, 255, .62);
-    -webkit-backdrop-filter: blur(30px); backdrop-filter: blur(30px);
-    border: 2px solid rgba(255, 255, 255, .9);
-    box-shadow:
-      inset 0 2px 0 rgba(255, 255, 255, .95),
-      inset 0 -30px 80px rgba(255, 255, 255, .35),
-      0 40px 80px -40px rgba(20, 45, 48, .28);
-    padding: 70px 56px 60px;
+    padding: 76px 66px 64px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .86) 0%, rgba(255, 255, 255, .8) 100%);
     color: #2F3437;
   }
   .caps {
@@ -53,7 +43,7 @@
   .heading__a { font-family: "Inter Tight", Inter, sans-serif; font-weight: 500; letter-spacing: -.035em; }
   .heading__b { font-family: "Playfair Display", serif; font-style: italic; font-weight: 600; letter-spacing: -.01em; margin-top: 2px; }
   .sub { margin-top: 44px; font-family: Inter, sans-serif; font-size: 31px; line-height: 1.42; color: #5C656A; }
-  .bottom { position: absolute; left: 56px; right: 56px; bottom: 58px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+  .bottom { position: absolute; left: 66px; right: 66px; bottom: 64px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
   .go {
     width: 100px; height: 100px; border-radius: 50%; display: grid; place-items: center; flex: none;
     background: rgba(72, 80, 82, .46);
@@ -260,12 +250,10 @@
     var rot = [-7, 6, -4, 8, -9, 5][i % 6];
     return '<div class="card" id="shot" style="--c:' + p.color + '">' +
       '<div class="card__left">' +
-        '<div class="glass">' +
-          '<p class="caps">' + esc(cat.short) + '</p>' +
-          '<h1 class="heading"><span class="heading__a" data-fit>' + esc(p.title) + '</span><span class="heading__b" data-fit>' + esc(p.accent) + '</span></h1>' +
-          '<p class="sub">' + esc(p.short[0]) + '<br>' + esc(p.short[1]) + '</p>' +
-          '<div class="bottom"><span class="go"><svg viewBox="0 0 40 40"><path d="M12 28 28 12M15 12h13v13"/></svg></span><span class="price">' + (p.rx ? '<small>Рецепт</small>' : '') + priceText(p.price) + '</span></div>' +
-        '</div>' +
+        '<p class="caps">' + esc(cat.short) + '</p>' +
+        '<h1 class="heading"><span class="heading__a" data-fit>' + esc(p.title) + '</span><span class="heading__b" data-fit>' + esc(p.accent) + '</span></h1>' +
+        '<p class="sub">' + esc(p.short[0]) + '<br>' + esc(p.short[1]) + '</p>' +
+        '<div class="bottom"><span class="go"><svg viewBox="0 0 40 40"><path d="M12 28 28 12M15 12h13v13"/></svg></span><span class="price">' + (p.rx ? '<small>Рецепт</small>' : '') + priceText(p.price) + '</span></div>' +
       '</div>' +
       '<span class="card__strip"></span>' +
       '<div class="card__right"><span class="card__floor"></span>' +
@@ -279,7 +267,7 @@
   function fitHeading() {
     var lines = document.querySelectorAll('[data-fit]');
     if (!lines.length) return;
-    var max = 456, size = 104;
+    var max = 500, size = 104;
     lines.forEach(function (l) { l.style.fontSize = size + 'px'; });
     var widest = 0;
     lines.forEach(function (l) { widest = Math.max(widest, l.getBoundingClientRect().width); });

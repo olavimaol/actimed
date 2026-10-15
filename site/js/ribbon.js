@@ -32,7 +32,7 @@ if (groupLabel) groupLabel.textContent = group.label;
 const items = [];
 while (items.length < 8 || items.length % products.length) items.push(products[items.length % products.length]);
 
-const cardImage = (p) => `img/cards/${p.id}.jpg`;
+const cardImage = (p) => `img/cards/${p.id}.webp`;
 const productUrl = (p) => `product.html?id=${encodeURIComponent(p.id)}`;
 const pad = (n) => String(n).padStart(2, '0');
 
@@ -141,10 +141,12 @@ const fragmentShader = /* glsl */ `
     float alpha = 1.0 - smoothstep(-aa, aa, d);
     if (alpha <= 0.0) discard;
 
-    vec3 col = mix(uColor, texture2D(uMap, vUv).rgb, uHasMap);
+    vec4 tex = texture2D(uMap, vUv);
+    vec3 col = mix(uColor, tex.rgb, uHasMap);
     col *= mix(0.66, 1.0, pow(clamp(vFacing, 0.0, 1.0), 3.0));   // повёрнутое от нас темнее
     float fog = smoothstep(uFogNear, uFogFar, vDist);
-    gl_FragColor = vec4(col, alpha * (1.0 - fog));
+    // левая часть карточки в картинке полупрозрачная — сквозь неё видна сцена
+    gl_FragColor = vec4(col, alpha * mix(1.0, tex.a, uHasMap) * (1.0 - fog));
   }
 `;
 

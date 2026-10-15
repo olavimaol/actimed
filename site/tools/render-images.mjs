@@ -2,7 +2,7 @@
 // Запуск из папки site:  node tools/render-images.mjs
 // Нужен Playwright (npm i -D playwright или глобальная установка) и интернет для шрифтов.
 //
-//   img/cards/<id>.jpg     — карточки ленты на главной
+//   img/cards/<id>.webp    — карточки ленты на главной (левая часть полупрозрачная)
 //   img/products/<id>.webp — упаковки на прозрачном фоне для страниц товаров
 //   img/footer/…           — восьмиугольник и блистеры в футере
 import path from 'node:path';
@@ -61,7 +61,8 @@ const ids = (await page.evaluate(() => window.ACTIMED.products.map((p) => p.id))
 
 for (const id of ids) {
   await open(page, `card=${id}`);
-  save(path.join(site, 'img/cards', `${id}.jpg`), await page.locator('#shot').screenshot({ type: 'jpeg', quality: 86 }));
+  const cardPng = await page.locator('#shot').screenshot({ omitBackground: true });
+  save(path.join(site, 'img/cards', `${id}.webp`), await toWebp(page, cardPng, 0.9));
 
   await open(hiDpi, `cutout=${id}`);
   const png = await hiDpi.locator('#shot').screenshot({ omitBackground: true });
