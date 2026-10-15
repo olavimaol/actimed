@@ -178,24 +178,19 @@ const gridFragment = /* glsl */ `
     return fract((p3.x + p3.y) * p3.z);
   }
 
-  float box(vec2 p, vec2 b) {
-    vec2 d = abs(p) - b;
-    return length(max(d, 0.0)) + min(max(d.x, d.y), 0.0);
-  }
-
   void main() {
     vec2 c = vec2(vWorld.x, vWorld.z) / uCell;   // пол неподвижен — лента едет над ним
     vec2 w = max(fwidth(c), vec2(1e-4));
     vec2 id = floor(c + 0.5);            // ближайший угол клетки
-    vec2 f = c - id;                     // -0.5 … 0.5
+    vec2 f = abs(c - id);                // 0 … 0.5
 
-    // от клетки остаётся медицинский «+»: перекладины толщиной в треть креста,
-    // углы чуть скруглены
-    float arm = 0.16, bar = 0.054, rad = 0.014;
-    float d = min(box(f, vec2(arm, bar) - rad), box(f, vec2(bar, arm) - rad)) - rad;
-    float aa = max(fwidth(d), 1e-4);
-    float plus = 1.0 - smoothstep(-aa, aa, d);
-    float halo = exp(-dot(f, f) / 0.03);
+    // от клетки остаётся только «+» в углу
+    float arm = 0.13;
+    vec2 thick = w * 0.6;
+    float bx = (1.0 - smoothstep(thick.y, thick.y + w.y, f.y)) * (1.0 - smoothstep(arm - w.x, arm, f.x));
+    float by = (1.0 - smoothstep(thick.x, thick.x + w.x, f.x)) * (1.0 - smoothstep(arm - w.y, arm, f.y));
+    float plus = max(bx, by);
+    float halo = exp(-dot(f, f) / 0.018);
 
     // у каждого плюса свой ритм мерцания, по полу медленно идёт волна света
     float tw = 0.5 + 0.5 * sin(uTime * (0.45 + hash(id) * 1.3) + hash(id + 19.19) * 6.2832);
@@ -204,7 +199,7 @@ const gridFragment = /* glsl */ `
 
     float fade = (1.0 - smoothstep(uNear + 20.0, uFar, vDist)) * smoothstep(uNear - 20.0, uNear - 10.0, vDist);
     fade *= 1.0 - smoothstep(0.12, 0.3, max(w.x, w.y));   // у горизонта плюсы мельче пикселя — гасим
-    float a = (plus * (0.42 + 0.58 * min(glow, 1.0)) + halo * 0.3 * glow) * fade;
+    float a = (plus * (0.4 + 0.6 * min(glow, 1.0)) + halo * 0.32 * glow) * fade;
     gl_FragColor = vec4(uColor, min(a, 1.0));
   }
 `;
@@ -228,7 +223,7 @@ function init() {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, 1, 1, 800);
 
-  // Пол: светящиеся медицинские «+» в углах клеток; пол стоит на месте
+  // Пол: светящиеся «+» в углах клеток; пол стоит на месте
   const CELL = 6;
   const grid = new THREE.Mesh(
     new THREE.PlaneGeometry(900, 900),
