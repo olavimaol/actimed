@@ -68,7 +68,7 @@ const FLOOR_Y = -14;
 const shape = {
   amp: 6.5,                 // глубина волны
   k: Math.PI * 0.9 / 33,    // одна длинная дуга на экран
-  x0: -14,                  // гребень левее центра
+  x0: -6,                   // гребень чуть левее центра
   depth: -3.5,
   slope: -0.06,             // вся лента чуть уходит вглубь вправо
   bank: -0.05,              // лёгкий наклон вдоль оси ленты
@@ -281,6 +281,10 @@ function init() {
 
   /* ---------- Размер и камера ---------- */
   let fitHalf = 0;
+  // Куда встаёт карточка при остановке: на компьютере на гребень встаёт
+  // центр блока с описанием (левые 40% карточки), на телефоне — вся карточка.
+  const TEXT_CENTER = CARD_W * 0.3;
+  let focusShift = TEXT_CENTER;
   function resize() {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (!w || !h) return;
@@ -290,7 +294,8 @@ function init() {
     const tanHalf = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
     const portrait = camera.aspect < 1;
     // на телефоне гребень по центру и карточка почти во всю ширину
-    shape.x0 = portrait ? 0 : -14;
+    shape.x0 = portrait ? 0 : -6;
+    focusShift = portrait ? 0 : TEXT_CENTER;
     shared.uX0.value = shape.x0;
     const needHalfW = CARD_W * (portrait ? 0.5 : 0.6);
     const z = Math.max(27, needHalfW / (tanHalf * camera.aspect));
@@ -473,7 +478,7 @@ function init() {
     shared.uVel.value = vel;
 
     for (const mesh of cards) {
-      mesh.position.x = wrap(mesh.userData.index * STEP - offset) + shape.x0;
+      mesh.position.x = wrap(mesh.userData.index * STEP - offset) + shape.x0 + focusShift;
     }
     grid.material.uniforms.uShift.value = offset;
 
