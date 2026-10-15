@@ -3,60 +3,99 @@
 <head>
 <meta charset="utf-8">
 <!--
-  Шаблон для картинок сайта. Не открывается посетителями —
+  Шаблон для картинок сайта. Посетители его не открывают —
   его фотографирует tools/render-images.mjs.
-  ?card=<id категории>  — карточка ленты 1600×900
-  ?octagon              — картинка для восьмиугольника в футере 960×960
-  ?blisters             — блистеры поверх восьмиугольника 2400×364 (прозрачный фон)
+  ?card=<id товара>    — карточка ленты 1600×900: 40% описание на «стекле», белая полоса, 60% картинка
+  ?cutout=<id товара>  — упаковка на прозрачном фоне (страница товара)
+  ?octagon             — картинка для восьмиугольника в футере 960×960
+  ?blisters            — блистеры поверх восьмиугольника 2400×364 (прозрачный фон)
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Unbounded:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600&family=Inter:wght@400;500;600&family=Jost:wght@500;600&family=Manrope:wght@500;600;700;800&family=Playfair+Display:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: transparent; }
   body { font-family: Manrope, sans-serif; -webkit-font-smoothing: antialiased; }
 
-  /* ---------- Карточка ---------- */
+  /* ================= Карточка ленты ================= */
   .card {
     --c: #2FA36B;
-    position: relative; width: 1600px; height: 900px; overflow: hidden; color: #fff;
-    background:
-      radial-gradient(90% 80% at 72% 38%, color-mix(in srgb, var(--c) 55%, white) 0%, transparent 62%),
-      radial-gradient(120% 90% at 10% 110%, color-mix(in srgb, var(--c) 40%, #04191C) 0%, transparent 70%),
-      linear-gradient(150deg, color-mix(in srgb, var(--c) 92%, white) 0%, var(--c) 45%, color-mix(in srgb, var(--c) 62%, #04191C) 100%);
+    position: relative; width: 1600px; height: 900px; overflow: hidden; background: #fff;
   }
-  .card::after { /* лёгкое зерно, как у фотографии */
-    content: ""; position: absolute; inset: 0; opacity: .16; mix-blend-mode: overlay;
+  /* левая часть: мягкий цветной фон, поверх него матовое стекло */
+  .card__left {
+    position: absolute; left: 0; top: 0; width: 640px; height: 900px; overflow: hidden;
+    background:
+      radial-gradient(85% 60% at 88% 18%, color-mix(in srgb, var(--c) 62%, white) 0%, transparent 70%),
+      radial-gradient(80% 55% at 8% 96%, color-mix(in srgb, var(--c) 48%, white) 0%, transparent 72%),
+      linear-gradient(165deg, color-mix(in srgb, var(--c) 24%, white) 0%, color-mix(in srgb, var(--c) 42%, white) 100%);
+  }
+  .glass {
+    position: absolute; left: 34px; top: 34px; right: 34px; bottom: 34px; border-radius: 48px;
+    background: rgba(255, 255, 255, .46);
+    -webkit-backdrop-filter: blur(40px) saturate(1.35); backdrop-filter: blur(40px) saturate(1.35);
+    border: 2px solid rgba(255, 255, 255, .9);
+    box-shadow:
+      inset 0 2px 0 rgba(255, 255, 255, .95),
+      inset 0 -30px 80px rgba(255, 255, 255, .35),
+      0 40px 80px -40px rgba(20, 45, 48, .28);
+    padding: 70px 56px 60px;
+    color: #2F3437;
+  }
+  .caps {
+    display: flex; align-items: center; gap: 18px;
+    font-family: Inter, sans-serif; font-weight: 500; font-size: 21px; letter-spacing: .2em; text-transform: uppercase; color: #6A7377;
+  }
+  .caps::before {
+    content: ""; width: 26px; height: 26px; border-radius: 50%; flex: none;
+    border: 2px solid #9AA2A6; background: radial-gradient(circle at 35% 30%, #fff, #E3E7E9);
+  }
+  .heading { margin-top: 74px; color: #33383B; }
+  .heading__a, .heading__b { display: block; white-space: nowrap; line-height: 1.02; width: max-content; }
+  .heading__a { font-family: "Inter Tight", Inter, sans-serif; font-weight: 500; letter-spacing: -.035em; }
+  .heading__b { font-family: "Playfair Display", serif; font-style: italic; font-weight: 600; letter-spacing: -.01em; margin-top: 2px; }
+  .sub { margin-top: 44px; font-family: Inter, sans-serif; font-size: 31px; line-height: 1.42; color: #5C656A; }
+  .bottom { position: absolute; left: 56px; right: 56px; bottom: 58px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+  .pill {
+    display: inline-flex; align-items: center; height: 92px; padding: 0 46px; border-radius: 999px;
+    font-family: Inter, sans-serif; font-weight: 500; font-size: 29px; color: #3A4043;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .82), rgba(236, 240, 241, .6));
+    -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+    border: 2px solid rgba(255, 255, 255, .95);
+    box-shadow: inset 0 -6px 14px rgba(150, 160, 165, .25), inset 0 3px 0 #fff, 0 18px 30px -16px rgba(30, 45, 48, .35), 0 0 0 1px rgba(160, 170, 175, .35);
+  }
+  .price { font-family: Inter, sans-serif; font-weight: 600; font-size: 31px; color: #2F3437; white-space: nowrap; text-align: right; }
+  .price small { display: block; font-weight: 500; font-size: 19px; color: #A0672A; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+
+  /* белая полоса */
+  .card__strip { position: absolute; left: 640px; top: 0; width: 18px; height: 900px; background: #fff; }
+
+  /* правая часть: товар */
+  .card__right {
+    position: absolute; left: 658px; right: 0; top: 0; bottom: 0; overflow: hidden;
+    background:
+      radial-gradient(70% 70% at 55% 40%, color-mix(in srgb, var(--c) 45%, white) 0%, transparent 65%),
+      radial-gradient(120% 90% at 10% 110%, color-mix(in srgb, var(--c) 45%, #04191C) 0%, transparent 70%),
+      linear-gradient(155deg, color-mix(in srgb, var(--c) 88%, white) 0%, var(--c) 48%, color-mix(in srgb, var(--c) 65%, #04191C) 100%);
+  }
+  .card__right::after {
+    content: ""; position: absolute; inset: 0; opacity: .14; mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
   }
   .card__floor {
-    position: absolute; left: 34%; right: -10%; bottom: 120px; height: 160px; border-radius: 50%;
-    background: radial-gradient(closest-side, rgba(3, 30, 33, .45), transparent);
-    filter: blur(12px);
+    position: absolute; left: 12%; right: 12%; bottom: 96px; height: 120px; border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(3, 30, 33, .45), transparent); filter: blur(14px);
   }
-  .card__glow {
-    position: absolute; width: 760px; height: 760px; right: 40px; top: -120px; border-radius: 50%;
-    background: radial-gradient(closest-side, rgba(255, 255, 255, .35), transparent 70%);
+  .card__stage { position: absolute; inset: 0; display: grid; place-items: center; }
+  .card__stage .pack { position: relative; }
+  .card__brand {
+    position: absolute; right: 50px; top: 44px; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    font-family: Jost, sans-serif; font-weight: 500; font-size: 17px; letter-spacing: .2em; color: rgba(255, 255, 255, .92);
   }
-  .card__brand { position: absolute; left: 72px; top: 64px; font-family: Unbounded, sans-serif; font-weight: 700; font-size: 26px; letter-spacing: .14em; opacity: .85; }
-  .card__brand::before {
-    content: ""; display: inline-block; width: 26px; height: 26px; margin-right: 14px; vertical-align: -5px; border-radius: 7px;
-    background:
-      linear-gradient(var(--c), var(--c)) center / 14px 4px no-repeat,
-      linear-gradient(var(--c), var(--c)) center / 4px 14px no-repeat,
-      #fff;
-  }
-  .card__title { position: absolute; left: 72px; bottom: 132px; font-weight: 800; font-size: 96px; line-height: 1; letter-spacing: -.02em; text-shadow: 0 4px 40px rgba(0, 0, 0, .18); }
-  .card__sub { position: absolute; left: 76px; bottom: 76px; font-weight: 600; font-size: 30px; opacity: .86; }
-  .card__arrow {
-    position: absolute; right: 64px; bottom: 64px; width: 96px; height: 96px; border-radius: 50%;
-    background: rgba(4, 25, 28, .82); display: grid; place-items: center;
-  }
-  .card__arrow svg { width: 40px; height: 40px; stroke: #fff; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
-  .card__stage { position: absolute; inset: 0; }
+  .card__brand img { width: 52px; height: 48px; filter: brightness(0) invert(1); opacity: .92; }
 
-  /* ---------- Упаковки (крупные версии упаковок с сайта) ---------- */
+  /* ================= Упаковки ================= */
   .pack { position: absolute; --c: #2FA36B; color: #13282C; }
   .box {
     width: 520px; height: 340px; border-radius: 22px; padding: 44px 40px 36px; overflow: hidden;
@@ -70,7 +109,7 @@
     position: absolute; right: 30px; top: 28px; width: 44px; height: 44px;
     background: linear-gradient(#fff, #fff) center / 44px 14px no-repeat, linear-gradient(#fff, #fff) center / 14px 44px no-repeat;
   }
-  .brand { font-family: Unbounded, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: .1em; color: var(--c); text-transform: uppercase; }
+  .brand { font-family: Jost, sans-serif; font-weight: 600; font-size: 21px; letter-spacing: .16em; color: var(--c); text-transform: uppercase; }
   .name { font-weight: 800; font-size: 48px; line-height: 1.05; margin-top: 6px; }
   .dose { font-size: 24px; color: #5A6E71; margin-top: 8px; font-weight: 600; }
   .rx { position: absolute; left: 40px; top: 38px; background: #fff; color: #C7792A; font-weight: 800; font-size: 20px; padding: 6px 16px; border-radius: 99px; }
@@ -100,7 +139,7 @@
     background: linear-gradient(90deg, #DDE7E6 0%, #FFFFFF 30%, #F2F6F6 60%, #CFDCDB 100%);
     box-shadow: 0 70px 90px -30px rgba(3, 30, 33, .55);
   }
-  .tube::before { /* обжатый край */
+  .tube::before {
     content: ""; position: absolute; left: -8px; right: -8px; top: -22px; height: 40px; border-radius: 6px;
     background: repeating-linear-gradient(0deg, #E9F0EF 0 6px, #CBD8D6 6px 8px);
   }
@@ -127,7 +166,11 @@
   .thermo .screen { position: absolute; left: 18px; right: 18px; top: 90px; height: 70px; border-radius: 12px; background: #0B2E33; color: #9EF0CF; font-weight: 800; font-size: 32px; display: grid; place-items: center; }
   .thermo .tip { position: absolute; left: 50%; bottom: -70px; transform: translateX(-50%); width: 34px; height: 90px; border-radius: 0 0 17px 17px; background: linear-gradient(90deg, #B9C6C4, #F4F7F7, #AFBDBB); }
 
-  /* ---------- Восьмиугольник ---------- */
+  /* ================= Упаковка отдельно ================= */
+  .cutout { display: inline-block; padding: 110px 90px 150px; }
+  .cutout .pack { position: relative; }
+
+  /* ================= Восьмиугольник ================= */
   .octa {
     position: relative; width: 960px; height: 960px; overflow: hidden;
     background:
@@ -141,7 +184,7 @@
   }
   .octa svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 
-  /* ---------- Блистеры ---------- */
+  /* ================= Блистеры ================= */
   .blisters { position: relative; width: 2400px; height: 364px; }
   .strip {
     position: absolute; display: flex; align-items: center; justify-content: space-evenly;
@@ -149,9 +192,7 @@
     background: linear-gradient(180deg, #F4F7F8 0%, #C9D3D6 18%, #EEF2F3 40%, #B7C3C6 72%, #E3E9EA 100%);
     box-shadow: 0 40px 50px -24px rgba(0, 0, 0, .55), inset 0 2px 0 rgba(255, 255, 255, .9), inset 0 -3px 0 rgba(0, 0, 0, .12);
   }
-  .strip::before { /* линия перфорации */
-    content: ""; position: absolute; left: 18px; right: 18px; top: 50%; border-top: 3px dashed rgba(90, 110, 113, .35);
-  }
+  .strip::before { content: ""; position: absolute; left: 18px; right: 18px; top: 50%; border-top: 3px dashed rgba(90, 110, 113, .35); }
   .strip--long { left: 10px; top: 24px; width: 1980px; height: 200px; transform: rotate(-1.4deg); }
   .strip--short { left: 560px; top: 238px; width: 1080px; height: 116px; transform: rotate(-.8deg); }
   .cell {
@@ -162,15 +203,13 @@
   }
   .strip--long .cell { width: 150px; height: 132px; }
   .strip--short .cell { width: 150px; height: 82px; }
-  .pill { border-radius: 999px; }
-  .strip--long .pill {
-    width: 118px; height: 58px;
-    background: linear-gradient(90deg, #0E6E6E 0 50%, #F4FBF8 50% 100%);
+  .pill-in { border-radius: 999px; }
+  .strip--long .pill-in {
+    width: 118px; height: 58px; background: linear-gradient(90deg, #0E6E6E 0 50%, #F4FBF8 50% 100%);
     box-shadow: inset 0 -10px 12px rgba(0, 0, 0, .18), inset 0 8px 10px rgba(255, 255, 255, .45);
   }
-  .strip--short .pill {
-    width: 70px; height: 52px;
-    background: radial-gradient(70% 70% at 40% 30%, #FFFFFF, #E5EFEC 70%, #C9D9D5);
+  .strip--short .pill-in {
+    width: 70px; height: 52px; background: radial-gradient(70% 70% at 40% 30%, #FFFFFF, #E5EFEC 70%, #C9D9D5);
     box-shadow: inset 0 -6px 8px rgba(0, 0, 0, .12);
   }
 </style>
@@ -179,92 +218,86 @@
 <div id="root"></div>
 <script src="../js/data.js"></script>
 <script>
-  // Какие упаковки стоят на карточке каждой категории
-  var SCENES = {
-    cold: [
-      { t: 'tube', name: 'Хлоргексидин', dose: 'спрей · 100 мл', c: '#3FA7C9', x: 1310, y: 120, r: 10, z: 1 },
-      { t: 'bottle', name: 'Амброксол', dose: 'сироп · 100 мл', c: '#0E6E6E', x: 1070, y: 150, r: -5, z: 2 },
-      { t: 'box', name: 'Парацетамол', dose: '500 мг · 20 таблеток', c: '#2FA36B', x: 940, y: 390, r: -7, z: 3 }
-    ],
-    pain: [
-      { t: 'box', name: 'Ибупрофен', dose: '400 мг · 10 таблеток', c: '#B84E5A', x: 1000, y: 150, r: 8, small: true, z: 1 },
-      { t: 'tube', name: 'Диклофенак', dose: 'гель · 50 г', c: '#D46A6A', x: 1280, y: 90, r: -6, z: 2 },
-      { t: 'box', name: 'Ибупрофен', dose: '200 мг · 20 таблеток', c: '#D46A6A', x: 960, y: 400, r: -9, z: 3 }
-    ],
-    vitamins: [
-      { t: 'bottle', name: 'Витамин D3', dose: '2000 МЕ · 60 капсул', c: '#E0A13A', x: 830, y: 260, r: -7 },
-      { t: 'bottle', name: 'Омега-3', dose: '1000 мг · 90 капсул', c: '#3B7DD8', x: 1110, y: 200, r: 5 },
-      { t: 'box', name: 'Магний B6', dose: '50 таблеток', c: '#D46A6A', x: 1080, y: 540, r: -4, small: true }
-    ],
-    heart: [
-      { t: 'box', name: 'Ацетилсалициловая кислота', dose: '75 мг · 30 таблеток', c: '#8E3C59', x: 1030, y: 150, r: 7, small: true, fs: 36, z: 1 },
-      { t: 'box', name: 'Аторвастатин', dose: '20 мг · 30 таблеток', c: '#C8546E', x: 950, y: 430, r: -8, rx: true, z: 2 }
-    ],
-    allergy: [
-      { t: 'box', name: 'Лоратадин', dose: '10 мг · 10 таблеток', c: '#7A6BD1', x: 880, y: 390, r: -10 },
-      { t: 'bottle', name: 'Цетиризин', dose: 'капли · 20 мл', c: '#5B4FB0', x: 1260, y: 200, r: 7 }
-    ],
-    baby: [
-      { t: 'tube', name: 'Крем под подгузник', dose: '75 мл', c: '#3FA7C9', x: 900, y: 210, r: -10 },
-      { t: 'bottle', name: 'Витамин D3', dose: 'капли · 10 мл', c: '#E0A13A', x: 1150, y: 230, r: 6 }
-    ],
-    care: [
-      { t: 'tube', name: 'Крем для рук', dose: 'увлажняющий · 50 мл', c: '#0E8C7E', x: 880, y: 220, r: -12 },
-      { t: 'bottle', name: 'Гель для душа', dose: 'для сухой кожи · 250 мл', c: '#3FA7C9', x: 1140, y: 200, r: 4 }
-    ],
-    devices: [
-      { t: 'device', x: 820, y: 330, r: -6, c: '#3B7DD8' },
-      { t: 'thermo', x: 1340, y: 170, r: 14, c: '#0E8C7E' }
-    ]
-  };
+  var D = window.ACTIMED;
 
-  var SUBS = {
-    cold: 'жаропонижающие · от кашля · спреи для горла',
-    pain: 'таблетки · гели · пластыри',
-    vitamins: 'иммунитет · энергия · крепкий сон',
-    heart: 'давление · холестерин · кровообращение',
-    allergy: 'таблетки · капли · спреи',
-    baby: 'уход · витамины · первая аптечка',
-    care: 'кожа · волосы · гигиена',
-    devices: 'тонометры · термометры · ингаляторы'
+  // Надписи на упаковках
+  var PACK = {
+    'ibuprofen': { name: 'Ибупрофен', dose: '200 мг · 20 таблеток' },
+    'paracetamol': { name: 'Парацетамол', dose: '500 мг · 10 таблеток' },
+    'vitamin-d3': { name: 'Витамин D3', dose: '2000 МЕ · 60 капсул' },
+    'omega-3': { name: 'Омега-3', dose: '1000 мг · 90 капсул' },
+    'loratadine': { name: 'Лоратадин', dose: '10 мг · 10 таблеток' },
+    'ambroxol': { name: 'Амброксол', dose: 'сироп · 100 мл' },
+    'magnesium-b6': { name: 'Магний B6', dose: '50 таблеток' },
+    'chlorhexidine': { name: 'Хлоргексидин', dose: 'спрей 0,05% · 100 мл' },
+    'atorvastatin': { name: 'Аторвастатин', dose: '20 мг · 30 таблеток' },
+    'aspirin-cardio': { name: 'Ацетилсалициловая кислота', dose: '75 мг · 30 таблеток', fs: 38 },
+    'amoxicillin': { name: 'Амоксициллин', dose: '500 мг · 16 капсул' },
+    'cetirizine': { name: 'Цетиризин', dose: 'капли · 20 мл' },
+    'diaper-cream': { name: 'Крем под подгузник', dose: '75 мл' },
+    'hand-cream': { name: 'Крем для рук', dose: 'увлажняющий · 50 мл' }
   };
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function byId(id) { return D.products.filter(function (p) { return p.id === id; })[0]; }
+  function priceText(n) { return n.toLocaleString('ru-RU').replace(/ |,/g, ' ') + ' сум'; }
 
-  function packHtml(p) {
-    var pos = 'left:' + p.x + 'px;top:' + p.y + 'px;transform:rotate(' + p.r + 'deg)' + (p.small ? ' scale(.78)' : '') + ';--c:' + p.c + ';z-index:' + (p.z || 1);
-    var label = '<span class="brand">Actimed</span><span class="name"' + (p.fs ? ' style="font-size:' + p.fs + 'px"' : '') + '>' + esc(p.name || '') + '</span><span class="dose">' + esc(p.dose || '') + '</span>';
-    if (p.t === 'box') return '<div class="pack box" style="' + pos + '"><span class="band"></span><span class="cross"></span>' + (p.rx ? '<span class="rx">По рецепту</span>' : '') + label + '</div>';
-    if (p.t === 'bottle') return '<div class="pack bottle" style="' + pos + '"><span class="cap"></span><span class="label">' + label + '</span></div>';
-    if (p.t === 'tube') return '<div class="pack tube" style="' + pos + '"><span class="stripe"></span><span class="label">' + label + '</span><span class="cap"></span></div>';
-    if (p.t === 'device') return '<div class="pack device" style="' + pos + '"><div class="screen">120/80<small>мм рт. ст.</small></div><span class="btn"></span></div>';
-    if (p.t === 'thermo') return '<div class="pack thermo" style="' + pos + '"><div class="screen">36,6°</div><span class="tip"></span></div>';
+  function packHtml(p, extraStyle) {
+    var t = PACK[p.id] || {};
+    var style = '--c:' + p.color + ';' + (extraStyle || '');
+    var label = '<span class="brand">Actimed</span><span class="name"' + (t.fs ? ' style="font-size:' + t.fs + 'px"' : '') + '>' + esc(t.name || p.title) + '</span><span class="dose">' + esc(t.dose || '') + '</span>';
+    if (p.type === 'box') return '<div class="pack box" style="' + style + '"><span class="band"></span><span class="cross"></span>' + (p.rx ? '<span class="rx">По рецепту</span>' : '') + label + '</div>';
+    if (p.type === 'bottle') return '<div class="pack bottle" style="' + style + '"><span class="cap"></span><span class="label">' + label + '</span></div>';
+    if (p.type === 'tube') return '<div class="pack tube" style="' + style + '"><span class="stripe"></span><span class="label">' + label + '</span><span class="cap"></span></div>';
+    if (p.type === 'device') return '<div class="pack device" style="' + style + '"><div class="screen">120/80<small>мм рт. ст.</small></div><span class="btn"></span></div>';
+    if (p.type === 'thermo') return '<div class="pack thermo" style="' + style + '"><div class="screen">36,6°</div><span class="tip"></span></div>';
     return '';
   }
 
-  var arrow = '<svg viewBox="0 0 40 40"><path d="M8 20h24M22 10l10 10-10 10"/></svg>';
+  var SCALE = { box: 1.18, bottle: 1.22, tube: 1.18, device: 1.1, thermo: 1.05 };
 
   function card(id) {
-    var cat = window.ACTIMED.categories.filter(function (c) { return c.id === id; })[0];
-    var items = SCENES[id] || [];
-    return '<div class="card" id="shot" style="--c:' + cat.color + '">' +
-      '<span class="card__glow"></span><span class="card__floor"></span>' +
-      '<div class="card__stage">' + items.map(packHtml).join('') + '</div>' +
-      '<span class="card__brand">ACTIMED</span>' +
-      '<h1 class="card__title">' + esc(cat.name) + '</h1>' +
-      '<p class="card__sub">' + cat.count + ' товаров · ' + esc(SUBS[id] || '') + '</p>' +
-      '<span class="card__arrow">' + arrow + '</span>' +
+    var p = byId(id);
+    var i = D.products.indexOf(p);
+    var cat = D.categories[p.cat];
+    var rot = [-7, 6, -4, 8, -9, 5][i % 6];
+    return '<div class="card" id="shot" style="--c:' + p.color + '">' +
+      '<div class="card__left">' +
+        '<div class="glass">' +
+          '<p class="caps">' + esc(cat.short) + '</p>' +
+          '<h1 class="heading"><span class="heading__a" data-fit>' + esc(p.title) + '</span><span class="heading__b" data-fit>' + esc(p.accent) + '</span></h1>' +
+          '<p class="sub">' + esc(p.short[0]) + '<br>' + esc(p.short[1]) + '</p>' +
+          '<div class="bottom"><span class="pill">Подробнее</span><span class="price">' + (p.rx ? '<small>Рецепт</small>' : '') + priceText(p.price) + '</span></div>' +
+        '</div>' +
+      '</div>' +
+      '<span class="card__strip"></span>' +
+      '<div class="card__right"><span class="card__floor"></span>' +
+        '<div class="card__stage">' + packHtml(p, 'transform:rotate(' + rot + 'deg) scale(' + SCALE[p.type] + ')') + '</div>' +
+        '<span class="card__brand"><img src="../img/logo-mark.svg" alt="">ACTIMED</span>' +
+      '</div>' +
     '</div>';
   }
 
+  // Обе строки заголовка — одного кегля, чтобы влезли в стекло
+  function fitHeading() {
+    var lines = document.querySelectorAll('[data-fit]');
+    if (!lines.length) return;
+    var max = 456, size = 104;
+    lines.forEach(function (l) { l.style.fontSize = size + 'px'; });
+    var widest = 0;
+    lines.forEach(function (l) { widest = Math.max(widest, l.getBoundingClientRect().width); });
+    if (widest > max) size = Math.floor(size * max / widest);
+    lines.forEach(function (l) { l.style.fontSize = size + 'px'; });
+  }
+
+  function cutout(id) {
+    return '<div class="cutout" id="shot">' + packHtml(byId(id)) + '</div>';
+  }
+
   function octagon() {
-    // мягкие листья и «пузырьки» — травяной мотив аптеки
     var leaves = '';
-    var L = [
-      [210, 640, -38, 1.25, .5], [330, 720, -12, 1.0, .42], [690, 260, 145, 1.1, .36],
-      [760, 520, 118, .9, .3], [470, 830, -70, .85, .4], [150, 300, 20, .7, .25]
-    ];
-    L.forEach(function (l) {
+    [[210, 640, -38, 1.25, .5], [330, 720, -12, 1.0, .42], [690, 260, 145, 1.1, .36],
+     [760, 520, 118, .9, .3], [470, 830, -70, .85, .4], [150, 300, 20, .7, .25]].forEach(function (l) {
       leaves += '<g transform="translate(' + l[0] + ' ' + l[1] + ') rotate(' + l[2] + ') scale(' + l[3] + ')" opacity="' + l[4] + '">' +
         '<path d="M0 0 C 60 -90 170 -110 260 -80 C 200 -10 110 40 0 0 Z" fill="#0B4A4C"/>' +
         '<path d="M0 0 C 90 -45 170 -70 250 -78" stroke="#E6F5EF" stroke-width="3" fill="none" opacity=".55"/></g>';
@@ -278,16 +311,19 @@
 
   function blisters() {
     var long = '', short = '';
-    for (var i = 0; i < 10; i++) long += '<span class="cell"><span class="pill"></span></span>';
-    for (var j = 0; j < 6; j++) short += '<span class="cell"><span class="pill"></span></span>';
+    for (var i = 0; i < 10; i++) long += '<span class="cell"><span class="pill-in"></span></span>';
+    for (var j = 0; j < 6; j++) short += '<span class="cell"><span class="pill-in"></span></span>';
     return '<div class="blisters" id="shot"><div class="strip strip--long">' + long + '</div><div class="strip strip--short">' + short + '</div></div>';
   }
 
   var q = new URLSearchParams(location.search);
   var root = document.getElementById('root');
   if (q.has('card')) root.innerHTML = card(q.get('card'));
+  else if (q.has('cutout')) root.innerHTML = cutout(q.get('cutout'));
   else if (q.has('octagon')) root.innerHTML = octagon();
   else if (q.has('blisters')) root.innerHTML = blisters();
+  document.fonts.ready.then(fitHeading);
+  window.fitHeading = fitHeading;
 </script>
 </body>
 </html>

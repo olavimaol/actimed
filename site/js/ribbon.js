@@ -1,48 +1,51 @@
 /*
-  Лента категорий по мотивам Jesper Landberg.
+  Главная: лента товаров по мотивам Jesper Landberg.
 
-  Как устроено:
   • Карточки стоят вплотную и едут сквозь неподвижную «волну» глубины.
     Волна меняет только z, поэтому контур карточки изгибается за счёт
-    перспективы (ближняя часть крупнее, дальняя мельче), а не перекоса.
-  • Гребень волны сдвинут левее центра: ближняя карточка стоит на склоне.
-  • Лента слегка повёрнута вдоль своей оси; при быстрой прокрутке её края
-    приподнимаются и закручиваются в разные стороны, в покое всё ровно.
-  • Движение берётся из прокрутки страницы (секция закреплена) и перетаскивания.
+    перспективы, без перекоса. Гребень волны левее центра.
+  • Лента бесконечная. Управление: колесо и тачпад, свайп, перетаскивание,
+    стрелки на клавиатуре. После остановки ближайшая карточка мягко
+    встаёт на гребень.
+  • При быстром движении края ленты слегка приподнимаются и закручиваются,
+    в покое всё ровно.
+  • Клик по карточке открывает страницу товара.
   • Наведение мыши ничего не анимирует — меняется только курсор.
 */
 import * as THREE from '../vendor/three.module.min.js';
 
+const D = window.ACTIMED;
 const section = document.querySelector('[data-ribbon]');
 const canvas = document.querySelector('[data-ribbon-canvas]');
-const fallback = document.querySelector('[data-ribbon-fallback]');
+const links = document.querySelector('[data-ribbon-links]');
 const counter = document.querySelector('[data-ribbon-counter]');
-const categories = window.ACTIMED.categories.filter((c) => c.id !== 'all');
+const groupLabel = document.querySelector('[data-ribbon-group]');
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const imageOf = (cat) => `img/categories/${cat.id}.jpg`;
+/* ---------- Какие товары показывать ---------- */
+const groupId = new URLSearchParams(location.search).get('group') || 'all';
+const group = D.groups.find((g) => g.id === groupId) || D.groups[0];
+const products = group.cats ? D.products.filter((p) => group.cats.includes(p.cat)) : D.products.slice();
+if (groupLabel) groupLabel.textContent = group.label;
+
+// Для бесконечной ленты нужно хотя бы 8 карточек — короткий список повторяем
+const items = [];
+while (items.length < 8 || items.length % products.length) items.push(products[items.length % products.length]);
+
+const cardImage = (p) => `img/cards/${p.id}.jpg`;
+const productUrl = (p) => `product.html?id=${encodeURIComponent(p.id)}`;
 const pad = (n) => String(n).padStart(2, '0');
 
-function openCategory(id) {
-  if (window.actimedOpenCategory) window.actimedOpenCategory(id);
+function go(p) {
+  document.documentElement.classList.add('is-leaving');
+  setTimeout(() => { location.href = productUrl(p); }, reduceMotion ? 0 : 260);
 }
 
-// Обычные ссылки на категории: для клавиатуры и экранного диктора,
-// а без WebGL — видимая лента картинок.
+// Обычные ссылки на товары: для клавиатуры и экранного диктора, а без WebGL — видимая лента
 function fillLinks() {
-  fallback.innerHTML = categories.map((c) =>
-    `<li><a href="#catalog" data-cat-link="${c.id}"><img src="${imageOf(c)}" alt="${c.name}" loading="lazy" width="1600" height="900"></a></li>`
+  links.innerHTML = products.map((p) =>
+    `<li><a href="${productUrl(p)}"><img src="${cardImage(p)}" alt="${p.name}, ${p.form}" loading="lazy" width="1600" height="900"></a></li>`
   ).join('');
-  fallback.addEventListener('click', (e) => {
-    const a = e.target.closest('[data-cat-link]');
-    if (!a) return;
-    e.preventDefault();
-    openCategory(a.getAttribute('data-cat-link'));
-  });
-}
-
-function buildFallback() {
-  section.classList.add('no-webgl');
 }
 
 function webglAvailable() {
@@ -59,21 +62,19 @@ const CARD_W = 36;
 const CARD_H = CARD_W * 9 / 16;
 const GAP = 0.9;
 const STEP = CARD_W + GAP;
-const TOTAL = STEP * categories.length;
-const CENTER_Y = -0.4;
+const TOTAL = STEP * items.length;
+const CENTER_Y = -0.6;
 const FLOOR_Y = -14;
 
-// Форма ленты (в покое)
 const shape = {
   amp: 6.5,                 // глубина волны
-  k: Math.PI * 0.9 / 33,    // меньше половины периода на полэкрана — одна длинная дуга
+  k: Math.PI * 0.9 / 33,    // одна длинная дуга на экран
   x0: -14,                  // гребень левее центра
   depth: -3.5,
   slope: -0.06,             // вся лента чуть уходит вглубь вправо
-  bank: -0.05,              // наклон вдоль оси ленты
+  bank: -0.05,              // лёгкий наклон вдоль оси ленты
   half: 34,
-  // Реакция на скорость
-  rearY: 2.2,
+  rearY: 2.2,               // реакция на скорость
   rearZ: 2.0,
   twist: 0.12,
   lean: 0.025
@@ -102,12 +103,12 @@ const vertexShader = /* glsl */ `
   void main() {
     vUv = uv;
     vec4 w = modelMatrix * vec4(position, 1.0);
-    float dy = position.y;                 // высота над осью ленты
+    float dy = position.y;
     float side = w.x - uX0;
     float edge = smoothstep(0.25, 1.0, abs(side) / uHalf);
     float speed = abs(uVel);
 
-    float x = w.x + uLean * uVel * dy;     // лёгкий наклон по ходу движения
+    float x = w.x + uLean * uVel * dy;
     float theta = uBank * sin(uK * side) + uTwist * uVel * edge * sign(side);
 
     w.x = x;
@@ -142,7 +143,7 @@ const fragmentShader = /* glsl */ `
     if (alpha <= 0.0) discard;
 
     vec3 col = mix(uColor, texture2D(uMap, vUv).rgb, uHasMap);
-    col *= mix(0.62, 1.0, pow(clamp(vFacing, 0.0, 1.0), 3.0));   // повёрнутое от нас темнее
+    col *= mix(0.66, 1.0, pow(clamp(vFacing, 0.0, 1.0), 3.0));   // повёрнутое от нас темнее
     float fog = smoothstep(uFogNear, uFogFar, vDist);
     gl_FragColor = vec4(col, alpha * (1.0 - fog));
   }
@@ -179,13 +180,13 @@ const gridFragment = /* glsl */ `
 
 function init() {
   fillLinks();
-  if (!webglAvailable()) { buildFallback(); return; }
+  if (!webglAvailable()) { section.classList.add('no-webgl'); return; }
 
   let renderer;
   try {
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   } catch (e) {
-    buildFallback();
+    section.classList.add('no-webgl');
     return;
   }
   THREE.ColorManagement.enabled = false;
@@ -216,7 +217,6 @@ function init() {
   );
   grid.rotation.x = -Math.PI / 2;
   grid.position.set(0, FLOOR_Y, -300);
-  grid.renderOrder = 0;
   scene.add(grid);
 
   // Карточки
@@ -242,32 +242,38 @@ function init() {
   const geometry = new THREE.PlaneGeometry(CARD_W, CARD_H, 96, 16);
   const loader = new THREE.TextureLoader();
   const maxAniso = renderer.capabilities.getMaxAnisotropy();
+  const textures = new Map();
 
-  const cards = categories.map((cat, i) => {
+  function textureFor(p, material) {
+    if (!textures.has(p.id)) {
+      textures.set(p.id, new Promise((resolve) => {
+        loader.load(cardImage(p), (tex) => {
+          tex.anisotropy = maxAniso;
+          tex.minFilter = THREE.LinearMipmapLinearFilter;
+          resolve(tex);
+        });
+      }));
+    }
+    textures.get(p.id).then((tex) => {
+      material.uniforms.uMap.value = tex;
+      material.uniforms.uHasMap.value = 1;
+      requestRender();
+    });
+  }
+
+  const cards = items.map((p, i) => {
     const material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
       transparent: true,
       depthWrite: false,
       extensions: { derivatives: true },
-      uniforms: {
-        ...shared,
-        uMap: { value: null },
-        uHasMap: { value: 0 },
-        uColor: { value: new THREE.Color(cat.color) }
-      }
+      uniforms: { ...shared, uMap: { value: null }, uHasMap: { value: 0 }, uColor: { value: new THREE.Color('#F2F6F5') } }
     });
-    loader.load(imageOf(cat), (tex) => {
-      tex.anisotropy = maxAniso;
-      tex.minFilter = THREE.LinearMipmapLinearFilter;
-      material.uniforms.uMap.value = tex;
-      material.uniforms.uHasMap.value = 1;
-      requestRender();
-    });
+    textureFor(p, material);
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.y = CENTER_Y;
-    mesh.renderOrder = 1;
-    mesh.userData = { cat: cat.id, index: i };
+    mesh.userData = { product: p, index: i };
     scene.add(mesh);
     return mesh;
   });
@@ -281,42 +287,107 @@ function init() {
     camera.aspect = w / h;
     camera.fov = camera.aspect < 1 ? 60 : 75;
     const tanHalf = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
-    // на узком экране отодвигаем камеру, чтобы карточка поместилась по ширине
-    const needHalfW = CARD_W * (camera.aspect < 1 ? 0.54 : 0.6);
+    const portrait = camera.aspect < 1;
+    // на телефоне гребень по центру и карточка почти во всю ширину
+    shape.x0 = portrait ? 0 : -14;
+    shared.uX0.value = shape.x0;
+    const needHalfW = CARD_W * (portrait ? 0.5 : 0.6);
     const z = Math.max(27, needHalfW / (tanHalf * camera.aspect));
     camera.position.set(0, 0, z);
-    camera.lookAt(0, 1.6, 0);
+    camera.lookAt(0, 1.4, 0);
     camera.updateProjectionMatrix();
     fitHalf = z * tanHalf * camera.aspect;
-    // туман и сетка считаются от реального расстояния камеры
+    shared.uHalf.value = Math.max(shape.half, fitHalf);
     shared.uFogNear.value = z + 13;
     shared.uFogFar.value = z + 68;
     grid.material.uniforms.uNear.value = z;
     grid.material.uniforms.uFar.value = z + 233;
-    shared.uHalf.value = Math.max(shape.half, fitHalf);
     requestRender();
   }
   new ResizeObserver(resize).observe(canvas);
 
   /* ---------- Управление ---------- */
-  let dragOffset = 0;
-  let offset = 0;
+  let target = 0;          // куда едем
+  let offset = 0;          // где сейчас
   let prevOffset = 0;
   let vel = 0;
+  let lastInput = 0;
   let pointer = null;
+  const pxToWorld = () => (2 * fitHalf) / canvas.clientWidth * 1.1;
+  const menuOpen = () => window.actimedMenu && window.actimedMenu.isOpen();
 
-  function scrollProgress() {
-    const r = section.getBoundingClientRect();
-    const range = r.height - window.innerHeight;
-    return range > 0 ? Math.min(1, Math.max(0, -r.top / range)) : 0;
+  function nudge(delta) {
+    target += delta;
+    lastInput = performance.now();
+    requestRender();
   }
-  const targetOffset = () => scrollProgress() * (categories.length - 1) * STEP + dragOffset;
 
+  // колесо и тачпад
+  window.addEventListener('wheel', (e) => {
+    if (menuOpen()) return;
+    e.preventDefault();
+    const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1;
+    const d = (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY) * unit;
+    nudge(d * STEP / 520);
+  }, { passive: false });
+
+  // клавиатура
+  window.addEventListener('keydown', (e) => {
+    if (menuOpen()) return;
+    const tag = e.target && e.target.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'BUTTON' || tag === 'A') {
+      if (e.key === ' ' || e.key === 'Enter') return;
+    }
+    const next = ['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key);
+    const prev = ['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key);
+    if (!next && !prev) return;
+    e.preventDefault();
+    target = (Math.round(target / STEP) + (next ? 1 : -1)) * STEP;
+    lastInput = performance.now() - 1000;
+    requestRender();
+  });
+
+  // перетаскивание мышью и пальцем
+  canvas.addEventListener('pointerdown', (ev) => {
+    pointer = { id: ev.pointerId, x: ev.clientX, y: ev.clientY, startX: ev.clientX, startY: ev.clientY, moved: false, type: ev.pointerType };
+    canvas.setPointerCapture(ev.pointerId);
+    requestRender();
+  });
+  canvas.addEventListener('pointermove', (ev) => {
+    if (pointer && ev.pointerId === pointer.id) {
+      const dx = ev.clientX - pointer.x;
+      const dy = ev.clientY - pointer.y;
+      pointer.x = ev.clientX;
+      pointer.y = ev.clientY;
+      if (Math.hypot(ev.clientX - pointer.startX, ev.clientY - pointer.startY) > 6) {
+        pointer.moved = true;
+        canvas.classList.add('is-dragging');
+      }
+      // палец можно вести и по вертикали — как прокрутку
+      const d = pointer.type === 'touch' && Math.abs(dy) > Math.abs(dx) ? dy : dx;
+      nudge(-d * pxToWorld());
+    } else if (ev.pointerType === 'mouse') {
+      canvas.classList.toggle('is-pointer', !!pickCard(ev.clientX, ev.clientY));
+    }
+  });
+  function endPointer(ev) {
+    if (!pointer || ev.pointerId !== pointer.id) return;
+    const click = !pointer.moved;
+    canvas.classList.remove('is-dragging');
+    pointer = null;
+    lastInput = performance.now();
+    if (click && ev.type === 'pointerup') {
+      const p = pickCard(ev.clientX, ev.clientY);
+      if (p) go(p);
+    }
+  }
+  canvas.addEventListener('pointerup', endPointer);
+  canvas.addEventListener('pointercancel', endPointer);
+
+  /* ---------- Попадание по изогнутой карточке ---------- */
   function wrap(x) {
     return ((((x + TOTAL / 2) % TOTAL) + TOTAL) % TOTAL) - TOTAL / 2;
   }
-
-  // Та же деформация, что в шейдере, — чтобы клик попадал в изогнутую карточку
   const tmp = new THREE.Vector3();
   function deformed(x, dy, v) {
     const side = x - shape.x0;
@@ -325,13 +396,14 @@ function init() {
     const xx = x + shape.lean * v * dy;
     const theta = shape.bank * Math.sin(shape.k * side) + shape.twist * v * edge * Math.sign(side);
     const z = shape.depth + shape.amp * Math.cos(shape.k * (xx - shape.x0)) + shape.slope * xx;
-    return tmp.set(
-      xx,
-      CENTER_Y + dy * Math.cos(theta) + shape.rearY * Math.abs(v) * edge,
-      z - dy * Math.sin(theta) + shape.rearZ * Math.abs(v) * edge
-    );
+    return tmp.set(xx, CENTER_Y + dy * Math.cos(theta) + shape.rearY * Math.abs(v) * edge, z - dy * Math.sin(theta) + shape.rearZ * Math.abs(v) * edge);
   }
-
+  function inTri(px, py, a, b, c) {
+    const s1 = (b.x - a.x) * (py - a.y) - (b.y - a.y) * (px - a.x);
+    const s2 = (c.x - b.x) * (py - b.y) - (c.y - b.y) * (px - b.x);
+    const s3 = (a.x - c.x) * (py - c.y) - (a.y - c.y) * (px - c.x);
+    return (s1 >= 0 && s2 >= 0 && s3 >= 0) || (s1 <= 0 && s2 <= 0 && s3 <= 0);
+  }
   function pickCard(clientX, clientY) {
     const r = canvas.getBoundingClientRect();
     const px = ((clientX - r.left) / r.width) * 2 - 1;
@@ -341,6 +413,7 @@ function init() {
     let best = null, bestDepth = Infinity;
     for (const mesh of cards) {
       const cx = mesh.position.x;
+      if (Math.abs(cx) > fitHalf * 2.5) continue;
       const pts = [];
       for (let j = 0; j <= rows; j++) {
         const row = [];
@@ -355,73 +428,44 @@ function init() {
       for (let j = 0; j < rows; j++) {
         for (let i = 0; i < cols; i++) {
           const a = pts[j][i], b = pts[j][i + 1], c = pts[j + 1][i + 1], d = pts[j + 1][i];
-          if (inTri(px, py, a, b, c) || inTri(px, py, a, c, d)) {
-            if (a.depth < bestDepth) { bestDepth = a.depth; best = mesh.userData.cat; }
+          if ((inTri(px, py, a, b, c) || inTri(px, py, a, c, d)) && a.depth < bestDepth) {
+            bestDepth = a.depth;
+            best = mesh.userData.product;
           }
         }
       }
     }
     return best;
   }
-  function inTri(px, py, a, b, c) {
-    const s1 = (b.x - a.x) * (py - a.y) - (b.y - a.y) * (px - a.x);
-    const s2 = (c.x - b.x) * (py - b.y) - (c.y - b.y) * (px - b.x);
-    const s3 = (a.x - c.x) * (py - c.y) - (a.y - c.y) * (px - c.x);
-    return (s1 >= 0 && s2 >= 0 && s3 >= 0) || (s1 <= 0 && s2 <= 0 && s3 <= 0);
-  }
 
-  canvas.addEventListener('pointerdown', (ev) => {
-    pointer = { id: ev.pointerId, x: ev.clientX, startX: ev.clientX, startY: ev.clientY, moved: false };
-    canvas.setPointerCapture(ev.pointerId);
-  });
-  canvas.addEventListener('pointermove', (ev) => {
-    if (pointer && ev.pointerId === pointer.id) {
-      const dx = ev.clientX - pointer.x;
-      pointer.x = ev.clientX;
-      if (Math.abs(ev.clientX - pointer.startX) > 6) {
-        pointer.moved = true;
-        canvas.classList.add('is-dragging');
-      }
-      // пиксели → мировые единицы на глубине гребня
-      dragOffset -= dx * (2 * fitHalf) / canvas.clientWidth * 1.1;
-      requestRender();
-    } else if (ev.pointerType === 'mouse') {
-      canvas.classList.toggle('is-pointer', !!pickCard(ev.clientX, ev.clientY));
-    }
-  });
-  function endPointer(ev) {
-    if (!pointer || ev.pointerId !== pointer.id) return;
-    const click = !pointer.moved && Math.abs(ev.clientY - pointer.startY) < 6;
-    canvas.classList.remove('is-dragging');
-    pointer = null;
-    if (click && ev.type === 'pointerup') {
-      const id = pickCard(ev.clientX, ev.clientY);
-      if (id) openCategory(id);
-    }
-  }
-  canvas.addEventListener('pointerup', endPointer);
-  canvas.addEventListener('pointercancel', endPointer);
   function currentIndex() {
-    const i = Math.round(offset / STEP) % categories.length;
-    return (i + categories.length) % categories.length;
+    const i = Math.round(offset / STEP) % items.length;
+    return (i + items.length) % items.length;
   }
 
   /* ---------- Кадр ---------- */
-  let visible = false, rafId = 0, last = 0, lastCounter = -1;
+  let rafId = 0, last = 0, lastCounter = -1;
 
   function frame(now) {
     rafId = 0;
     const dt = Math.min(0.05, last ? (now - last) / 1000 : 1 / 60);
     last = now;
 
-    const target = targetOffset();
+    // после паузы ближайшая карточка встаёт на гребень
+    const idle = now - lastInput > 260 && !pointer;
+    if (idle) {
+      const snap = Math.round(target / STEP) * STEP;
+      target += (snap - target) * (reduceMotion ? 1 : 1 - Math.exp(-dt * 5));
+      if (Math.abs(snap - target) < 0.001) target = snap;
+    }
+
     const follow = reduceMotion ? 1 : 1 - Math.exp(-dt * 7);
     offset += (target - offset) * follow;
     if (Math.abs(target - offset) < 0.001) offset = target;
 
-    const rawVel = dt > 0 ? (offset - prevOffset) / dt : 0;   // единиц в секунду
+    const rawVel = (offset - prevOffset) / dt;
     prevOffset = offset;
-    const vTarget = reduceMotion ? 0 : Math.tanh(rawVel / 240);   // мягкое насыщение
+    const vTarget = reduceMotion ? 0 : Math.tanh(rawVel / 240);
     vel += (vTarget - vel) * (1 - Math.exp(-dt * 6));
     if (Math.abs(vel) < 0.0005 && vTarget === 0) vel = 0;
     shared.uVel.value = vel;
@@ -433,27 +477,22 @@ function init() {
 
     renderer.render(scene, camera);
 
-    const idx = currentIndex();
+    const idx = currentIndex() % products.length;
     if (counter && idx !== lastCounter) {
       lastCounter = idx;
-      counter.textContent = `${pad(idx + 1)} / ${pad(categories.length)}`;
+      counter.textContent = `${pad(idx + 1)} / ${pad(products.length)}`;
     }
 
-    const moving = offset !== target || vel !== 0;
-    if (visible && moving) rafId = requestAnimationFrame(frame);
+    const snapped = target === Math.round(target / STEP) * STEP;
+    const moving = offset !== target || vel !== 0 || !snapped || !!pointer;
+    if (moving) rafId = requestAnimationFrame(frame);
     else last = 0;
   }
 
   function requestRender() {
-    if (visible && !rafId) rafId = requestAnimationFrame(frame);
+    if (!rafId) rafId = requestAnimationFrame(frame);
   }
 
-  new IntersectionObserver((entries) => {
-    visible = entries[0].isIntersecting;
-    if (visible) { resize(); requestRender(); }
-  }, { rootMargin: '200px 0px' }).observe(section);
-
-  window.addEventListener('scroll', requestRender, { passive: true });
   resize();
 }
 

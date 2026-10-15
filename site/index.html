@@ -4,228 +4,35 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Actimed — онлайн-аптека</title>
-  <meta name="description" content="Actimed — онлайн-аптека: лекарства, витамины и товары для здоровья с доставкой за 2 часа.">
+  <meta name="description" content="Actimed — онлайн-аптека в Ташкенте: лекарства, витамины и товары для здоровья с доставкой за 2 часа.">
+  <link rel="icon" href="img/logo-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Forum&family=JetBrains+Mono:wght@500&family=Jost:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="page-home">
 
-  <!-- Шапка -->
-  <header class="header" id="top">
-    <div class="header__inner container">
-      <a class="logo" href="#top" aria-label="Actimed — на главную">
-        <span class="logo__mark" aria-hidden="true"></span>
-        <span class="logo__text">Actimed</span>
-      </a>
-      <nav class="header__nav" aria-label="Основное меню">
-        <a href="#catalog">Каталог</a>
-        <a href="#categories">Категории</a>
-        <a href="#about">О нас</a>
-        <a href="#contacts">Контакты</a>
-      </nav>
-      <div class="header__actions">
-        <a class="header__phone" href="tel:+998712000000">+998 71 200-00-00</a>
-        <a class="cart-btn" href="#catalog" aria-label="Корзина">
-          Корзина <span class="cart-btn__count" data-cart-count>0</span>
-        </a>
-      </div>
-    </div>
-  </header>
+  <!-- Шапка и меню (js/menu.js) -->
+  <div data-site-header data-theme="dark"></div>
 
   <main>
+    <h1 class="visually-hidden">Actimed — онлайн-аптека</h1>
 
-    <!-- Главный экран: товары плывут при прокрутке (идея — Agrumea) -->
-    <section class="hero" data-hero>
-      <div class="hero__ring" aria-hidden="true">
-        <svg viewBox="0 0 1000 1000" class="hero__ring-svg" data-hero-ring>
-          <defs>
-            <path id="ringPath" d="M500,500 m-420,0 a420,420 0 1,1 840,0 a420,420 0 1,1 -840,0"/>
-          </defs>
-          <circle cx="500" cy="500" r="470" class="hero__ring-disc"/>
-          <text class="hero__ring-text">
-            <textPath href="#ringPath">ЗАБОТА · ЗДОРОВЬЕ · ДОВЕРИЕ · ЗАБОТА · ЗДОРОВЬЕ · ДОВЕРИЕ ·</textPath>
-          </text>
-        </svg>
+    <!-- Лента товаров (js/ribbon.js) -->
+    <section class="ribbon" data-ribbon aria-label="Товары">
+      <canvas class="ribbon__canvas" data-ribbon-canvas aria-hidden="true"></canvas>
+      <div class="ribbon__hud" aria-hidden="true">
+        <p><span data-ribbon-group>Все товары</span> · <span data-ribbon-counter>01 / 16</span></p>
+        <p class="ribbon__hint">Колесо, стрелки или перетаскивание</p>
       </div>
-
-      <div class="hero__packs" aria-hidden="true">
-        <div class="pack pack--box hero__item" style="--x:6%;--y:18%;--r:-14deg;--s:1;--speed:.35;--c:#2FA36B">
-          <span class="pack__band"></span>
-          <span class="pack__brand">Actimed</span>
-          <span class="pack__name">Ибупрофен</span>
-          <span class="pack__dose">200 мг · 20 таб.</span>
-          <span class="pack__cross"></span>
-        </div>
-        <div class="pack pack--bottle hero__item" style="--x:9%;--y:60%;--r:10deg;--s:.9;--speed:.6;--c:#E0A13A">
-          <span class="pack__cap"></span>
-          <span class="pack__label">
-            <span class="pack__brand">Actimed</span>
-            <span class="pack__name">Витамин D3</span>
-            <span class="pack__dose">2000 МЕ · 60 капс.</span>
-          </span>
-        </div>
-        <div class="pack pack--box pack--wide hero__item" style="--x:66%;--y:14%;--r:12deg;--s:1.05;--speed:.45;--c:#3B7DD8">
-          <span class="pack__band"></span>
-          <span class="pack__brand">Actimed</span>
-          <span class="pack__name">Омега-3</span>
-          <span class="pack__dose">1000 мг · 90 капс.</span>
-          <span class="pack__cross"></span>
-        </div>
-        <div class="pack pack--bottle pack--tall hero__item" style="--x:85%;--y:58%;--r:-8deg;--s:1;--speed:.75;--c:#0E6E6E">
-          <span class="pack__cap"></span>
-          <span class="pack__label">
-            <span class="pack__brand">Actimed</span>
-            <span class="pack__name">Амброксол</span>
-            <span class="pack__dose">сироп · 100 мл</span>
-          </span>
-        </div>
-        <div class="pack pack--box pack--small hero__item" style="--x:72%;--y:80%;--r:-20deg;--s:.85;--speed:.55;--c:#D46A6A">
-          <span class="pack__band"></span>
-          <span class="pack__brand">Actimed</span>
-          <span class="pack__name">Магний B6</span>
-          <span class="pack__dose">50 таб.</span>
-          <span class="pack__cross"></span>
-        </div>
-      </div>
-
-      <div class="hero__content container">
-        <p class="eyebrow">Онлайн-аптека в Ташкенте</p>
-        <h1 class="hero__title">Лекарства с заботой —<br>доставка за 2 часа</h1>
-        <form class="search" role="search" action="#catalog" data-search>
-          <label class="visually-hidden" for="q">Поиск лекарств</label>
-          <input id="q" name="q" type="search" placeholder="Название лекарства или действующее вещество" autocomplete="off">
-          <button type="submit" class="btn btn--light">Найти</button>
-        </form>
-        <ul class="hero__facts">
-          <li><strong>12 000+</strong> товаров</li>
-          <li><strong>2 часа</strong> доставка</li>
-          <li><strong>24/7</strong> фармацевт на связи</li>
-        </ul>
-      </div>
-      <p class="hero__scroll">Листайте вниз</p>
+      <!-- Ссылки на товары: для клавиатуры и экранного диктора, без WebGL — видимая лента -->
+      <ul class="ribbon__links" data-ribbon-links aria-label="Товары"></ul>
     </section>
-
-    <!-- О нас + три направления (идея — Mantis) -->
-    <section class="intro container" id="about">
-      <div class="intro__head">
-        <h2 class="intro__title">Мы бережём ваше здоровье.</h2>
-        <p class="intro__text">Actimed — аптека, где каждое лекарство проходит проверку качества,
-          а фармацевт помогает подобрать препарат и объясняет, как его принимать.</p>
-      </div>
-      <div class="intro__grid">
-        <a class="feature" href="#catalog" data-filter-link="cold">
-          <div class="feature__media feature__media--a">
-            <svg viewBox="0 0 120 120" aria-hidden="true"><rect x="22" y="44" width="76" height="32" rx="16" transform="rotate(-35 60 60)"/><line x1="60" y1="26" x2="60" y2="94" transform="rotate(-35 60 60)"/></svg>
-          </div>
-          <h3 class="feature__title">Лекарства</h3>
-          <p class="feature__tags">Простуда · Боль · Аллергия</p>
-        </a>
-        <a class="feature" href="#catalog" data-filter-link="vitamins">
-          <div class="feature__media feature__media--b">
-            <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="30"/><circle cx="60" cy="60" r="14"/></svg>
-          </div>
-          <h3 class="feature__title">Витамины и БАДы</h3>
-          <p class="feature__tags">Иммунитет · Энергия · Сон</p>
-        </a>
-        <a class="feature" href="#catalog" data-filter-link="care">
-          <div class="feature__media feature__media--c">
-            <svg viewBox="0 0 120 120" aria-hidden="true"><path d="M60 22c14 20 26 34 26 50a26 26 0 0 1-52 0c0-16 12-30 26-50z"/></svg>
-          </div>
-          <h3 class="feature__title">Уход и гигиена</h3>
-          <p class="feature__tags">Кожа · Мама и малыш · Медтехника</p>
-        </a>
-      </div>
-    </section>
-
-    <!-- Лента карточек категорий в 3D (по мотивам Jesper) -->
-    <section class="ribbon" id="categories" data-ribbon aria-labelledby="ribbon-title">
-      <div class="ribbon__sticky">
-        <canvas class="ribbon__canvas" data-ribbon-canvas aria-hidden="true"></canvas>
-        <div class="ribbon__hud">
-          <h2 class="ribbon__title" id="ribbon-title">Популярные категории</h2>
-          <p class="ribbon__hint">Листайте страницу или тяните ленту</p>
-          <p class="ribbon__counter" data-ribbon-counter aria-hidden="true">01 / 08</p>
-          <a class="ribbon__all" href="#catalog">Весь каталог →</a>
-        </div>
-        <!-- Ссылки на категории: для клавиатуры и экранного диктора, и как запасной вариант без WebGL -->
-        <ul class="ribbon__fallback" data-ribbon-fallback></ul>
-      </div>
-    </section>
-
-    <!-- Каталог: плитка / список (идея — Revoltosa) -->
-    <section class="catalog container" id="catalog">
-      <div class="catalog__head">
-        <h2 class="section-title">Каталог</h2>
-        <div class="view-switch" role="group" aria-label="Вид каталога">
-          <button type="button" class="view-switch__btn is-active" data-view="grid" aria-pressed="true">Плитка</button>
-          <button type="button" class="view-switch__btn" data-view="list" aria-pressed="false">Список</button>
-        </div>
-      </div>
-      <div class="chips" role="group" aria-label="Категории" data-chips></div>
-      <p class="catalog__empty" data-catalog-empty hidden>Ничего не нашлось. Попробуйте другое название или позвоните фармацевту.</p>
-      <ul class="products products--grid" data-products></ul>
-    </section>
-
-    <!-- Преимущества -->
-    <section class="perks container">
-      <div class="perk"><span class="perk__num">01</span><h3>Доставка за 2 часа</h3><p>По Ташкенту ежедневно с 8:00 до 23:00. Бесплатно от 200 000 сум.</p></div>
-      <div class="perk"><span class="perk__num">02</span><h3>Только оригиналы</h3><p>Работаем напрямую с дистрибьюторами, храним лекарства при правильной температуре.</p></div>
-      <div class="perk"><span class="perk__num">03</span><h3>Фармацевт онлайн</h3><p>Бесплатная консультация по телефону и в Telegram круглосуточно.</p></div>
-      <div class="perk"><span class="perk__num">04</span><h3>Рецептурные препараты</h3><p>Отпускаются только при наличии рецепта — покажите его курьеру при получении.</p></div>
-    </section>
-
   </main>
 
-  <!-- Футер по образцу String-tune: тёмная гора поднимается снизу (js/footer.js) -->
-  <footer class="footer" id="contacts" data-footer>
-    <span class="footer__overlay" aria-hidden="true">
-      <svg class="footer__mountain" viewBox="0 0 1 1" preserveAspectRatio="none"><path data-footer-shape d="M 0 1 Z"/></svg>
-    </span>
-    <svg class="footer__octa-line" viewBox="0 0 8 8" preserveAspectRatio="none" aria-hidden="true">
-      <polygon points="4 0 6 0.5359 7.4641 2 8 4 7.4641 6 6 7.4641 4 8 2 7.4641 0.5359 6 0 4 0.5359 2 2 0.5359" vector-effect="non-scaling-stroke"/>
-    </svg>
-    <div class="footer__grid">
-      <svg class="footer__string" data-footer-string-svg viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true">
-        <path data-footer-string d="M 0 0.5 L 1 0.5" vector-effect="non-scaling-stroke"/>
-      </svg>
-      <span class="footer__heading footer__heading--l">Здоровье</span>
-      <span class="footer__heading footer__heading--r">под защитой.</span>
-      <p class="footer__statement footer__statement--1">Только сертифицированные препараты.</p>
-      <p class="footer__statement footer__statement--2">Доставка за 2 часа по Ташкенту.</p>
-      <p class="footer__statement footer__statement--3">Фармацевт на связи круглосуточно.</p>
-      <a class="footer__more" href="#about">Как мы работаем</a>
-      <nav class="footer__nav" aria-label="Связаться с аптекой">
-        <a class="footer__btn footer__btn--main" href="#catalog">Каталог лекарств</a>
-        <span class="footer__divider" aria-hidden="true"></span>
-        <a class="footer__btn footer__btn--icon" href="tel:+998712000000" aria-label="Позвонить: +998 71 200-00-00">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5h3l1.4 4.2-2 1.4a12 12 0 0 0 5.9 5.9l1.4-2 4.2 1.4v3a2 2 0 0 1-2.2 2A17.5 17.5 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2z"/></svg>
-        </a>
-        <a class="footer__btn footer__btn--icon" href="https://t.me/" target="_blank" rel="noopener" aria-label="Написать в Telegram">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.5 3.6 2.9 10.8c-.9.4-.9 1.6.1 1.9l4.6 1.5 1.8 5.6c.3.8 1.3 1 1.9.4l2.6-2.5 4.7 3.5c.7.5 1.7.1 1.9-.8L23 4.9c.2-1-.7-1.7-1.5-1.3zM9.6 14.6l8.5-7.6-6.6 8.7-.3 2.9-1.6-4z"/></svg>
-        </a>
-      </nav>
-      <span class="footer__name" aria-hidden="true">Actimed</span>
-      <span class="footer__mark" aria-hidden="true"><span class="logo__mark"></span>аптека</span>
-      <span class="footer__sub footer__sub--1">© Actimed, онлайн-аптека</span>
-      <span class="footer__sub footer__sub--2">Лицензия на фармдеятельность № 0000000</span>
-      <span class="footer__sub footer__sub--3">Ташкент · ежедневно 8:00–23:00</span>
-      <span class="footer__sub footer__sub--4">‘<span data-year-short>26</span></span>
-      <div class="footer__octa" string="progress" string-id="footer-octa" aria-hidden="true">
-        <img src="img/footer/octagon.jpg" alt="" loading="lazy" width="960" height="960">
-        <span class="logo__mark"></span>
-      </div>
-      <figure class="footer__blisters" string="parallax" string-parallax="-0.2" aria-hidden="true">
-        <img src="img/footer/blisters.png" alt="" loading="lazy" width="2400" height="364">
-      </figure>
-      <p class="footer__warning">Имеются противопоказания. Перед применением проконсультируйтесь со специалистом.</p>
-    </div>
-  </footer>
-
   <script src="js/data.js"></script>
-  <script src="js/main.js"></script>
-  <script type="module" src="js/footer.js"></script>
+  <script src="js/menu.js"></script>
   <script type="module" src="js/ribbon.js"></script>
 </body>
 </html>
