@@ -1,0 +1,7 @@
+@font-face {
+  font-family: "Vulf Mono";
+  src:url("Vulf_Mono-Bold.woff2") format("woff2");
+  font-weight: 700; /* rango de pesos disponibles */
+  font-display: swap;
+  font-style: normal;
+}

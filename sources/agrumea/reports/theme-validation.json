@@ -1,0 +1,16 @@
+{
+  "pages": 34,
+  "theme_attached_to_all_pages": true,
+  "missing_local_references": [],
+  "changed_text_pages": [],
+  "product_photography_changed": false,
+  "theme_svg_valid": true,
+  "modified_module_syntax_valid": true,
+  "browser_checks": {
+    "desktop": "1440x900: homepage, fullscreen menu, catalogue; no broken images or overflow",
+    "mobile": "390x844: homepage and product; no broken images",
+    "navigation": "menu to catalogue works",
+    "menu_links": "white on cyan gradient",
+    "product_text_and_photos": "unchanged"
+  }
+}

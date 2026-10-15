@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon</title>
+    <defs>
+        <path d="M48,47.5 C39.1921506,47.5 31.516052,42.6543986 27.492069,35.4835605 C26.3867048,35.8196019 25.2144195,36 24,36 C17.372583,36 12,30.627417 12,24 C12,17.372583 17.372583,12 24,12 C25.2144195,12 26.3867048,12.1803981 27.4915202,12.5158587 C31.5167679,5.3451495 39.1925613,0.5 48,0.5 Z" id="path-1" vector-effect="non-scaling-stroke"></path>
+    </defs>
+    <g id="icon" stroke="none" fill="none" xlink:href="#path-1">
+        <circle id="Oval-6-Copy-2" fill="#101214" fill-rule="evenodd" cx="24" cy="24" r="12" vector-effect="non-scaling-stroke"></circle>
+        <circle id="Oval-6-Copy-3" stroke="#101214" stroke-width="1" cx="48" cy="24" r="23.5" vector-effect="non-scaling-stroke"></circle>
+        <line x1="0" y1="24" x2="48" y2="24" id="Path-5" stroke="#FF4F36" stroke-width="1" vector-effect="non-scaling-stroke"></line>
+    </g>
+</svg>

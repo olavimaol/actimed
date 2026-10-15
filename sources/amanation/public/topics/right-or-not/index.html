@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <!-- Google Tag Manager -->
+  <script>
+    (function(w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({
+        'gtm.start': new Date().getTime(),
+        event: 'gtm.js'
+      });
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s),
+        dl = l != 'dataLayer' ? '&l=' + l : '';
+      j.async = true;
+      j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+      f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-N598ZTCL');
+  </script>
+  <!-- End Google Tag Manager -->
+    <script src="https://use.typekit.net/uvi6pth.js"></script>
+  <script>
+    try {
+      Typekit.load({
+        async: false
+      });
+    } catch (e) {}
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+      </script>
+  <script data-cfasync="false" data-no-defer="1" data-no-minify="1" data-no-optimize="1">var ewww_webp_supported=!1;function check_webp_feature(A,e){var w;e=void 0!==e?e:function(){},ewww_webp_supported?e(ewww_webp_supported):((w=new Image).onload=function(){ewww_webp_supported=0<w.width&&0<w.height,e&&e(ewww_webp_supported)},w.onerror=function(){e&&e(!1)},w.src="data:image/webp;base64,"+{alpha:"UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAARBxAR/Q9ERP8DAABWUDggGAAAABQBAJ0BKgEAAQAAAP4AAA3AAP7mtQAAAA=="}[A])}check_webp_feature("alpha");</script><script data-cfasync="false" data-no-defer="1" data-no-minify="1" data-no-optimize="1">var Arrive=function(c,w){"use strict";if(c.MutationObserver&&"undefined"!=typeof HTMLElement){var r,a=0,u=(r=HTMLElement.prototype.matches||HTMLElement.prototype.webkitMatchesSelector||HTMLElement.prototype.mozMatchesSelector||HTMLElement.prototype.msMatchesSelector,{matchesSelector:function(e,t){return e instanceof HTMLElement&&r.call(e,t)},addMethod:function(e,t,r){var a=e[t];e[t]=function(){return r.length==arguments.length?r.apply(this,arguments):"function"==typeof a?a.apply(this,arguments):void 0}},callCallbacks:function(e,t){t&&t.options.onceOnly&&1==t.firedElems.length&&(e=[e[0]]);for(var r,a=0;r=e[a];a++)r&&r.callback&&r.callback.call(r.elem,r.elem);t&&t.options.onceOnly&&1==t.firedElems.length&&t.me.unbindEventWithSelectorAndCallback.call(t.target,t.selector,t.callback)},checkChildNodesRecursively:function(e,t,r,a){for(var i,n=0;i=e[n];n++)r(i,t,a)&&a.push({callback:t.callback,elem:i}),0<i.childNodes.length&&u.checkChildNodesRecursively(i.childNodes,t,r,a)},mergeArrays:function(e,t){var r,a={};for(r in e)e.hasOwnProperty(r)&&(a[r]=e[r]);for(r in t)t.hasOwnProperty(r)&&(a[r]=t[r]);return a},toElementsArray:function(e){return e=void 0!==e&&("number"!=typeof e.length||e===c)?[e]:e}}),e=(l.prototype.addEvent=function(e,t,r,a){a={target:e,selector:t,options:r,callback:a,firedElems:[]};return this._beforeAdding&&this._beforeAdding(a),this._eventsBucket.push(a),a},l.prototype.removeEvent=function(e){for(var t,r=this._eventsBucket.length-1;t=this._eventsBucket[r];r--)e(t)&&(this._beforeRemoving&&this._beforeRemoving(t),(t=this._eventsBucket.splice(r,1))&&t.length&&(t[0].callback=null))},l.prototype.beforeAdding=function(e){this._beforeAdding=e},l.prototype.beforeRemoving=function(e){this._beforeRemoving=e},l),t=function(i,n){var o=new e,l=this,s={fireOnAttributesModification:!1};return o.beforeAdding(function(t){var e=t.target;e!==c.document&&e!==c||(e=document.getElementsByTagName("html")[0]);var r=new MutationObserver(function(e){n.call(this,e,t)}),a=i(t.options);r.observe(e,a),t.observer=r,t.me=l}),o.beforeRemoving(function(e){e.observer.disconnect()}),this.bindEvent=function(e,t,r){t=u.mergeArrays(s,t);for(var a=u.toElementsArray(this),i=0;i<a.length;i++)o.addEvent(a[i],e,t,r)},this.unbindEvent=function(){var r=u.toElementsArray(this);o.removeEvent(function(e){for(var t=0;t<r.length;t++)if(this===w||e.target===r[t])return!0;return!1})},this.unbindEventWithSelectorOrCallback=function(r){var a=u.toElementsArray(this),i=r,e="function"==typeof r?function(e){for(var t=0;t<a.length;t++)if((this===w||e.target===a[t])&&e.callback===i)return!0;return!1}:function(e){for(var t=0;t<a.length;t++)if((this===w||e.target===a[t])&&e.selector===r)return!0;return!1};o.removeEvent(e)},this.unbindEventWithSelectorAndCallback=function(r,a){var i=u.toElementsArray(this);o.removeEvent(function(e){for(var t=0;t<i.length;t++)if((this===w||e.target===i[t])&&e.selector===r&&e.callback===a)return!0;return!1})},this},i=new function(){var s={fireOnAttributesModification:!1,onceOnly:!1,existing:!1};function n(e,t,r){return!(!u.matchesSelector(e,t.selector)||(e._id===w&&(e._id=a++),-1!=t.firedElems.indexOf(e._id)))&&(t.firedElems.push(e._id),!0)}var c=(i=new t(function(e){var t={attributes:!1,childList:!0,subtree:!0};return e.fireOnAttributesModification&&(t.attributes=!0),t},function(e,i){e.forEach(function(e){var t=e.addedNodes,r=e.target,a=[];null!==t&&0<t.length?u.checkChildNodesRecursively(t,i,n,a):"attributes"===e.type&&n(r,i)&&a.push({callback:i.callback,elem:r}),u.callCallbacks(a,i)})})).bindEvent;return i.bindEvent=function(e,t,r){t=void 0===r?(r=t,s):u.mergeArrays(s,t);var a=u.toElementsArray(this);if(t.existing){for(var i=[],n=0;n<a.length;n++)for(var o=a[n].querySelectorAll(e),l=0;l<o.length;l++)i.push({callback:r,elem:o[l]});if(t.onceOnly&&i.length)return r.call(i[0].elem,i[0].elem);setTimeout(u.callCallbacks,1,i)}c.call(this,e,t,r)},i},o=new function(){var a={};function i(e,t){return u.matchesSelector(e,t.selector)}var n=(o=new t(function(){return{childList:!0,subtree:!0}},function(e,r){e.forEach(function(e){var t=e.removedNodes,e=[];null!==t&&0<t.length&&u.checkChildNodesRecursively(t,r,i,e),u.callCallbacks(e,r)})})).bindEvent;return o.bindEvent=function(e,t,r){t=void 0===r?(r=t,a):u.mergeArrays(a,t),n.call(this,e,t,r)},o};d(HTMLElement.prototype),d(NodeList.prototype),d(HTMLCollection.prototype),d(HTMLDocument.prototype),d(Window.prototype);var n={};return s(i,n,"unbindAllArrive"),s(o,n,"unbindAllLeave"),n}function l(){this._eventsBucket=[],this._beforeAdding=null,this._beforeRemoving=null}function s(e,t,r){u.addMethod(t,r,e.unbindEvent),u.addMethod(t,r,e.unbindEventWithSelectorOrCallback),u.addMethod(t,r,e.unbindEventWithSelectorAndCallback)}function d(e){e.arrive=i.bindEvent,s(i,e,"unbindArrive"),e.leave=o.bindEvent,s(o,e,"unbindLeave")}}(window,void 0),ewww_webp_supported=!1;function check_webp_feature(e,t){var r;ewww_webp_supported?t(ewww_webp_supported):((r=new Image).onload=function(){ewww_webp_supported=0<r.width&&0<r.height,t(ewww_webp_supported)},r.onerror=function(){t(!1)},r.src="data:image/webp;base64,"+{alpha:"UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAARBxAR/Q9ERP8DAABWUDggGAAAABQBAJ0BKgEAAQAAAP4AAA3AAP7mtQAAAA==",animation:"UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/////AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA"}[e])}function ewwwLoadImages(e){if(e){for(var t=document.querySelectorAll(".batch-image img, .image-wrapper a, .ngg-pro-masonry-item a, .ngg-galleria-offscreen-seo-wrapper a"),r=0,a=t.length;r<a;r++)ewwwAttr(t[r],"data-src",t[r].getAttribute("data-webp")),ewwwAttr(t[r],"data-thumbnail",t[r].getAttribute("data-webp-thumbnail"));for(var i=document.querySelectorAll("div.woocommerce-product-gallery__image"),r=0,a=i.length;r<a;r++)ewwwAttr(i[r],"data-thumb",i[r].getAttribute("data-webp-thumb"))}for(var n=document.querySelectorAll("video"),r=0,a=n.length;r<a;r++)ewwwAttr(n[r],"poster",e?n[r].getAttribute("data-poster-webp"):n[r].getAttribute("data-poster-image"));for(var o,l=document.querySelectorAll("img.ewww_webp_lazy_load"),r=0,a=l.length;r<a;r++)e&&(ewwwAttr(l[r],"data-lazy-srcset",l[r].getAttribute("data-lazy-srcset-webp")),ewwwAttr(l[r],"data-srcset",l[r].getAttribute("data-srcset-webp")),ewwwAttr(l[r],"data-lazy-src",l[r].getAttribute("data-lazy-src-webp")),ewwwAttr(l[r],"data-src",l[r].getAttribute("data-src-webp")),ewwwAttr(l[r],"data-orig-file",l[r].getAttribute("data-webp-orig-file")),ewwwAttr(l[r],"data-medium-file",l[r].getAttribute("data-webp-medium-file")),ewwwAttr(l[r],"data-large-file",l[r].getAttribute("data-webp-large-file")),null!=(o=l[r].getAttribute("srcset"))&&!1!==o&&o.includes("R0lGOD")&&ewwwAttr(l[r],"src",l[r].getAttribute("data-lazy-src-webp"))),l[r].className=l[r].className.replace(/\bewww_webp_lazy_load\b/,"");for(var s=document.querySelectorAll(".ewww_webp"),r=0,a=s.length;r<a;r++)e?(ewwwAttr(s[r],"srcset",s[r].getAttribute("data-srcset-webp")),ewwwAttr(s[r],"src",s[r].getAttribute("data-src-webp")),ewwwAttr(s[r],"data-orig-file",s[r].getAttribute("data-webp-orig-file")),ewwwAttr(s[r],"data-medium-file",s[r].getAttribute("data-webp-medium-file")),ewwwAttr(s[r],"data-large-file",s[r].getAttribute("data-webp-large-file")),ewwwAttr(s[r],"data-large_image",s[r].getAttribute("data-webp-large_image")),ewwwAttr(s[r],"data-src",s[r].getAttribute("data-webp-src"))):(ewwwAttr(s[r],"srcset",s[r].getAttribute("data-srcset-img")),ewwwAttr(s[r],"src",s[r].getAttribute("data-src-img"))),s[r].className=s[r].className.replace(/\bewww_webp\b/,"ewww_webp_loaded");window.jQuery&&jQuery.fn.isotope&&jQuery.fn.imagesLoaded&&(jQuery(".fusion-posts-container-infinite").imagesLoaded(function(){jQuery(".fusion-posts-container-infinite").hasClass("isotope")&&jQuery(".fusion-posts-container-infinite").isotope()}),jQuery(".fusion-portfolio:not(.fusion-recent-works) .fusion-portfolio-wrapper").imagesLoaded(function(){jQuery(".fusion-portfolio:not(.fusion-recent-works) .fusion-portfolio-wrapper").isotope()}))}function ewwwWebPInit(e){ewwwLoadImages(e),ewwwNggLoadGalleries(e),document.arrive(".ewww_webp",function(){ewwwLoadImages(e)}),document.arrive(".ewww_webp_lazy_load",function(){ewwwLoadImages(e)}),document.arrive("videos",function(){ewwwLoadImages(e)}),"loading"==document.readyState?document.addEventListener("DOMContentLoaded",ewwwJSONParserInit):("undefined"!=typeof galleries&&ewwwNggParseGalleries(e),ewwwWooParseVariations(e))}function ewwwAttr(e,t,r){null!=r&&!1!==r&&e.setAttribute(t,r)}function ewwwJSONParserInit(){"undefined"!=typeof galleries&&check_webp_feature("alpha",ewwwNggParseGalleries),check_webp_feature("alpha",ewwwWooParseVariations)}function ewwwWooParseVariations(e){if(e)for(var t=document.querySelectorAll("form.variations_form"),r=0,a=t.length;r<a;r++){var i=t[r].getAttribute("data-product_variations"),n=!1;try{for(var o in i=JSON.parse(i))void 0!==i[o]&&void 0!==i[o].image&&(void 0!==i[o].image.src_webp&&(i[o].image.src=i[o].image.src_webp,n=!0),void 0!==i[o].image.srcset_webp&&(i[o].image.srcset=i[o].image.srcset_webp,n=!0),void 0!==i[o].image.full_src_webp&&(i[o].image.full_src=i[o].image.full_src_webp,n=!0),void 0!==i[o].image.gallery_thumbnail_src_webp&&(i[o].image.gallery_thumbnail_src=i[o].image.gallery_thumbnail_src_webp,n=!0),void 0!==i[o].image.thumb_src_webp&&(i[o].image.thumb_src=i[o].image.thumb_src_webp,n=!0));n&&ewwwAttr(t[r],"data-product_variations",JSON.stringify(i))}catch(e){}}}function ewwwNggParseGalleries(e){if(e)for(var t in galleries){var r=galleries[t];galleries[t].images_list=ewwwNggParseImageList(r.images_list)}}function ewwwNggLoadGalleries(e){e&&document.addEventListener("ngg.galleria.themeadded",function(e,t){window.ngg_galleria._create_backup=window.ngg_galleria.create,window.ngg_galleria.create=function(e,t){var r=$(e).data("id");return galleries["gallery_"+r].images_list=ewwwNggParseImageList(galleries["gallery_"+r].images_list),window.ngg_galleria._create_backup(e,t)}})}function ewwwNggParseImageList(e){for(var t in e){var r=e[t];if(void 0!==r["image-webp"]&&(e[t].image=r["image-webp"],delete e[t]["image-webp"]),void 0!==r["thumb-webp"]&&(e[t].thumb=r["thumb-webp"],delete e[t]["thumb-webp"]),void 0!==r.full_image_webp&&(e[t].full_image=r.full_image_webp,delete e[t].full_image_webp),void 0!==r.srcsets)for(var a in r.srcsets)nggSrcset=r.srcsets[a],void 0!==r.srcsets[a+"-webp"]&&(e[t].srcsets[a]=r.srcsets[a+"-webp"],delete e[t].srcsets[a+"-webp"]);if(void 0!==r.full_srcsets)for(var i in r.full_srcsets)nggFSrcset=r.full_srcsets[i],void 0!==r.full_srcsets[i+"-webp"]&&(e[t].full_srcsets[i]=r.full_srcsets[i+"-webp"],delete e[t].full_srcsets[i+"-webp"])}return e}check_webp_feature("alpha",ewwwWebPInit);</script><meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+	
+	<!-- This site is optimized with the Yoast SEO plugin v24.5 - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>龍ヶ崎リン「Right or Not」ジャケット、MV、グッズのイラストを担当しました。 | 株式会社AMANATION</title>
+	<meta name="description" content="日本を代表するクリエイティブカンパニーとして、私たちは日本のカルチャーと創造の力を、世界中へ遍く届けていきます。それがAMANATIONのミッションです。" />
+	<link rel="canonical" href="/amanation/topics/right-or-not/" />
+	<meta property="og:locale" content="ja_JP" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="龍ヶ崎リン「Right or Not」ジャケット、MV、グッズのイラストを担当しました。 | 株式会社AMANATION" />
+	<meta property="og:description" content="日本を代表するクリエイティブカンパニーとして、私たちは日本のカルチャーと創造の力を、世界中へ遍く届けていきます。それがAMANATIONのミッションです。" />
+	<meta property="og:url" content="/amanation/topics/right-or-not/" />
+	<meta property="og:site_name" content="株式会社AMANATION" />
+	<meta property="article:modified_time" content="2026-03-29T23:21:09+00:00" />
+	<meta property="og:image" content="/amanation/wp-content/uploads/2026/03/0303-1024x576.jpg.webp" />
+	<meta property="og:image:width" content="1024" />
+	<meta property="og:image:height" content="576" />
+	<meta property="og:image:type" content="image/jpeg" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"/amanation/topics/right-or-not/","url":"/amanation/topics/right-or-not/","name":"龍ヶ崎リン「Right or Not」ジャケット、MV、グッズのイラストを担当しました。 | 株式会社AMANATION","isPartOf":{"@id":"/amanation/#website"},"primaryImageOfPage":{"@id":"/amanation/topics/right-or-not/#primaryimage"},"image":{"@id":"/amanation/topics/right-or-not/#primaryimage"},"thumbnailUrl":"/amanation/wp-content/uploads/2026/03/0303-1024x576.jpg.webp","datePublished":"2026-03-29T23:18:43+00:00","dateModified":"2026-03-29T23:21:09+00:00","description":"日本を代表するクリエイティブカンパニーとして、私たちは日本のカルチャーと創造の力を、世界中へ遍く届けていきます。それがAMANATIONのミッションです。","breadcrumb":{"@id":"/amanation/topics/right-or-not/#breadcrumb"},"inLanguage":"ja","potentialAction":[{"@type":"ReadAction","target":["/amanation/topics/right-or-not/"]}]},{"@type":"ImageObject","inLanguage":"ja","@id":"/amanation/topics/right-or-not/#primaryimage","url":"/amanation/wp-content/uploads/2026/03/0303-1024x576.jpg.webp","contentUrl":"/amanation/wp-content/uploads/2026/03/0303-1024x576.jpg.webp","width":5760,"height":3240},{"@type":"BreadcrumbList","@id":"/amanation/topics/right-or-not/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"ホーム","item":"/amanation/"},{"@type":"ListItem","position":2,"name":"Topics","item":"/amanation/topics/"},{"@type":"ListItem","position":3,"name":"龍ヶ崎リン「Right or Not」ジャケット、MV、グッズのイラストを担当しました。"}]},{"@type":"WebSite","@id":"/amanation/#website","url":"/amanation/","name":"株式会社AMANATION","description":"デザイン・イラスト・アニメーション制作","publisher":{"@id":"/amanation/#organization"},"potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"/amanation/?s={search_term_string}"},"query-input":{"@type":"PropertyValueSpecification","valueRequired":true,"valueName":"search_term_string"}}],"inLanguage":"ja"},{"@type":"Organization","@id":"/amanation/#organization","name":"AMANATION","url":"/amanation/","logo":{"@type":"ImageObject","inLanguage":"ja","@id":"/amanation/#/schema/logo/image/","url":"/amanation/wp-content/uploads/2025/02/favicon_amanation.jpg","contentUrl":"/amanation/wp-content/uploads/2025/02/favicon_amanation.jpg","width":900,"height":900,"caption":"AMANATION"},"image":{"@id":"/amanation/#/schema/logo/image/"}}]}</script>
+	<!-- / Yoast SEO plugin. -->
+
+
+<script type="text/javascript">
+/* <![CDATA[ */
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"concatemoji":"\/amanation\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.7.10"}};
+/*! This file is auto-generated */
+!function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\uddfa\ud83c\uddf3","\ud83c\uddfa\u200b\ud83c\uddf3")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!n(e,"\ud83d\udc26\u200d\u2b1b","\ud83d\udc26\u200b\u2b1b")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+/* ]]> */
+</script>
+<style id='wp-emoji-styles-inline-css' type='text/css'>
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+</style>
+<link rel='stylesheet' id='wp-block-library-css' href='/amanation/wp-includes/css/dist/block-library/style.min.css?ver=6.7.10' type='text/css' media='all' />
+<style id='classic-theme-styles-inline-css' type='text/css'>
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+</style>
+<style id='global-styles-inline-css' type='text/css'>
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+:root :where(.wp-block-pullquote){font-size: 1.5em;line-height: 1.6;}
+</style>
+<link rel='stylesheet' id='contact-form-7-css' href='/amanation/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=6.0.4' type='text/css' media='all' />
+<link rel='stylesheet' id='tailwind-css' href='/amanation/wp-content/themes/amanation/build/css/tailwind.css?ver=1.0.9a' type='text/css' media='all' />
+<link rel='stylesheet' id='splide-css-css' href='/amanation/wp-content/themes/amanation/assets/lib/splide-core.min.css?ver=1.0.0' type='text/css' media='all' />
+<link rel="https://api.w.org/" href="/amanation/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="/amanation/wp-json/wp/v2/topics/1142" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="/amanation/xmlrpc.php?rsd" />
+
+<link rel='shortlink' href='/amanation/?p=1142' />
+<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="/amanation/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.amanation-official.com%2Ftopics%2Fright-or-not%2F" />
+<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="/amanation/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.amanation-official.com%2Ftopics%2Fright-or-not%2F&#038;format=xml" />
+<link rel="icon" href="/amanation/wp-content/uploads/2025/02/cropped-favicon_amanation-32x32.jpg" sizes="32x32" />
+<link rel="icon" href="/amanation/wp-content/uploads/2025/02/cropped-favicon_amanation-192x192.jpg" sizes="192x192" />
+<link rel="apple-touch-icon" href="/amanation/wp-content/uploads/2025/02/cropped-favicon_amanation-180x180.jpg" />
+<meta name="msapplication-TileImage" content="/amanation/wp-content/uploads/2025/02/cropped-favicon_amanation-270x270.jpg" />
+<script src="/amanation/replica-forms.js" defer></script><link rel="stylesheet" href="/theme/sites-menu.css"><script src="/theme/sites-menu.js" defer></script></head>
+
+<body>
+<script data-cfasync="false" data-no-defer="1" data-no-minify="1" data-no-optimize="1">if(typeof ewww_webp_supported==="undefined"){var ewww_webp_supported=!1}if(ewww_webp_supported){document.body.classList.add("webp-support")}</script>
+  <!-- Google Tag Manager (noscript) -->
+  
+  <!-- End Google Tag Manager (noscript) -->
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="" hidden>
+      <symbol viewBox="0 0 508 195" id="logo-header-amanation">
+    <path d="M368.883 68.4937C369.108 68.88 369.334 69.2664 369.559 69.6528C374.717 64.2695 381.356 60.3222 388.819 58.4805C388.6 58.0942 388.388 57.7014 388.169 57.3086C380.725 59.2146 374.092 63.1555 368.889 68.4937H368.883Z" fill="currentColor" />
+    <path d="M365.164 72.8613C360.49 79.2105 357.579 86.9312 357.18 95.3088C357.643 95.2959 358.075 95.2895 358.468 95.2766C358.86 87.4528 361.52 80.215 365.796 74.2007C365.583 73.75 365.377 73.3056 365.171 72.8613H365.164Z" fill="currentColor" />
+    <path d="M427.803 126.265C427.558 125.898 427.32 125.531 427.075 125.164C421.718 130.676 414.789 134.649 407.023 136.362C407.223 136.755 407.423 137.148 407.622 137.547C415.414 135.763 422.375 131.777 427.803 126.272V126.265Z" fill="currentColor" />
+    <path d="M438.025 102.806C437.143 109.213 434.734 115.138 431.18 120.205C431.392 120.637 431.611 121.075 431.83 121.513C435.816 116.026 438.475 109.535 439.364 102.484C438.939 102.575 438.488 102.678 438.025 102.8V102.806Z" fill="currentColor" />
+    <path d="M400.428 137.254C399.765 137.286 399.095 137.306 398.426 137.306C378.155 137.306 361.367 122.141 358.785 102.559C358.463 102.546 358.025 102.54 357.484 102.533C360.06 122.836 377.433 138.593 398.426 138.593C399.333 138.593 400.229 138.555 401.124 138.497C400.892 138.078 400.66 137.666 400.435 137.254H400.428Z" fill="currentColor" />
+    <path d="M395.524 57.42C396.477 57.3491 397.437 57.3041 398.409 57.3041C419.871 57.3041 437.438 74.2974 438.365 95.5343C438.809 95.5729 439.241 95.6051 439.653 95.618C438.764 73.6277 420.612 56.0098 398.409 56.0098C397.179 56.0098 395.962 56.0742 394.758 56.1772C395.015 56.5893 395.267 57.0014 395.524 57.4071V57.42Z" fill="currentColor" />
+    <path d="M507.974 98.5474C507.974 98.5474 505.733 98.5345 502.063 98.5216V69.0553H490.942V98.4636C489.184 98.4508 487.342 98.4443 485.449 98.4314L468.192 69.0553H455.674V98.2254C447.753 98.1546 441.565 98.0773 439.646 98C432.769 97.7231 421.758 94.555 416.22 90.833C406.883 84.5547 358.781 0 358.781 0C358.781 0 401.815 76.615 405.254 83.3763C408.693 90.1376 401.951 92.7648 395.923 93.1705C389.78 93.5826 383.161 90.1762 381.68 89.4421C375.234 86.2418 362.523 61.8497 362.523 61.8497C362.523 61.8497 372.104 81.4445 373.824 86.8213C375.543 92.1982 365.961 96.0682 361.789 97.4462C361.331 97.5943 356.965 97.7102 349.541 97.8004V69.0488H337.68V97.9034C331.208 97.9485 323.623 97.9807 315.155 98.0129V78.8752H332.251V69.0488H285.972V78.8752H303.146V98.0515C282.347 98.103 257.6 98.1223 231.547 98.1481V69.0553H220.42V98.1546C218.539 98.1546 216.653 98.1546 214.766 98.1546L197.67 69.0488H185.152V98.1803C162.131 98.2061 139.297 98.2383 118.369 98.2962V69.0488H101.196L94.2606 98.3799C91.9617 98.3928 89.708 98.3992 87.4864 98.4121L80.4933 69.0488H63.1264V98.5731C39.0498 98.7792 23.75 99.0882 23.75 99.5776C23.75 100.067 39.0563 100.357 63.1264 100.505V124.53H74.2536V100.556C75.9342 100.563 77.6471 100.569 79.3922 100.576L84.9171 124.53H96.5079L102.059 100.621C103.765 100.621 105.497 100.621 107.242 100.621V124.524H118.369V100.621C139.316 100.621 162.15 100.582 185.152 100.524V124.517H196.279V100.492C199.312 100.486 202.345 100.479 205.377 100.466L219.615 124.511H231.553V100.389C257.703 100.305 282.482 100.222 303.152 100.164V124.511H315.168V100.131C323.719 100.112 331.305 100.093 337.693 100.093V124.517H349.554V100.099C354.596 100.112 357.906 100.138 359.103 100.183C372.401 100.692 380.939 106.075 385.672 109.41C386.097 109.713 386.503 109.971 386.857 110.254C387.565 110.821 387.958 111.452 388.911 112.868C398.615 127.318 434.166 194.596 434.166 194.596C434.166 194.596 394.957 118.258 392.749 113.017C390.54 107.775 396.187 104.877 401.59 104.047C406.993 103.216 413.123 106.036 417.798 109.565C423.889 114.169 437.695 137.576 437.695 137.576C437.695 137.576 426.394 117.292 424.675 111.085C422.956 104.877 434.991 100.872 439.415 100.048C440.715 99.803 447.193 99.5712 455.687 99.3651V124.517H466.814V99.1269C469.518 99.0754 472.281 99.0239 475.03 98.9788L490.15 124.511H502.088V98.5924C505.759 98.5473 508 98.5216 508 98.5216L507.974 98.5474ZM74.2407 98.4894V87.0016C74.2407 85.9198 74.2278 84.413 74.2021 82.4684C74.1763 80.5237 74.1634 79.0233 74.1634 77.9673L78.8899 98.4572C77.3123 98.4636 75.7668 98.4765 74.2407 98.4894ZM90.867 112.675L87.9951 100.601C89.8754 100.601 91.7878 100.608 93.7196 100.614L90.867 112.675ZM102.574 98.3477L107.307 77.9673C107.307 79.0233 107.294 80.5237 107.268 82.4684C107.242 84.413 107.229 85.9263 107.229 87.0016V98.3284C105.665 98.3284 104.113 98.3413 102.574 98.3477ZM196.259 98.1674V85.1214L203.98 98.161C201.411 98.161 198.835 98.161 196.259 98.1674ZM220.407 107.781L216.105 100.453C217.541 100.453 218.977 100.447 220.407 100.441V107.781ZM466.794 98.3091V85.1214L474.631 98.3606C472.004 98.3413 469.377 98.3284 466.794 98.3091ZM490.942 107.781L485.688 98.8307C487.503 98.8049 489.261 98.7792 490.942 98.7534V107.781Z" fill="currentColor" />
+    <path d="M43.8582 96.4288L33.8773 69.0488H20.3869L0 124.53H12.4794L27.0129 81.7343L31.9519 96.6671C34.5792 96.5898 37.8181 96.5254 41.656 96.461C42.3707 96.4481 43.1048 96.4353 43.8582 96.4288Z" fill="currentColor" />
+    <path d="M41.1671 124.531H54.1101L46.1575 102.728C41.019 102.67 37.0137 102.612 33.8906 102.541L41.1606 124.531H41.1671Z" fill="currentColor" />
+    <path d="M125.703 124.531H138.183L145.504 102.979C141.499 102.979 137.532 102.985 133.617 102.991L125.703 124.531Z" fill="currentColor" />
+    <path d="M152.719 81.7343L157.388 95.8493C161.348 95.8493 165.334 95.8364 169.352 95.83L159.583 69.0488H146.093L136.234 95.8879C140.092 95.8815 143.987 95.875 147.928 95.8622L152.725 81.7343H152.719Z" fill="currentColor" />
+    <path d="M166.861 124.529H179.804L171.929 102.932C167.847 102.938 163.77 102.951 159.727 102.957L166.861 124.529Z" fill="currentColor" />
+    <path d="M239.367 124.53H251.847L259.265 102.682C255.369 102.695 251.402 102.707 247.378 102.72L239.367 124.53Z" fill="currentColor" />
+    <path d="M266.385 81.7343L271.015 95.7398C275.065 95.7398 279.057 95.7269 282.973 95.7205L273.249 69.0488H259.759L249.945 95.7591C253.867 95.7591 257.769 95.7527 261.626 95.7462L266.385 81.7343Z" fill="currentColor" />
+    <path d="M280.519 124.528H293.462L285.464 102.596C281.498 102.609 277.435 102.621 273.281 102.634L280.519 124.528Z" fill="currentColor" />
+  </symbol>
+  <symbol viewBox="0 0 43 42" id="icon-close-button">
+    <path d="M41.3555 1L1.35432 40.9996" stroke="currentColor" stroke-width="2" />
+    <path d="M41.3555 41L1.35433 1.00041" stroke="currentColor" stroke-width="2" />
+  </symbol>
+  <symbol viewBox="0 0 9 5" id="icon-arrow">
+    <path d="M1.22266 2.64118L8.16631 2.64118L6.46414 4.34616L6.56701 4.44922L8.44488 2.56764L6.56701 0.686061L6.46414 0.789121L8.16631 2.49409L1.22266 2.49409L1.22266 2.64118Z" fill="currentColor" stroke="currentColor" stroke-width="0.75" stroke-linejoin="round" />
+  </symbol>
+  <symbol viewBox="0 0 13 13" fill="none" id="icon-arrow-left-up">
+    <path d="M5.16745e-08 8.66667L1.73333 8.66667L1.73333 2.95533L11.778 13L13 11.778L2.95533 1.73333L8.66667 1.73333L8.66667 1.03349e-07L1.55023e-07 0L5.16745e-08 8.66667Z" fill="currentColor"/>
+  </symbol>
+  <symbol viewBox="0 0 8 6" id="icon-triangle">
+    <path d="M4 6L0.535899 -6.52533e-07L7.4641 -4.68497e-08L4 6Z" fill="currentColor"/>
+  </symbol>
+  <symbol viewBox="0 0 13 14" fill="none" id="icon-rotate-arrow">
+    <path d="M13 5.125V1.37524L11.6873 2.68798C10.525 1.41252 8.8375 0.625 7.00024 0.625C3.47548 0.625 0.625 3.47548 0.625 7.00024C0.625 10.525 3.47476 13.3755 7.00024 13.3755C8.80024 13.3755 10.4125 12.6252 11.5755 11.4257L10.5257 10.338C9.66298 11.2752 8.3875 11.875 7.00024 11.875C4.30024 11.875 2.12548 9.70026 2.12548 7.00026C2.12548 4.30026 4.30024 2.1255 7.00024 2.1255C8.42548 2.1255 9.7375 2.76324 10.6375 3.73776L9.25024 5.12502L13 5.125Z" fill="currentColor" />
+  </symbol>
+  <symbol viewBox="0 0 31 31" fill="none" id="icon-x">
+    <circle cx="15.5" cy="15.5" r="15.5" fill="currentColor" />
+    <path d="M16.7368 14.8686L21.5763 9H20.4295L16.2273 14.0956L12.8711 9H9L14.0753 16.7054L9 22.8595H10.1469L14.5845 17.4784L18.1289 22.8595H22L16.7365 14.8686H16.7368ZM15.166 16.7733L14.6517 16.006L10.5601 9.90065H12.3217L15.6236 14.8279L16.1379 15.5952L20.43 21.9999H18.6685L15.166 16.7736V16.7733Z" fill="white" />
+  </symbol>
+  <symbol viewBox="0 0 31 31" fill="none" id="icon-tiktok">
+    <circle cx="15.5" cy="15.5" r="15.5" fill="currentColor" />
+    <path d="M20.0585 10.9533C19.2556 10.4357 18.6759 9.60787 18.4952 8.6428C18.4561 8.43419 18.4347 8.21968 18.4347 8H15.8717L15.8675 18.1515C15.8244 19.2883 14.8779 20.2007 13.7172 20.2007C13.3566 20.2007 13.0168 20.1117 12.7179 19.956C12.0321 19.5993 11.563 18.8888 11.563 18.0713C11.563 16.8972 12.5295 15.9419 13.7172 15.9419C13.939 15.9419 14.1516 15.9781 14.3529 16.0403V13.4544C14.1446 13.4263 13.933 13.4089 13.7172 13.4089C11.1162 13.4089 9 15.5004 9 18.0711C9 19.6485 9.79749 21.0443 11.0139 21.8883C11.78 22.4199 12.7122 22.7333 13.7172 22.7333C16.3183 22.7333 18.4345 20.6418 18.4345 18.0711V12.9235C19.4395 13.6367 20.6711 14.0568 22 14.0568V11.5237C21.2842 11.5237 20.6173 11.3134 20.0583 10.953L20.0585 10.9533Z" fill="white" />
+  </symbol>
+  <symbol viewBox="0 0 31 31" fill="none" id="icon-website">
+    <circle cx="15.5" cy="15.5" r="15.5" fill="currentColor" />
+    <path d="M12.2487 8.55389C11.841 9.29491 11.5051 10.1704 11.252 11.1335C10.6145 11.009 10.0364 10.8595 9.52673 10.6924C10.2553 9.78763 11.1851 9.05245 12.248 8.55371L12.2487 8.55389ZM18.7519 8.55389L18.7527 8.55472C19.8162 9.05265 20.7453 9.78783 21.4739 10.6918L21.4731 10.6927C20.9626 10.8597 20.3853 11.0093 19.7479 11.1338C19.4947 10.1713 19.1589 9.2959 18.752 8.55467L18.7519 8.55389ZM15.9162 7.84293H15.917C16.4383 7.87133 16.9438 7.95154 17.4317 8.07853H17.4325C18.0408 8.82875 18.5679 9.92226 18.9322 11.2734L18.9314 11.2742C18.0207 11.4096 17.0114 11.4948 15.9178 11.5123L15.9162 7.84293ZM15.0824 11.512V11.5129C13.9879 11.4945 12.9787 11.4093 12.0688 11.274L12.0672 11.2731C12.4314 9.92223 12.9586 8.82948 13.5668 8.07826C14.0547 7.95044 14.561 7.87107 15.0815 7.84266L15.0824 11.512ZM9.02016 11.3976L9.02099 11.3984C9.63673 11.614 10.3252 11.7944 11.0637 11.9398C10.8607 12.9315 10.7412 13.9949 10.7162 15.0835L7.84199 15.0827C7.91467 13.7309 8.33658 12.4745 9.02 11.3977V11.3985L9.02016 11.3976ZM11.8765 12.081H11.8773C12.8941 12.2364 13.9819 12.3258 15.0846 12.3441L15.0838 15.0836H11.5491C11.5733 14.0018 11.6878 12.9934 11.8758 12.0811L11.8765 12.081ZM19.1235 12.0801V12.081C19.3114 12.9933 19.4267 14.0017 19.4501 15.0835H15.9161L15.9144 12.344C17.0173 12.3257 18.1049 12.2363 19.1217 12.0809L19.1235 12.0801ZM21.9791 11.3976H21.9799C22.6625 12.4745 23.0853 13.7334 23.1571 15.0844L20.2829 15.0835C20.2587 13.995 20.1392 12.9316 19.9354 11.9398C20.6739 11.7944 21.3632 11.6132 21.979 11.3976L21.9791 11.3976ZM15.0824 18.656V18.6568C13.9804 18.6744 12.8926 18.7638 11.8767 18.9192C11.6887 18.0069 11.5718 16.9984 11.5484 15.9166L15.084 15.9158L15.0824 18.656ZM19.4519 15.9165C19.4277 16.9984 19.3116 18.0067 19.1236 18.9191C18.1068 18.7637 17.0199 18.6743 15.9172 18.6559L15.9164 15.9164L19.4519 15.9165ZM10.718 15.919C10.7422 17.0067 10.8609 18.0677 11.0647 19.0609H11.0639C10.3262 19.2055 9.63608 19.3867 9.02027 19.6023C8.33685 18.5254 7.91578 17.2699 7.84393 15.918L10.718 15.919ZM23.1572 15.9165C23.0854 17.2674 22.6626 18.5264 21.9792 19.6024C21.3635 19.386 20.6734 19.2055 19.9356 19.061C20.1394 18.0677 20.2572 17.0066 20.2815 15.9182L23.1572 15.9165ZM19.7478 19.8665C20.3861 19.991 20.9626 20.1414 21.473 20.3093C20.7445 21.2132 19.8146 21.9484 18.7511 22.4464V22.4472C19.1588 21.7045 19.4946 20.829 19.7478 19.8667L19.7478 19.8665ZM11.2527 19.8665C11.505 20.8289 11.8417 21.7052 12.2486 22.447C11.185 21.9483 10.2552 21.2131 9.52661 20.3083C10.0371 20.1404 10.6144 19.9909 11.2518 19.8664L11.2527 19.8665ZM15.9178 19.4881H15.9186C17.0131 19.5048 18.0223 19.5908 18.933 19.7261V19.7278C18.5688 21.0787 18.0399 22.1723 17.4317 22.9227L17.4309 22.9235C16.943 23.0497 16.4367 23.129 15.9162 23.1574L15.9178 19.4881ZM15.0831 23.1572C14.5635 23.1288 14.0564 23.0502 13.5684 22.9233H13.5676C12.9594 22.1722 12.4305 21.0786 12.0663 19.7279V19.7262C12.9769 19.5908 13.9878 19.5056 15.0823 19.4881L15.0831 23.1572ZM15.4992 7C10.8047 7 7 10.8055 7 15.4996C7 20.1936 10.8047 24 15.4992 24C20.1937 23.9992 24 20.1938 24 15.4996C24 10.8053 20.1944 7 15.5001 7H15.4992Z" fill="white" />
+    <path d="M9.02016 11.3976V11.3984M9.02016 11.3976L9.02099 11.3984C9.63673 11.614 10.3252 11.7944 11.0637 11.9398C10.8607 12.9315 10.7412 13.9949 10.7162 15.0835L7.84199 15.0827C7.91467 13.7309 8.33658 12.4745 9.02 11.3977V11.3985L9.02016 11.3976ZM12.2487 8.55389C11.841 9.29491 11.5051 10.1704 11.252 11.1335C10.6145 11.009 10.0364 10.8595 9.52673 10.6924C10.2553 9.78763 11.1851 9.05245 12.248 8.55371L12.2487 8.55389ZM18.7519 8.55389L18.7527 8.55472C19.8162 9.05265 20.7453 9.78783 21.4739 10.6918L21.4731 10.6927C20.9626 10.8597 20.3853 11.0093 19.7479 11.1338C19.4947 10.1713 19.1589 9.2959 18.752 8.55467L18.7519 8.55389ZM15.9162 7.84293H15.917C16.4383 7.87133 16.9438 7.95154 17.4317 8.07853H17.4325C18.0408 8.82875 18.5679 9.92226 18.9322 11.2734L18.9314 11.2742C18.0207 11.4096 17.0114 11.4948 15.9178 11.5123L15.9162 7.84293ZM15.0824 11.512V11.5129C13.9879 11.4945 12.9787 11.4093 12.0688 11.274L12.0672 11.2731C12.4314 9.92223 12.9586 8.82948 13.5668 8.07826C14.0547 7.95044 14.561 7.87107 15.0815 7.84266L15.0824 11.512ZM11.8765 12.081H11.8773C12.8941 12.2364 13.9819 12.3258 15.0846 12.3441L15.0838 15.0836H11.5491C11.5733 14.0018 11.6878 12.9934 11.8758 12.0811L11.8765 12.081ZM19.1235 12.0801V12.081C19.3114 12.9933 19.4267 14.0017 19.4501 15.0835H15.9161L15.9144 12.344C17.0173 12.3257 18.1049 12.2363 19.1217 12.0809L19.1235 12.0801ZM21.9791 11.3976H21.9799C22.6625 12.4745 23.0853 13.7334 23.1571 15.0844L20.2829 15.0835C20.2587 13.995 20.1392 12.9316 19.9354 11.9398C20.6739 11.7944 21.3632 11.6132 21.979 11.3976L21.9791 11.3976ZM15.0824 18.656V18.6568C13.9804 18.6744 12.8926 18.7638 11.8767 18.9192C11.6887 18.0069 11.5718 16.9984 11.5484 15.9166L15.084 15.9158L15.0824 18.656ZM19.4519 15.9165C19.4277 16.9984 19.3116 18.0067 19.1236 18.9191C18.1068 18.7637 17.0199 18.6743 15.9172 18.6559L15.9164 15.9164L19.4519 15.9165ZM10.718 15.919C10.7422 17.0067 10.8609 18.0677 11.0647 19.0609H11.0639C10.3262 19.2055 9.63608 19.3867 9.02027 19.6023C8.33685 18.5254 7.91578 17.2699 7.84393 15.918L10.718 15.919ZM23.1572 15.9165C23.0854 17.2674 22.6626 18.5264 21.9792 19.6024C21.3635 19.386 20.6734 19.2055 19.9356 19.061C20.1394 18.0677 20.2572 17.0066 20.2815 15.9182L23.1572 15.9165ZM19.7478 19.8665C20.3861 19.991 20.9626 20.1414 21.473 20.3093C20.7445 21.2132 19.8146 21.9484 18.7511 22.4464V22.4472C19.1588 21.7045 19.4946 20.829 19.7478 19.8667L19.7478 19.8665ZM11.2527 19.8665C11.505 20.8289 11.8417 21.7052 12.2486 22.447C11.185 21.9483 10.2552 21.2131 9.52661 20.3083C10.0371 20.1404 10.6144 19.9909 11.2518 19.8664L11.2527 19.8665ZM15.9178 19.4881H15.9186C17.013 19.5048 18.0223 19.5908 18.933 19.7261V19.7278C18.5688 21.0787 18.0399 22.1723 17.4317 22.9227L17.4309 22.9235C16.943 23.0497 16.4367 23.129 15.9162 23.1574L15.9178 19.4881ZM15.0831 23.1572C14.5635 23.1288 14.0564 23.0502 13.5684 22.9233H13.5676C12.9594 22.1722 12.4305 21.0786 12.0663 19.7279V19.7262C12.9769 19.5908 13.9878 19.5056 15.0823 19.4881L15.0831 23.1572ZM15.4992 7C10.8047 7 7 10.8055 7 15.4996C7 20.1936 10.8047 24 15.4992 24C20.1937 23.9992 24 20.1938 24 15.4996C24 10.8053 20.1944 7 15.5001 7H15.4992Z" stroke="white" stroke-width="0.3" />
+  </symbol>
+  <symbol viewBox="0 0 31 31" fill="none" id="icon-facebook">
+    <g clip-path="url(#clip0_4260_2908)">
+      <path d="M31.4805 15.5C31.4805 6.93958 24.5409 0 15.9805 0C7.42005 0 0.480469 6.93958 0.480469 15.5C0.480469 23.2365 6.1486 29.6489 13.5586 30.8117V19.9805H9.62305V15.5H13.5586V12.0852C13.5586 8.20047 15.8726 6.05469 19.4132 6.05469C21.109 6.05469 22.8828 6.35742 22.8828 6.35742V10.1719H20.9283C19.0028 10.1719 18.4023 11.3667 18.4023 12.5924V15.5H22.7012L22.014 19.9805H18.4023V30.8117C25.8124 29.6489 31.4805 23.2365 31.4805 15.5V15.5Z" fill="currentColor" />
+      <path d="M22.0159 19.9805L22.7031 15.5H18.4043V12.5924C18.4043 11.3667 19.0048 10.1719 20.9303 10.1719H22.8848V6.35742C22.8848 6.35742 21.111 6.05469 19.4151 6.05469C15.8746 6.05469 13.5605 8.20047 13.5605 12.0852V15.5H9.625V19.9805H13.5605V30.8117C15.1654 31.0628 16.7995 31.0628 18.4043 30.8117V19.9805H22.0159Z" fill="white" />
+    </g>
+    <defs>
+      <clipPath id="clip0_4260_2908">
+        <rect width="31" height="31" fill="white" transform="translate(0.480469)" />
+      </clipPath>
+    </defs>
+  </symbol>
+  <symbol viewBox="0 0 31 31" fill="none" id="icon-instagram">
+    <circle cx="15.5" cy="15.5" r="15.5" fill="currentColor" />
+    <g clip-path="url(#clip0_4260_2907)">
+      <path d="M15.4977 6.31445C13.0031 6.31445 12.6903 6.32502 11.7106 6.36972C10.733 6.41433 10.0653 6.5696 9.48103 6.79666C8.86814 7.0273 8.31294 7.38884 7.85414 7.85609C7.38689 8.31489 7.02534 8.8701 6.79471 9.48298C6.56765 10.0672 6.41238 10.7349 6.36776 11.7126C6.32306 12.6923 6.3125 13.0051 6.3125 15.4997C6.3125 17.9942 6.32306 18.307 6.36776 19.2867C6.41238 20.2643 6.56765 20.932 6.79471 21.5163C7.02535 22.1292 7.38689 22.6844 7.85414 23.1432C8.31294 23.6104 8.86814 23.972 9.48103 24.2026C10.0653 24.4297 10.733 24.585 11.7106 24.6295C12.6903 24.6742 13.0031 24.6848 15.4977 24.6848C17.9922 24.6848 18.305 24.6742 19.2847 24.6295C20.2624 24.585 20.9301 24.4297 21.5143 24.2026C22.1245 23.9666 22.6786 23.6058 23.1412 23.1432C23.6038 22.6806 23.9647 22.1265 24.2007 21.5163C24.4277 20.932 24.583 20.2643 24.6276 19.2867C24.6723 18.307 24.6829 17.9942 24.6829 15.4997C24.6829 13.0051 24.6723 12.6923 24.6276 11.7126C24.583 10.7349 24.4277 10.0672 24.2007 9.48298C23.97 8.8701 23.6085 8.3149 23.1412 7.85609C22.6824 7.38885 22.1272 7.0273 21.5143 6.79666C20.9301 6.5696 20.2624 6.41433 19.2847 6.36972C18.305 6.32502 17.9922 6.31445 15.4977 6.31445ZM15.4977 7.96944C17.9502 7.96944 18.2407 7.97879 19.2093 8.02298C20.1048 8.06385 20.5912 8.21347 20.9148 8.33926C21.3138 8.4865 21.6747 8.72128 21.971 9.02634C22.276 9.32262 22.5108 9.68351 22.6581 10.0825C22.7839 10.4061 22.9335 10.8925 22.9743 11.788C23.0185 12.7566 23.0279 13.0471 23.0279 15.4997C23.0279 17.9522 23.0185 18.2427 22.9743 19.2112C22.9335 20.1068 22.7839 20.5931 22.6581 20.9168C22.5052 21.3129 22.2712 21.6727 21.971 21.9729C21.6707 22.2731 21.311 22.5072 20.9148 22.66C20.5912 22.7858 20.1048 22.9354 19.2093 22.9763C18.2409 23.0205 17.9504 23.0298 15.4977 23.0298C13.045 23.0298 12.7545 23.0205 11.7861 22.9763C10.8905 22.9354 10.4042 22.7858 10.0805 22.66C9.68156 22.5128 9.32068 22.278 9.0244 21.9729C8.71933 21.6766 8.48455 21.3158 8.33731 20.9168C8.21152 20.5931 8.0619 20.1068 8.02103 19.2112C7.97684 18.2427 7.96749 17.9522 7.96749 15.4997C7.96749 13.0471 7.97684 12.7566 8.02103 11.788C8.0619 10.8925 8.21152 10.4061 8.33731 10.0825C8.48455 9.68352 8.71933 9.32264 9.02439 9.02636C9.32067 8.72129 9.68156 8.4865 10.0805 8.33926C10.4042 8.21347 10.8905 8.06385 11.7861 8.02298C12.7546 7.97879 13.0451 7.96944 15.4977 7.96944" fill="white" />
+      <path d="M15.498 18.5616C14.8924 18.5616 14.3005 18.3821 13.797 18.0457C13.2935 17.7092 12.901 17.2311 12.6693 16.6716C12.4376 16.1121 12.3769 15.4965 12.4951 14.9026C12.6132 14.3087 12.9048 13.7631 13.333 13.3349C13.7612 12.9068 14.3067 12.6152 14.9007 12.497C15.4946 12.3789 16.1102 12.4395 16.6696 12.6713C17.2291 12.903 17.7073 13.2954 18.0437 13.7989C18.3801 14.3024 18.5597 14.8944 18.5597 15.4999C18.5597 16.312 18.2371 17.0907 17.6629 17.6649C17.0888 18.2391 16.31 18.5616 15.498 18.5616V18.5616ZM15.498 10.7832C14.5651 10.7832 13.6532 11.0598 12.8775 11.5781C12.1019 12.0964 11.4973 12.833 11.1403 13.6949C10.7833 14.5568 10.6899 15.5051 10.8719 16.4201C11.0539 17.335 11.5031 18.1755 12.1627 18.8351C12.8224 19.4948 13.6628 19.944 14.5778 20.126C15.4927 20.308 16.4411 20.2146 17.303 19.8576C18.1648 19.5006 18.9015 18.8961 19.4198 18.1204C19.938 17.3447 20.2147 16.4328 20.2147 15.4999C20.2147 14.8805 20.0927 14.2672 19.8557 13.6949C19.6186 13.1227 19.2712 12.6027 18.8332 12.1647C18.3952 11.7267 17.8753 11.3793 17.303 11.1422C16.7307 10.9052 16.1174 10.7832 15.498 10.7832V10.7832Z" fill="white" />
+      <path d="M21.5013 10.5964C21.5013 10.8144 21.4367 11.0275 21.3156 11.2087C21.1944 11.39 21.0223 11.5313 20.8209 11.6147C20.6195 11.6981 20.3979 11.7199 20.1841 11.6774C19.9703 11.6349 19.7739 11.5299 19.6197 11.3758C19.4656 11.2216 19.3606 11.0252 19.3181 10.8114C19.2755 10.5976 19.2974 10.376 19.3808 10.1746C19.4642 9.97317 19.6055 9.80102 19.7867 9.67991C19.968 9.55879 20.1811 9.49414 20.3991 9.49414C20.5438 9.49414 20.6872 9.52265 20.8209 9.57804C20.9546 9.63343 21.0761 9.71462 21.1785 9.81697C21.2808 9.91932 21.362 10.0408 21.4174 10.1746C21.4728 10.3083 21.5013 10.4516 21.5013 10.5964V10.5964Z" fill="white" />
+    </g>
+    <defs>
+      <clipPath id="clip0_4260_2907">
+        <rect width="18.3704" height="18.3704" fill="white" transform="translate(6.3125 6.31445)" />
+      </clipPath>
+    </defs>
+  </symbol>
+  <symbol viewBox="0 0 12 20" id="icon-arrow-under">
+    <path d="M5.80457 1L5.80457 18.3057L1.27387 14.0634L1 14.3198L6 19L11 14.3198L10.7261 14.0634L6.19543 18.3057L6.19543 1L5.80457 1Z" stroke="currentColor" stroke-linejoin="round" />
+  </symbol>
+  </svg>  <header
+    id="header"
+    class="group w-full js-header"
+    x-data="headerChange" x-init="init()"
+    :class="{ 'is-active': isHeaderActive }">
+    <div class="w-full relative" x-data="{ isVisible: false }">
+            <div id="header-logo-wrapper" class="fixed z-50 [&.js-hidden]:opacity-0 [&.js-hidden]:pointer-events-none transition-opacity duration-300">
+        <div id="header-logo" class="pl-5 md:pl-12.5 py-2 md:py-2 lg:py-2 transition-opacity"
+          :class="isVisible ? 'opacity-0 pointer-events-none md:opacity-100 md:pointer-events-auto' : 'opacity-100'">
+          <a
+            href="/amanation/"
+                        class="inline-block w-[227px] md:w-[345px]">
+            <svg
+              viewBox="0 0 508 195"
+              :class="isHeaderActive ? 'text-white' : 'text-black'"
+              class="w-full transition-all"
+              aria-hidden="true">
+              <use xlink:href="#logo-header-amanation"></use>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div id="header-menu" class="fixed right-0 z-50" x-data="{ isVisible: false }">
+        <div class="pr-5 md:pr-12.5 py-8 md:py-10.5" :class="isVisible ? 'py-7.5' : ''">
+          <div class="relative rounded-[20px] md:rounded-[30px] lg:rounded-[40px] inline-block transition-all box-border"
+            :class=" [
+      isHeaderActive ? 'bg-white text-black' : 'bg-black text-white' ,
+      isVisible ? 'w-[265px] max-h-[620px] md:w-[447px] md:max-h-[730px]' : 'w-[105px] max-h-[40px] md:w-[150px] md:max-h-[50px] lg:w-[187px] lg:max-h-[59px]'
+      ]"
+            @click.outside="isVisible = false">
+
+            <div>
+              <div class="text-right">
+                                <button @click="isVisible = !isVisible" x-show="!isVisible"
+                  class="rounded-[20px] md:rounded-[30px] lg:rounded-[40px] border-black group en-label-l md:text-[23px] lg:text-[26px] text-center overflow-hidden relative inline-box hover:after:left-0 hover:after:top-0 px-[10px] w-[105px] md:w-[150px] lg:w-[187px] py-[2px] md:py-1.5 lg:py-2"
+                  :class="
+                  [isVisible ? '' : 'menu-button-hover border-2',
+                  isHeaderActive ? 'bg-white' : 'bg-black',
+                  ]">
+                  <span class="inline-block relative z-10 leading-none -top-[.025em] md:-top-[.045em] ">
+                    MENU
+                  </span>
+                </button>
+                
+                                <button @click="isVisible = !isVisible"
+                  class="mt-8 mr-8 md:mt-10 md:mr-10 hover:text-orange ease-common duration-300 transition-all "
+                  :class="isHeaderActive ? 'text-black' : 'text-white'"
+                  x-show="isVisible">
+                  <span class="inline-block aspect-square w-[35px] md:w-10.5">
+                    <svg viewBox="0 0 43 42" class="w-full" aria-hidden="true">
+                      <use xlink:href="#icon-close-button"></use>
+                    </svg>
+                  </span>
+                </button>
+                              </div>
+
+                            <div x-show="isVisible"
+                class="px-7.5 md:px-9 pt-9 md:pt-10 pb-9 md:pb-12 w-[min(100vw*265/390,265px)] md:w-[447px]"
+                x-transition:enter="transition transform origin-top-right ease-out duration-200"
+                x-transition:enter-start="scale-0 opacity-0"
+                x-transition:enter-end="scale-100 opacity-100"
+                x-transition:leave="transition transform origin-top-right ease-in duration-200"
+                x-transition:leave-start="scale-100 opacity-100"
+                x-transition:leave-end="scale-0 opacity-0"
+                x-init="navMenuAnimation($refs, $watch, $nextTick)">
+
+                <nav :class="isHeaderActive ? 'text-black' : 'text-white'" class="uppercase">
+                  <ul x-ref="navItems" class="[&>li:not(:first-child)]:mt-4.5 [&>li:not(:first-child)]:md:mt-0">
+                                          <li class="overflow-hidden">
+                        <a href="/amanation/"
+                          class="en-label-xxxl hover-color-slide-link nav-item"
+                          :class="isHeaderActive ? 'bg-[linear-gradient(to_right,_theme(colors.orange)_50%,_theme(colors.black)_50%)]' : 'bg-[linear-gradient(to_right,_theme(colors.orange)_50%,_theme(colors.white)_50%)]'"
+                          @click="isVisible = false">
+                          top                        </a>
+                      </li>
+                                          <li class="overflow-hidden">
+                        <a href="/amanation/creator"
+                          class="en-label-xxxl hover-color-slide-link nav-item"
+                          :class="isHeaderActive ? 'bg-[linear-gradient(to_right,_theme(colors.orange)_50%,_theme(colors.black)_50%)]' : 'bg-[linear-gradient(to_right,_theme(colors.orange)_50%,_theme(colors.white)_50%)]'"
+                          @click="isVisible = false">
+                          creator                        </a>
+                      </li>
+                                          <li class="overflow-hidden">
+                        <a href="/amanation/topics"
+                          class="en-label-xxxl hover-color-slide-link nav-item"
+                          :class="isHeaderActive ? 'bg-[linear-gradient(to_right,_theme(colors.orange)_50%,_theme(colors.black)_50%)]' : 'bg-[linear-gradient(to_right,_theme(colors.orange)_50%,_theme(colors.white)_50%)]'"
+                          @click="isVisible = false">
+                          topics                        </a>
+                      </li>
+                                          <li class="overflow-hidden">
+                        <a href="/amanation/company"
+                          class="en-label-xxxl hover-color-slide-link nav-item"
+                          :class="isHeaderActive ? 'bg-[linear-gradient(to_right,_theme(colors.orange)_50%,_theme(colors.black)_50%)]' : 'bg-[linear-gradient(to_right,_theme(colors.orange)_50%,_theme(colors.white)_50%)]'"
+                          @click="isVisible = false">
+                          company                        </a>
+                      </li>
+                                          <li class="overflow-hidden">
+                        <a href="/amanation/contact"
+                          class="en-label-xxxl hover-color-slide-link nav-item"
+                          :class="isHeaderActive ? 'bg-[linear-gradient(to_right,_theme(colors.orange)_50%,_theme(colors.black)_50%)]' : 'bg-[linear-gradient(to_right,_theme(colors.orange)_50%,_theme(colors.white)_50%)]'"
+                          @click="isVisible = false">
+                          contact                        </a>
+                      </li>
+                                          <li class="overflow-hidden">
+                        <a href="/amanation/topics/amanationlab"
+                          class="en-label-xxxl hover-color-slide-link nav-item"
+                          :class="isHeaderActive ? 'bg-[linear-gradient(to_right,_theme(colors.orange)_50%,_theme(colors.black)_50%)]' : 'bg-[linear-gradient(to_right,_theme(colors.orange)_50%,_theme(colors.white)_50%)]'"
+                          @click="isVisible = false">
+                          lab                        </a>
+                      </li>
+                                      </ul>
+                </nav>
+
+                <div :class="isHeaderActive ? 'text-black nav-text--white' : 'text-white'" x-ref="navText" class="en-label-xs mt-7.5 md:mt-12 nav-text">
+                  <p>
+                    AMANATION IS A CREATOR MANAGEMENT COMPANY <br class="md:hidden">FROM TOKYO JAPAN
+                  </p>
+                </div>
+              </div>
+
+                          </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+  <div
+    x-data="transitionPage"
+    class="fixed z-[101] w-screen h-dvh overflow-hidden pointer-events-none">
+    <div
+      x-ref="background"
+      class="absolute z-10 top-0 left-0 bg-white w-full h-full -translate-x-full"></div>
+  </div>
+  <div
+    id="loading-element-subpage"
+    style="position:fixed; z-index:101; width: 100vw; height: 100dvh; overflow:hidden;">
+    <div
+      data-loading="background"
+      style="background-color:#fff;"
+      class="absolute z-10 top-0 left-0 bg-[#fff] w-full h-full"></div>
+  </div>
+  <main>
+    <div class="pt-45 lg:pt-0 md:grid-wrapper-pc px-[var(--space-side)]">
+        <div class="mt-0 md:mt-65 col-span-full lg:col-[1/5]">
+    <div class="lg:sticky lg:top-50 text-black pr-[calc(100vw*68/1440)]">
+      <h1 class="ja-label-l">
+        龍ヶ崎リン「Right or Not」ジャケット、MV、グッズのイラストを担当しました。      </h1>
+      <div class="flex flex-wrap items-center gap-4 mt-5 lg:mt-7.5">
+        <div class="flex flex-wrap gap-2">
+          <span class="en-label-xs uppercase border border-black rounded-full px-3.5 md:px-6 py-1.5 md:py-2">NEWS</span>
+        </div>
+        <span class="en-label-xs">2026.03.30</span>
+      </div>
+
+      <div class="mt-[305px] hidden lg:block">
+          <a href="/amanation/topics" class="text-black en-label-m uppercase group inline-flex items-stretch">
+    <span class="w-5 relative overflow-hidden mr-[15px]">
+      <svg
+        viewBox="0 0 13 13"
+        class="w-[13px] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform transition-all ease-common duration-300 animation-fill-forwards group-hover:animate-transformLeftUp"
+        aria-hidden="true">
+        <use xlink:href="#icon-arrow-left-up"></use>
+      </svg>
+
+      <svg
+        viewBox="0 0 13 13"
+        class="w-[13px] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform transition-all ease-common duration-300 animation-fill-forwards group-hover:animate-transformToLeftUp"
+        aria-hidden="true">
+        <use xlink:href="#icon-arrow-left-up"></use>
+      </svg>
+    </span>
+    <span>topics list</span>
+  </a>
+      </div>
+    </div>
+  </div>
+
+      <div class="mt-11 lg:mt-65 col-span-full lg:col-[5/13] [&>a:not(:first-child)]:mt-10 md:[&>a:not(:first-child)]:mt-15">
+        <div class="">
+                      <img
+              class="w-full ewww_webp"
+              src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt=""
+             data-src-img="/amanation/wp-content/uploads/2026/03/0303-1024x576.jpg.webp" data-src-webp="/amanation/wp-content/uploads/2026/03/0303-1024x576.jpg.webp" data-eio="j"><noscript><img
+              class="w-full"
+              src="/amanation/wp-content/uploads/2026/03/0303-1024x576.jpg.webp" alt=""
+            ></noscript>
+                  </div>
+        <div class="cms-styles mt-15">
+          
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-4-3 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe title="Right or Not / 龍ヶ崎リン：Official Music Video" width="500" height="375" src="https://www.youtube.com/embed/rDBZvcipgyc?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div></figure>
+
+
+
+<figure class="wp-block-image size-large"><img fetchpriority="high" decoding="async" width="1024" height="576" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" class="wp-image-1144 ewww_webp" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== 1w" sizes="(max-width: 1024px) 100vw, 1024px" data-src-img="/amanation/wp-content/uploads/2026/03/HEbYN1-aYAAKJ2--1024x576.jpeg.webp" data-src-webp="/amanation/wp-content/uploads/2026/03/HEbYN1-aYAAKJ2--1024x576.jpeg.webp" data-srcset-webp="/amanation/wp-content/uploads/2026/03/HEbYN1-aYAAKJ2--1024x576.jpeg.webp 1024w, /amanation/wp-content/uploads/2026/03/HEbYN1-aYAAKJ2--300x169.jpeg.webp 300w, /amanation/wp-content/uploads/2026/03/HEbYN1-aYAAKJ2--768x432.jpeg.webp 768w, /amanation/wp-content/uploads/2026/03/HEbYN1-aYAAKJ2--1024x576.jpeg.webp 1200w" data-srcset-img="/amanation/wp-content/uploads/2026/03/HEbYN1-aYAAKJ2--1024x576.jpeg.webp 1024w, /amanation/wp-content/uploads/2026/03/HEbYN1-aYAAKJ2--300x169.jpeg.webp 300w, /amanation/wp-content/uploads/2026/03/HEbYN1-aYAAKJ2--768x432.jpeg.webp 768w, /amanation/wp-content/uploads/2026/03/HEbYN1-aYAAKJ2--1024x576.jpeg.webp 1200w" data-eio="j" /><noscript><img fetchpriority="high" decoding="async" width="1024" height="576" src="/amanation/wp-content/uploads/2026/03/HEbYN1-aYAAKJ2--1024x576.jpeg.webp" alt="" class="wp-image-1144" srcset="/amanation/wp-content/uploads/2026/03/HEbYN1-aYAAKJ2--1024x576.jpeg.webp 1024w, /amanation/wp-content/uploads/2026/03/HEbYN1-aYAAKJ2--300x169.jpeg.webp 300w, /amanation/wp-content/uploads/2026/03/HEbYN1-aYAAKJ2--768x432.jpeg.webp 768w, /amanation/wp-content/uploads/2026/03/HEbYN1-aYAAKJ2--1024x576.jpeg.webp 1200w" sizes="(max-width: 1024px) 100vw, 1024px" /></noscript></figure>
+
+
+
+<p>クリエイター：ピカタ</p>
+
+
+
+<p></p>
+        </div>
+
+        <div class="block lg:hidden mt-15">
+            <a href="/amanation/topics" class="text-black en-label-m uppercase group inline-flex items-stretch">
+    <span class="w-5 relative overflow-hidden mr-[15px]">
+      <svg
+        viewBox="0 0 13 13"
+        class="w-[13px] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform transition-all ease-common duration-300 animation-fill-forwards group-hover:animate-transformLeftUp"
+        aria-hidden="true">
+        <use xlink:href="#icon-arrow-left-up"></use>
+      </svg>
+
+      <svg
+        viewBox="0 0 13 13"
+        class="w-[13px] absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform transition-all ease-common duration-300 animation-fill-forwards group-hover:animate-transformToLeftUp"
+        aria-hidden="true">
+        <use xlink:href="#icon-arrow-left-up"></use>
+      </svg>
+    </span>
+    <span>topics list</span>
+  </a>
+        </div>
+      </div>
+    </div>
+      <div class="mt-30 md:mt-40"></div>
+  </main>
+  <footer class="px-[var(--space-side)] pt-21 md:pt-17 pb-27 text-black">
+    <div class="md:grid-wrapper-pc">
+      <h2 class="md:col-[1/10] mb-4 md:mb-0">
+        <img
+          src="/amanation/wp-content/themes/amanation/assets/images/common/text-amanation.svg"
+          class="w-full md:w-[800px]"
+          alt="AMANATION"
+          width="508"
+          height="195">
+      </h2>
+
+      <div class="en-label-s uppercase md:row-start-2 md:col-[1/13] lg:col-[1/7]">
+        <dl class="grid grid-cols-[95px_1fr] md:grid-cols-[112px_1fr] gap-y-5">
+          <dt>Address</dt>
+          <dd>KEIO HATAGAYA BLDG 4F, 1-2-2 Hatagaya,<br>Shibuya-ku, Tokyo 151-0072, Japan</dd>
+          <dt>Mail</dt>
+          <dd>
+                        <script type="text/javascript">
+              <!--
+              function converter(M) {
+                var str = "",
+                  str_as = "";
+                for (var i = 0; i < M.length; i++) {
+                  str_as = M.charCodeAt(i);
+                  str += String.fromCharCode(str_as + 1);
+                }
+                return str;
+              }
+              var ad = converter(String.fromCharCode(104, 109, 101, 110, 63, 96, 108, 96, 109, 96) + String.fromCharCode(115, 104, 110, 109, 44, 110, 101, 101, 104, 98, 104, 96, 107, 45, 98, 110, 108));
+              document.write('<a href="mailto:' + ad + '" class="hover-color-slide-link">' + ad + '</a>');
+
+              //
+              -->
+            </script>
+                      </dd>
+          <dt>tel</dt>
+                    <dd><a href="tel:03-6262-3619" class="md:pointer-events-none">03-6262-3619</a></dd>
+
+          <dt>Instagram</dt>
+          <dd><a href="https://www.instagram.com/amanation.official/" target="_blank" rel="noopener" class="hover-color-slide-link">@amanation-official</a></dd>
+        </dl>
+      </div>
+      <nav class="border-black border-t md:border-none mt-7.5 lg:mt-0 pt-7.5 lg:pt-0 uppercase md:row-start-3 lg:row-start-2 md:col-[1/13] lg:col-[7/13]">
+        <ul class="[&>li:not(:first-child)]:mt-2.5">
+                                  <li class="grid grid-cols-[95px_1fr] md:grid-cols-[112px_1fr] items-center">
+              <a
+                href="/amanation/"
+                class="en-label-m hover-color-slide-link">
+                top              </a>
+                          </li>
+                                  <li class="grid grid-cols-[95px_1fr] md:grid-cols-[112px_1fr] items-center">
+              <a
+                href="/amanation/creator"
+                class="en-label-m hover-color-slide-link">
+                creator              </a>
+                              <div class="flex items-center gap-x-2.5">
+                                      <a
+                      href="/amanation/creator-type/illustrator"
+                      class="en-label-xs hover-underline-link">
+                      illustrator                    </a>
+                                      <a
+                      href="/amanation/creator"
+                      class="en-label-xs hover-underline-link">
+                      model/talent                    </a>
+                                  </div>
+                          </li>
+                                  <li class="grid grid-cols-[95px_1fr] md:grid-cols-[112px_1fr] items-center">
+              <a
+                href="/amanation/topics"
+                class="en-label-m hover-color-slide-link">
+                topics              </a>
+                              <div class="flex items-center gap-x-2.5">
+                                      <a
+                      href="/amanation/topics-type/news"
+                      class="en-label-xs hover-underline-link">
+                      news                    </a>
+                                      <a
+                      href="/amanation/topics-type/event"
+                      class="en-label-xs hover-underline-link">
+                      event                    </a>
+                                      <a
+                      href="/amanation/topics-type/column"
+                      class="en-label-xs hover-underline-link">
+                      column                    </a>
+                                  </div>
+                          </li>
+                                  <li class="grid grid-cols-[95px_1fr] md:grid-cols-[112px_1fr] items-center">
+              <a
+                href="/amanation/company"
+                class="en-label-m hover-color-slide-link">
+                company              </a>
+                          </li>
+                                  <li class="grid grid-cols-[140px_1fr] md:grid-cols-[170px_1fr] items-center">
+              <a
+                href="/amanation/topics/amanationlab"
+                class="en-label-m hover-color-slide-link">
+                AMANATION LAB              </a>
+                          </li>
+                                  <li class="grid grid-cols-[95px_1fr] md:grid-cols-[112px_1fr] items-center">
+              <a
+                href="/amanation/contact"
+                class="en-label-m hover-color-slide-link">
+                contact              </a>
+                          </li>
+                  </ul>
+      </nav>
+
+      <div class="mt-14 lg:mt-45 md:row-start-4 lg:row-start-3 md:col-[1/13]">
+        <h3 class="ja-display-l">すべてのクリエイターにリスペクトを。</h3>
+        <p class="en-label-m mt-5">©2025 ︎AMANATION</p>
+      </div>
+    </div>
+  </footer>
+<script type="text/javascript" src="/amanation/wp-includes/js/dist/hooks.min.js?ver=4d63a3d491d11ffd8ac6" id="wp-hooks-js"></script>
+<script type="text/javascript" src="/amanation/wp-includes/js/dist/i18n.min.js?ver=5e580eb46a90c2b997e6" id="wp-i18n-js"></script>
+<script type="text/javascript" id="wp-i18n-js-after">
+/* <![CDATA[ */
+wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'ltr' ] } );
+/* ]]> */
+</script>
+<script type="text/javascript" src="/amanation/wp-content/plugins/contact-form-7/includes/swv/js/index.js?ver=6.0.4" id="swv-js"></script>
+<script type="text/javascript" id="contact-form-7-js-translations">
+/* <![CDATA[ */
+( function( domain, translations ) {
+	var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
+	localeData[""].domain = domain;
+	wp.i18n.setLocaleData( localeData, domain );
+} )( "contact-form-7", {"translation-revision-date":"2025-02-18 07:36:32+0000","generator":"GlotPress\/4.0.1","domain":"messages","locale_data":{"messages":{"":{"domain":"messages","plural-forms":"nplurals=1; plural=0;","lang":"ja_JP"},"This contact form is placed in the wrong place.":["\u3053\u306e\u30b3\u30f3\u30bf\u30af\u30c8\u30d5\u30a9\u30fc\u30e0\u306f\u9593\u9055\u3063\u305f\u4f4d\u7f6e\u306b\u7f6e\u304b\u308c\u3066\u3044\u307e\u3059\u3002"],"Error:":["\u30a8\u30e9\u30fc:"]}},"comment":{"reference":"includes\/js\/index.js"}} );
+/* ]]> */
+</script>
+<script type="text/javascript" id="contact-form-7-js-before">
+/* <![CDATA[ */
+var wpcf7 = {
+    "api": {
+        "root": "\/amanation\/wp-json\/",
+        "namespace": "contact-form-7\/v1"
+    },
+    "cached": 1
+};
+/* ]]> */
+</script>
+<script type="text/javascript" src="/amanation/wp-content/plugins/contact-form-7/includes/js/index.js?ver=6.0.4" id="contact-form-7-js"></script>
+<script type="text/javascript" src="/amanation/wp-content/themes/amanation/build/js/main.js?ver=1.0.9a" id="main-js"></script>
+
+<script type="text/javascript" src="/amanation/wp-includes/js/dist/vendor/wp-polyfill.min.js?ver=3.15.0" id="wp-polyfill-js"></script>
+<script type="text/javascript" id="wpcf7-recaptcha-js-before">
+/* <![CDATA[ */
+var wpcf7_recaptcha = {
+    "sitekey": "6LdRxt8rAAAAABd8-Qp3iUpf_JKKS13Rs5DLaE0o",
+    "actions": {
+        "homepage": "homepage",
+        "contactform": "contactform"
+    }
+};
+/* ]]> */
+</script>
+
+</body>
+
+</html>

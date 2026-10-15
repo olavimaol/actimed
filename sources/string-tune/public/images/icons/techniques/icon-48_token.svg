@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;">
+    <circle id="Oval-6-Copy-2" cx="24" cy="24" r="6" style="fill:rgb(230,223,228);" vector-effect="non-scaling-stroke"/>
+    <path id="Path-5" d="M24,38L48,38" style="fill:none;fill-rule:nonzero;stroke:rgb(255,79,54);stroke-width:1px;" vector-effect="non-scaling-stroke"/>
+    <path id="Path-51" serif:id="Path-5" d="M38,0L38,24" style="fill:none;fill-rule:nonzero;stroke:rgb(255,79,54);stroke-width:1px;" vector-effect="non-scaling-stroke"/>
+    <circle id="Oval-6-Copy-3" cx="24" cy="24" r="14" style="fill:none;stroke:rgb(230,223,228);stroke-width:1px;" vector-effect="non-scaling-stroke"/>
+    <path id="Path-52" serif:id="Path-5" d="M0,24L16,24" style="fill:none;fill-rule:nonzero;stroke:rgb(255,79,54);stroke-width:1px;" vector-effect="non-scaling-stroke"/>
+    <path id="Path-53" serif:id="Path-5" d="M18,24L24,24" style="fill:none;fill-rule:nonzero;stroke:rgb(16,18,20);stroke-width:1px;" vector-effect="non-scaling-stroke"/>
+</svg>

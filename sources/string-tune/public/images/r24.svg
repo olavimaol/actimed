@@ -1,0 +1,17 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewBox="0 0 100% 100%"
+  preserveAspectRatio="none"
+>
+  <g id="original" class="original">
+    <path d="M28.6,0h6.9c8.1,0,12.4,1.1,16.3,3.2s7,5.2,9.1,9.1S64,20.5,64,28.6v6.9
+      c0,8.1-1.1,12.4-3.2,16.3s-5.2,7-9.1,9.1S43.5,64,35.4,64h-6.9c-8.1,0-12.4-1.1-16.3-3.2s-7-5.2-9.1-9.1S0,43.5,0,35.4v-6.9
+      c0-8.1,1.1-12.4,3.2-16.3s5.2-7,9.1-9.1S20.5,0,28.6,0z"/>
+  </g>
+  <use xlink:href="#original" x="100%" y="0" transform="translate(-64,0)"/>
+  <use xlink:href="#original" x="100%" y="100%" transform="translate(-64,-64)"/>
+  <use xlink:href="#original" x="0" y="100%" transform="translate(0,-64)"/>
+
+  <rect stroke="none" width="100%" height="100%" rx="32"/>
+</svg>

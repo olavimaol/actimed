@@ -1,0 +1,189 @@
+/* Custom visual theme. Photography, copy and interaction geometry stay intact. */
+:root {
+  --color-orange: #007fa7 !important;
+  --color-border: #084c68 !important;
+  --color-white: #effbff !important;
+  --color-yellow: #a0e8f2 !important;
+  --aqua-blue: #078ec2;
+  --aqua-cyan: #06c3de;
+  --aqua-ink: #084c68;
+  --aqua-line: rgba(255, 255, 255, .24);
+  --aqua-gradient: linear-gradient(122deg, #08c5db 0%, #04acd4 45%, #159acb 76%, #35b8d9 100%);
+}
+
+body {
+  background-color: #effbff;
+  background-image: radial-gradient(ellipse at 2% 0%, #d4f6fc 0, transparent 50%),
+    radial-gradient(ellipse at 95% 65%, #dff8ff 0, transparent 55%);
+  background-attachment: fixed;
+}
+
+::selection { background: #047fa7; color: #fff; }
+
+/* Clean cyan field with soft light and smooth color transitions. */
+:root body .jar-slider {
+  background-color: #08b4d6 !important;
+  background-image: var(--aqua-gradient) !important;
+  background-size: cover !important;
+  background-position: center !important;
+}
+
+.jar-slider::before,
+.jar-slider::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.jar-slider::before {
+  inset: -18%;
+  background: radial-gradient(ellipse at 15% 18%, rgba(47, 236, 251, .24), transparent 46%),
+    radial-gradient(ellipse at 86% 88%, rgba(0, 97, 178, .26), transparent 47%);
+  animation: aqua-light-flow 20s ease-in-out infinite alternate;
+}
+
+.jar-slider::after {
+  inset: 0;
+  background: url('/theme/grain.svg') repeat;
+  opacity: .055;
+  mix-blend-mode: soft-light;
+}
+
+:root body .jar-slider__prompt { color: #fff !important; }
+:root body .jar-slider__cta { color: #056b90; background: #fff; }
+
+/* White identity and controls on the saturated home and menu backgrounds. */
+body:has(.jar-slider) .site-header,
+:root body .site-header.is-nav-open { color: #fff !important; }
+
+body:has(.jar-slider) .site-header__logo-svg .site-logo-full__icon,
+body:has(.jar-slider) .site-header__logo-svg .site-logo-full__farm,
+body:has(.jar-slider) .site-header__logo-svg .site-logo-full__wordmark,
+:root body .site-header.is-nav-open .site-header__logo-svg .site-logo-full__icon,
+:root body .site-header.is-nav-open .site-header__logo-svg .site-logo-full__farm,
+:root body .site-header.is-nav-open .site-header__logo-svg .site-logo-full__wordmark { color: #fff !important; }
+
+body:has(.jar-slider) .site-menu-toggle__pill,
+body:has(.jar-slider) .site-lang-switcher__item,
+:root body .site-header.is-nav-open .site-menu-toggle__pill,
+:root body .site-header.is-nav-open .site-lang-switcher__item {
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, .78) !important;
+}
+
+body:has(.jar-slider) .site-lang-switcher__item.is-active,
+body:has(.jar-slider) .site-lang-switcher__item[aria-current=true],
+:root body .site-header.is-nav-open .site-lang-switcher__item.is-active,
+:root body .site-header.is-nav-open .site-lang-switcher__item[aria-current=true] {
+  background: #fff !important;
+  color: #047d9f !important;
+  border-color: #fff !important;
+}
+
+body:has(.jar-slider) .site-menu-toggle__disc,
+:root body .site-header.is-nav-open .site-menu-toggle__disc { background: #fff !important; }
+body:has(.jar-slider) .site-menu-toggle__disc::before,
+:root body .site-header.is-nav-open .site-menu-toggle__disc::before { background: #047d9f !important; }
+body:has(.jar-slider) .site-menu-toggle__diamond,
+:root body .site-header.is-nav-open .site-menu-toggle__diamond { background: #047d9f !important; }
+:root body .site-menu-toggle__close-icon path { stroke: #fff; }
+
+:root body .site-header__solid-bg { background-color: #effbff; }
+body:has(.jar-slider) .site-header__solid-bg { background-color: transparent; }
+body:has(.jar-slider) .site-shell__legal {
+  color: #fff;
+  background: rgba(1, 91, 130, .22);
+  border: 1px solid rgba(255, 255, 255, .2);
+}
+
+:root body .site-full-page-nav {
+  background-color: #069fca;
+  background-image: linear-gradient(125deg, #0587b4, #05b8d2 65%, #119bc8);
+  background-size: cover;
+  color: #fff;
+}
+:root body .fp-nav__link,
+:root body .fp-nav__secondary-link { color: rgba(255, 255, 255, .72); }
+:root body .fp-nav__link:hover,
+:root body .fp-nav__item.is-active .fp-nav__link,
+:root body .fp-nav__secondary-link:hover,
+:root body .fp-nav__secondary-item.is-active .fp-nav__secondary-link { color: #fff; }
+:root body .fp-nav__item + .fp-nav__item::before { background: rgba(255, 255, 255, .35); }
+:root body .fp-nav__marker,
+:root body .fp-nav__secondary-marker { background: #fff; }
+
+/* Carry the same palette through the catalogue, stories and product details. */
+:root body .product-slide {
+  background: linear-gradient(145deg, #d8f5fc, #c3edf9) !important;
+  transition: background .5s ease, transform .6s var(--ease-soft, ease);
+}
+:root body .product-slide.is-active {
+  background: linear-gradient(135deg, #96eaf3, #5bd4eb 70%, #69c5ed) !important;
+}
+:root body .product-hero__stage {
+  background-color: #effbff;
+  background-image: radial-gradient(ellipse at 48% 94%, #c7f1fa 0, transparent 60%);
+}
+:root body .experience-proposals {
+  background-color: #8de1ee;
+  background-image: linear-gradient(135deg, #a3eff3, #75d2eb);
+  background-size: cover;
+}
+:root body .experience-card { background: #f6fdff; }
+:root body .site-footer {
+  background-color: #075b7d;
+  background-image: linear-gradient(130deg, #057da0, #07516f 85%);
+  background-size: cover;
+  --color-orange: #93eaf5 !important;
+  --color-border: #07516f !important;
+  --color-white: #f1fdff !important;
+}
+:root body .site-footer__logo img,
+:root body .site-footer__mark { filter: brightness(0) invert(1); }
+:root body .cursor-label__pill { background: #fff; color: #057696; }
+:root body .cursor-label__diamond { background: #08aacc; }
+
+/* Loading and page transitions share the new blue identity. */
+:root body .fruit-loader__content {
+  background-color: #07aed2;
+  background-image: var(--aqua-gradient);
+  background-size: cover;
+}
+:root body .fruit-loader__mark { color: #fff; }
+:root body .fruit-loader__fruit path { fill: #edfcff; }
+:root body .fruit-loader__fruit:nth-child(3n) path { fill: #75e5f0; }
+:root body .fruit-loader__fruit:nth-child(3n + 1) path { fill: #087ca9; }
+:root body .fruit-loader__sweep-panel { background: #0bb3d2; }
+:root body .page-transition__panel {
+  background: linear-gradient(125deg, #059dc6, #04bfd6 65%, #058ab8);
+}
+
+/* The cookie controls are included in the theme and keep readable contrast. */
+body #cc-main {
+  --cc-bg: #f2fcff;
+  --cc-primary-color: #084c68;
+  --cc-secondary-color: #2e6278;
+  --cc-btn-primary-bg: #057da2;
+  --cc-btn-primary-color: #fff;
+  --cc-btn-primary-border-color: #057da2;
+  --cc-btn-primary-hover-bg: #056786;
+  --cc-btn-primary-hover-color: #fff;
+  --cc-btn-primary-hover-border-color: #056786;
+  --cc-btn-secondary-bg: #def5fb;
+  --cc-btn-secondary-color: #084c68;
+  --cc-btn-secondary-border-color: #b6e6f1;
+  --cc-separator-border-color: #c6eaf3;
+  --cc-cookie-category-block-bg: #e4f7fc;
+  --cc-cookie-category-block-border: #c6eaf3;
+}
+body #cc-main a { color: #057596; }
+:root body .not-found { background: #e5f8fd; }
+
+@keyframes aqua-light-flow {
+  from { transform: translate3d(-3%, -1%, 0) rotate(-3deg); opacity: .65; }
+  to { transform: translate3d(4%, 3%, 0) rotate(4deg); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jar-slider::before { animation: none; }
+}

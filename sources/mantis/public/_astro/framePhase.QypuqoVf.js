@@ -1,0 +1,1 @@
+import{r as e}from"./rolldown-runtime.DAXXjFlN.js?dpl=dpl_252g5VG1FQ1EMkJFPUPWfW8R2EWP";var t=e({FRAME_ANIMATION:()=>1,FRAME_APP:()=>2,FRAME_RENDER:()=>3,FRAME_SCROLL:()=>0}),n=0,r=1,i=2,a=3;export{t as a,n as i,i as n,a as r,r as t};

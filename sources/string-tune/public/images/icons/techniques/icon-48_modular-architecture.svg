@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 48 48">
+  <!-- Generator: Adobe Illustrator 29.0.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 186)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: none;
+        stroke: #ff4f36;
+      }
+
+      .st1 {
+        fill: #101214;
+      }
+    </style>
+  </defs>
+  <circle id="Oval-6" class="st1" cx="12" cy="12" r="12" vector-effect="non-scaling-stroke"/>
+  <circle id="Oval-6-Copy" class="st1" cx="36" cy="12" r="12" vector-effect="non-scaling-stroke"/>
+  <g id="Oval-6-Copy-2" vector-effect="non-scaling-stroke">
+    <path class="st1" d="M12,28c4.4,0,8,3.6,8,8s-3.6,8-8,8-8-3.6-8-8,3.6-8,8-8M12,24c-6.6,0-12,5.4-12,12s5.4,12,12,12,12-5.4,12-12-5.4-12-12-12h0Z"/>
+  </g>
+  <line id="Path-3" class="st0" x1="36" y1="48" x2="36" y2="24" vector-effect="non-scaling-stroke"/>
+  <line id="Path-5" class="st0" x1="24" y1="36" x2="48" y2="36" vector-effect="non-scaling-stroke"/>
+</svg>

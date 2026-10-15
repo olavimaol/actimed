@@ -1,0 +1,1 @@
+function e(e){if(typeof e!=`string`||!e)return!1;let t=e.split(`?`)[0].split(`#`)[0];return/\.gif$/i.test(t)}export{e as default};

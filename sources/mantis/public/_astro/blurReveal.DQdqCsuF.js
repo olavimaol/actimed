@@ -1,0 +1,1 @@
+import{r as e}from"./rolldown-runtime.DAXXjFlN.js?dpl=dpl_252g5VG1FQ1EMkJFPUPWfW8R2EWP";var t=e({blur:()=>i,isPhone:()=>r}),n=`(max-width: 479px)`,r=()=>window.matchMedia?.(n).matches??!1,i=e=>r()?{}:{filter:`blur(${e}px)`,willChange:`filter`};export{t};

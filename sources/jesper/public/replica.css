@@ -1,0 +1,8 @@
+/* Small, persistent links to the other websites. */
+/* Keep the original flat HUD labels readable while its GPU text initializes. */
+:root body .fixed.inset-0.z-40.justify-between{-webkit-text-fill-color:#fff!important}
+.replica-switcher{position:fixed;z-index:100;left:50%;top:40px;transform:translateX(-50%);display:flex;align-items:center;gap:20px;white-space:nowrap;mix-blend-mode:difference}
+.replica-switcher a{color:#fff!important;-webkit-text-fill-color:#fff!important;font-family:Arial,Helvetica,sans-serif;font-size:9px;font-weight:400;line-height:1;text-transform:uppercase;text-decoration:none;letter-spacing:.02em;opacity:.75;pointer-events:auto;transition:opacity .2s}
+.replica-switcher a:hover,.replica-switcher a:focus-visible{opacity:1}
+.replica-switcher a:focus-visible{outline:1px solid #fff;outline-offset:7px}
+@media(max-width:650px){.replica-switcher{top:25px;gap:12px}.replica-switcher a{font-size:8px}}

@@ -1,0 +1,48 @@
+{
+  "pages": [
+    "/",
+    "/chi-siamo",
+    "/contatti",
+    "/dispensa",
+    "/dispensa/caponata",
+    "/dispensa/cipolla",
+    "/dispensa/fregole_bacche",
+    "/dispensa/gelsi_neri",
+    "/dispensa/marmellata_arancia",
+    "/dispensa/mennulata",
+    "/dispensa/pera_cannella",
+    "/dispensa/pestorosso",
+    "/dispensa/smeralda",
+    "/dispensa/smeraldo",
+    "/en",
+    "/en/chi-siamo",
+    "/en/contatti",
+    "/en/dispensa",
+    "/en/dispensa/caponata",
+    "/en/dispensa/cipolla",
+    "/en/dispensa/fregole_bacche",
+    "/en/dispensa/gelsi_neri",
+    "/en/dispensa/marmellata_arancia",
+    "/en/dispensa/mennulata",
+    "/en/dispensa/pera_cannella",
+    "/en/dispensa/pestorosso",
+    "/en/dispensa/smeralda",
+    "/en/dispensa/smeraldo",
+    "/en/experience",
+    "/en/privacy",
+    "/en/produzione",
+    "/experience",
+    "/privacy",
+    "/produzione"
+  ],
+  "frontend_assets": 112,
+  "images": 90,
+  "errors": [],
+  "notes": [
+    "The original Cloudflare email-protection endpoint is replaced with mailto links.",
+    "Original Google Analytics and Cloudflare beacon are disabled."
+  ],
+  "resolved_errors": [
+    "Cloudflare email-protection route is a service endpoint, not a page; replaced with decoded mailto links."
+  ]
+}

@@ -1,0 +1,1 @@
+var e=null,t=class{constructor(e,t){this.main=e,this.app=t,this.destroyed=!1,this.disposeOnDestroy=!1,this.init(),this.app.on(`destroy`,()=>this.destroy())}async init(){e?.dispose(),e=null}destroy(){this.destroyed||(this.destroyed=!0,this.app.off(`hide.navstrands`),this.disposeOnDestroy&&(e?.dispose(),e=null))}};export{t as default};

@@ -1,0 +1,22 @@
+{
+  "total_pages": 45,
+  "agrumea_pages": 34,
+  "portfolio_pages": 11,
+  "portfolio_projects": 23,
+  "portfolio_case_studies": 8,
+  "missing_html_assets": [],
+  "texture_count": 65,
+  "switcher_connected_to_all_agrumea_pages": true,
+  "existing_photo_label_and_aqua_theme_unchanged": true,
+  "browser_checks": [
+    "Featured WebGL carousel with videos",
+    "Full index and project detail navigation",
+    "3D profile overlay",
+    "Newsletter screen opened without submission",
+    "Mobile 390x844 layout",
+    "Agrumea menu to Jesper full navigation",
+    "Jesper back link to Agrumea"
+  ],
+  "newsletter_backend": "not connected",
+  "portfolio_media": "Original public video/image CDNs; local textures and fonts"
+}

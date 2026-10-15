@@ -1,0 +1,1 @@
+import{r as e}from"./rolldown-runtime.DAXXjFlN.js?dpl=dpl_252g5VG1FQ1EMkJFPUPWfW8R2EWP";var t=e({DESKTOP:()=>r,STACKED:()=>i,isDesktop:()=>a,isStacked:()=>o}),n=`(pointer: coarse) and (orientation: portrait)`,r=`(min-width: 1024px) and (not (${n}))`,i=`(max-width: 1023px), ${n}`,a=()=>window.matchMedia(r).matches,o=()=>!a();export{a as i,i as n,t as r,r as t};

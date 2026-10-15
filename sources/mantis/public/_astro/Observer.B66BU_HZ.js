@@ -1,0 +1,1 @@
+var e=class{constructor(){this.instance=new IntersectionObserver(e=>{e.forEach(e=>{e.target.dataset.visible=e.isIntersecting?`true`:`false`})},{root:null,rootMargin:`15% 0px 15% 0px`})}};export{e as default};

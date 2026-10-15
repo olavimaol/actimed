@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StringTune : Tutorial : StringTune</title>
+  <script src="https://unpkg.com/@fiddle-digital/string-tune@1.2.1/dist/index.js"></script>
+  <style>
+@property --progress {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --spotlight-angle {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --spotlight-distance {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+:root {
+  --vh: 1vh;
+  --vw: 1vw;
+  --c-white: #ffffff;
+  --c-black: #000000;
+  --c-black-rgb: 0, 0, 0;
+  --c-grey-dark: #333333;
+  --c-grey-dark-rgba: 51, 51, 51;
+  --c-grey: #999999;
+  --c-red: #FF5A37;
+
+  --easing-function: cubic-bezier(0.86, 0, 0.31, 1);
+  --easing-function-2: cubic-bezier(0.35, 0.35, 0, 1);
+  --easing-timing: 1.5s;
+
+  --g-gap: 0.4rem;
+  --g-margin: calc(var(--g-gap) * 2);
+
+  --mm: 0.64rem;
+  --m: 0.8rem;
+  --p: 1rem;
+  --h6: 1.25rem;
+  --h5: 1.563rem;
+  --h4: 1.953rem;
+  --h3: 2.441rem;
+  --h2: 3.052rem;
+  --h1: 3.815rem;
+  --h0: 5.065rem;
+  --large: max(6.331rem, 18vw);
+  
+}
+@media (min-width: 1024px) {
+  :root {
+    --g-margin: calc(var(--g-gap) * 4);
+  }
+}
+
+html,
+body,
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.25;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #808080;
+  color: black;
+}
+.-w {
+  margin-left: var(--g-margin);
+  margin-right: var(--g-margin);
+}
+@media (min-width: 1024px) {
+  html {
+    font-size: 20px;
+  }
+}
+body {
+  position: relative;
+  min-height: 100lvh;
+}
+.note {
+  color: var(--c-white);
+}
+svg {
+  display: block;
+}
+img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+button {
+  border: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  background-color: transparent;
+  cursor: pointer;
+  display: block;
+  touch-action: manipulation;
+  color: var(--c-white);
+}
+
+h1,
+h2,
+h3,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: normal;
+}
+.-lrg {
+  font-size: var(--large);
+}
+.-h0 {
+  font-size: var(--h0);
+}
+h1, .-h1 {
+  font-size: var(--h1);
+}
+h2, .-h2 {
+  font-size: var(--h2);
+}
+h3, .-h3 {
+  font-size: var(--h3);
+}
+h4, .-h4 {
+  font-size: var(--h4);
+}
+h5, .-h5 {
+  font-size: var(--h5);
+}
+h6, .-h6 {
+  font-size: var(--h6);
+}
+.-p {
+  font-size: var(--p);
+}
+.-m {
+  font-size: var(--m);
+}
+.-mm {
+  font-size: var(--mm);
+}
+@media (max-width: 1600px) {
+  .-mid-lrg {
+    font-size: var(--large);
+  }
+  .-mid-h0 {
+    font-size: var(--h0);
+  }
+  .-mid-h1 {
+    font-size: var(--h1);
+  }
+  .-mid-h2 {
+    font-size: var(--h2);
+  }
+  .-mid-h3 {
+    font-size: var(--h3);
+  }
+  .-mid-h4 {
+    font-size: var(--h4);
+  }
+  .-mid-h5 {
+    font-size: var(--h5);
+  }
+  .-mid-h6 {
+    font-size: var(--h6);
+  }
+  .-mid-p {
+    font-size: var(--p);
+  }
+  .-mid-m {
+    font-size: var(--m);
+  }
+  .-mid-mm {
+    font-size: var(--mm);
+  }
+}
+
+@media (max-width: 1024px) {
+  .-m-lrg {
+    font-size: var(--large);
+  }
+  .-m-h0 {
+    font-size: var(--h0);
+  }
+  .-m-h1 {
+    font-size: var(--h1);
+  }
+  .-m-h2 {
+    font-size: var(--h2);
+  }
+  .-m-h3 {
+    font-size: var(--h3);
+  }
+  .-m-h4 {
+    font-size: var(--h4);
+  }
+  .-m-h5 {
+    font-size: var(--h5);
+  }
+  .-m-h6 {
+    font-size: var(--h6);
+  }
+  .-m-p {
+    font-size: var(--p);
+  }
+  .-m-m {
+    font-size: var(--m);
+  }
+  .-m-mm {
+    font-size: var(--mm);
+  }
+}
+
+.-up {
+  text-transform: uppercase;
+}
+.-tac {
+  text-align: center;
+}
+
+.-splitted {
+  display: flex;
+  flex-wrap: wrap;
+}
+.-s-line {
+  display: flex;
+  width: 100%;
+  will-change: contents;
+}
+.-s-word {
+  display: inline-flex;
+  will-change: contents;
+}
+.-s-char {
+  display: inline-flex;
+  will-change: contents;
+}
+
+.-w {
+  position: relative;
+  padding-top: calc( var(--vh,1vh) * 25 );
+  padding-bottom: calc( var(--vh,1vh) * 80 );
+}
+
+.sentence-1 {}
+.sentence-1 .-s-word[data-split-content="Into"] {
+  margin-left: 1em;
+}
+.sentence-1 .-s-word[data-split-content="Every"] {
+  margin-left: 1em;
+}
+.sentence-1 .-s-word[data-split-content="Line."] {
+  margin-left: 2em;
+}
+
+.sentence-2 {}
+.sentence-2 .-s-word[data-split-content="Precision,"] {
+  margin-left: 4em;
+}
+.sentence-2 .-s-word[data-split-content="Carried"] {
+  margin-left: 1em;
+}
+.sentence-2 .-s-word[data-split-content="In"] {
+  margin-left: 3em;
+}
+.sentence-2 .-s-word[data-split-content="Cut."] {
+  margin-left: 1em;
+}
+
+.sentence-3 {}
+.sentence-3 .-s-word[data-split-content="Before"] {
+  margin-left: 1em;
+}
+.sentence-3 .-s-word[data-split-content="It’s"] {
+  margin-left: 1em;
+}
+.sentence-3 .-s-word[data-split-content="Seen."] {
+  margin-left: 4em;
+}
+
+
+.-s-line {
+  width: 100%;
+}
+.-s-char {
+  --area: 0.15em;
+  position: relative;
+  overflow: hidden;
+  padding: 0 0 var(--area) 0;
+  margin: 0 0 calc(-1 * var(--area)) 0;
+  color: transparent;
+
+
+  --char-turn: calc( var(--char-random) / var(--char-global-total) );
+  
+  --char-step: calc( 1 / var(--char-global-total) );
+  --char-progress: clamp( 0, calc( (var(--progress) - var(--char-turn)) / var(--char-step) ), 1 );
+}
+.-s-char::before {
+  content: attr(data-split-content);
+  position: absolute;
+  inset: 0;
+  padding: 0 0 var(--area) 0;
+  color: #E1B1AB;
+
+  transform: translate3d(calc(var(--char-progress) * 50% ), 0, 0);
+  opacity: calc( 1 - var(--char-progress) );
+}
+.-s-char::after {
+  content: attr(data-split-content);
+  position: absolute;
+  inset: 0;
+  padding: 0 0 var(--area) 0;
+  color: #E1B1AB;
+
+  transform: translate3d(calc(-100% + var(--char-progress) * 100% ), 0, 0);
+}
+
+
+
+@media (min-width: 1024px) {
+  .sentence-1 {
+    margin-left: calc( var(--col) + var(--g-gap) );
+  }
+  .sentence-2 {
+    margin-left: calc( var(--col) * 4 + var(--g-gap) * 3 );
+  }
+  .sentence-3 {
+    margin-left: calc( var(--col) + var(--g-gap) );
+  }
+  .-s-line {
+    translate: 0 calc( 100% * var(--progress) );
+  }
+}
+</style>
+<script src="/string-tune/replica-forms.js" defer></script></head>
+
+<body>
+  <div class="-w">
+  <span class="-h1 -m-h3 sentence-1" string="split|progress" string-split="line|word|char[random(-10,10)]">Silence,<br/>Stitched Into<br/>Every<br/>Line.</span>
+  <span class="-h1 -m-h3 sentence-2" string="split|progress" string-split="line|word|char[random(-10,10)]">Precision,<br/>Carried In<br/>Every Cut.</span>
+  <span class="-h1 -m-h3 sentence-3" string="split|progress" string-split="line|word|char[random(-10,10)]">Presence,<br/>Felt Before It’s<br/>Seen.</span>
+</div>
+  <script>
+    const stringTune = StringTune.StringTune.getInstance();
+    window.StringTuneContext = stringTune;
+      // No additional StringTune modules configured for this tutorial.
+
+    stringTune.start(0);
+  </script>
+  
+
+</body>
+
+</html>
+
+</body>
+
+</html>

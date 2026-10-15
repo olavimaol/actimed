@@ -1,0 +1,24 @@
+{
+  "html_pages": 34,
+  "js_modules": 50,
+  "missing_local_references": [],
+  "invalid_json": [],
+  "invalid_js": [],
+  "tracking_beacons_remaining": 0,
+  "browser_checks": {
+    "desktop_1280x720": [
+      "home loaded",
+      "no broken or external product images",
+      "fullscreen menu opened",
+      "Pantry menu navigation",
+      "Orange Marmalade product navigation"
+    ],
+    "mobile_390x844": [
+      "home loaded",
+      "product loaded",
+      "no horizontal overflow",
+      "no broken product images"
+    ],
+    "final_home_network_errors": 0
+  }
+}

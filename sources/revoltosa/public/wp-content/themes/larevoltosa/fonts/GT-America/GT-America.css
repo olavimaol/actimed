@@ -1,0 +1,7 @@
+@font-face {
+  font-family: "GT America";
+  src:url("GT-America-Extended-Regular.otf") format("opentype");
+  font-weight: 400; /* rango de pesos disponibles */
+  font-display: swap;
+  font-style: normal;
+}

@@ -1,0 +1,38 @@
+/*
+ * The Typekit service used to deliver this font or fonts for use on websites
+ * is provided by Adobe and is subject to these Terms of Use
+ * http://www.adobe.com/products/eulas/tou_typekit. For font license
+ * information, see the list below.
+ *
+ * ivymode:
+ *   - http://typekit.com/eulas/00000000000000007735ce7b
+ * ivystyle-sans:
+ *   - http://typekit.com/eulas/00000000000000007735c074
+ *   - http://typekit.com/eulas/00000000000000007735c082
+ *
+ * © 2009-2026 Adobe Systems Incorporated. All Rights Reserved.
+ */
+/*{"last_published":"2026-07-24 07:29:19 UTC"}*/
+
+
+
+@font-face {
+font-family:"ivystyle-sans";
+src:url("/fonts/ivystyle-sans-600.woff2") format("woff2");
+font-display:swap;font-style:normal;font-weight:600;font-stretch:normal;
+}
+
+@font-face {
+font-family:"ivystyle-sans";
+src:url("/fonts/ivystyle-sans-400.woff2") format("woff2");
+font-display:swap;font-style:normal;font-weight:400;font-stretch:normal;
+}
+
+@font-face {
+font-family:"ivymode";
+src:url("/fonts/ivymode-400.woff2") format("woff2");
+font-display:swap;font-style:normal;font-weight:400;font-stretch:normal;
+}
+
+.tk-ivystyle-sans { font-family: "ivystyle-sans",sans-serif; }
+.tk-ivymode { font-family: "ivymode",sans-serif; }

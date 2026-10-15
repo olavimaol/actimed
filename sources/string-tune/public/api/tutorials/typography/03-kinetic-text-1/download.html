@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StringTune : Tutorial : StringTune</title>
+  <script src="https://unpkg.com/@fiddle-digital/string-tune@1.2.1/dist/index.js"></script>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Climate+Crisis:YEAR@1979&display=swap');
+
+@property --progress {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --spotlight-angle {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --spotlight-distance {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+:root {
+  --vh: 1vh;
+  --vw: 1vw;
+  --c-white: #ffffff;
+  --c-black: #000000;
+  --c-black-rgb: 0, 0, 0;
+  --c-grey-dark: #333333;
+  --c-grey-dark-rgba: 51, 51, 51;
+  --c-grey: #999999;
+  --c-red: #FF5A37;
+
+  --easing-function: cubic-bezier(0.86, 0, 0.31, 1);
+  --easing-function-2: cubic-bezier(0.35, 0.35, 0, 1);
+  --easing-timing: 1.5s;
+
+  --g-gap: 0.4rem;
+  --g-margin: calc(var(--g-gap) * 2);
+
+  --mm: 0.64rem;
+  --m: 0.8rem;
+  --p: 1rem;
+  --h6: 1.25rem;
+  --h5: 1.563rem;
+  --h4: 1.953rem;
+  --h3: 2.441rem;
+  --h2: 3.052rem;
+  --h1: 3.815rem;
+  --h0: 5.065rem;
+  --large: max(6.331rem, 18vw);
+  
+}
+@media (min-width: 1024px) {
+  :root {
+    --g-margin: calc(var(--g-gap) * 4);
+  }
+}
+
+html,
+body,
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.25;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #808080;
+  color: black;
+}
+.-w {
+  margin-left: var(--g-margin);
+  margin-right: var(--g-margin);
+}
+@media (min-width: 1024px) {
+  html {
+    font-size: 20px;
+  }
+}
+body {
+  position: relative;
+  min-height: 100lvh;
+}
+.note {
+  color: var(--c-white);
+}
+svg {
+  display: block;
+}
+img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+button {
+  border: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  background-color: transparent;
+  cursor: pointer;
+  display: block;
+  touch-action: manipulation;
+  color: var(--c-white);
+}
+
+h1,
+h2,
+h3,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: normal;
+}
+.-lrg {
+  font-size: var(--large);
+}
+.-h0 {
+  font-size: var(--h0);
+}
+h1, .-h1 {
+  font-size: var(--h1);
+}
+h2, .-h2 {
+  font-size: var(--h2);
+}
+h3, .-h3 {
+  font-size: var(--h3);
+}
+h4, .-h4 {
+  font-size: var(--h4);
+}
+h5, .-h5 {
+  font-size: var(--h5);
+}
+h6, .-h6 {
+  font-size: var(--h6);
+}
+.-p {
+  font-size: var(--p);
+}
+.-m {
+  font-size: var(--m);
+}
+.-mm {
+  font-size: var(--mm);
+}
+@media (max-width: 1600px) {
+  .-mid-lrg {
+    font-size: var(--large);
+  }
+  .-mid-h0 {
+    font-size: var(--h0);
+  }
+  .-mid-h1 {
+    font-size: var(--h1);
+  }
+  .-mid-h2 {
+    font-size: var(--h2);
+  }
+  .-mid-h3 {
+    font-size: var(--h3);
+  }
+  .-mid-h4 {
+    font-size: var(--h4);
+  }
+  .-mid-h5 {
+    font-size: var(--h5);
+  }
+  .-mid-h6 {
+    font-size: var(--h6);
+  }
+  .-mid-p {
+    font-size: var(--p);
+  }
+  .-mid-m {
+    font-size: var(--m);
+  }
+  .-mid-mm {
+    font-size: var(--mm);
+  }
+}
+
+@media (max-width: 1024px) {
+  .-m-lrg {
+    font-size: var(--large);
+  }
+  .-m-h0 {
+    font-size: var(--h0);
+  }
+  .-m-h1 {
+    font-size: var(--h1);
+  }
+  .-m-h2 {
+    font-size: var(--h2);
+  }
+  .-m-h3 {
+    font-size: var(--h3);
+  }
+  .-m-h4 {
+    font-size: var(--h4);
+  }
+  .-m-h5 {
+    font-size: var(--h5);
+  }
+  .-m-h6 {
+    font-size: var(--h6);
+  }
+  .-m-p {
+    font-size: var(--p);
+  }
+  .-m-m {
+    font-size: var(--m);
+  }
+  .-m-mm {
+    font-size: var(--mm);
+  }
+}
+
+.-up {
+  text-transform: uppercase;
+}
+.-tac {
+  text-align: center;
+}
+
+.-splitted {
+  display: flex;
+  flex-wrap: wrap;
+}
+.-s-line {
+  display: flex;
+  width: 100%;
+  will-change: contents;
+}
+.-s-word {
+  display: inline-flex;
+  will-change: contents;
+}
+.-s-char {
+  display: inline-flex;
+  will-change: contents;
+}
+
+
+
+.d-line {
+  aspect-ratio: initial;
+  position: absolute;
+  z-index: 10;
+  inset-inline: 0;
+  width: 100%;
+  fill: transparent;
+  stroke: var(--c-red);
+  stroke-width: 1px;
+}
+
+.d-line-1 {
+  top: 0;
+}
+
+.d-line-2 {
+  bottom: 0;
+}
+
+.-w {
+  position: relative;
+}
+
+.start,
+.end {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  width: 100%;
+  height: calc(var(--vh, 1vh) * 100);
+  align-items: center;
+  justify-content: center;
+}
+
+.start {
+  margin-bottom: calc(var(--vh, 1vh) * -100);
+}
+
+.start span,
+.end span {
+  border-radius: var(--h3);
+  background-color: var(--c-red);
+  padding: var(--g-gap) calc(var(--g-gap) * 2);
+  text-align: center;
+}
+
+.row {
+  position: relative;
+  width: 100%;
+  height: calc(var(--vh, 1svh) * 200);
+  margin-bottom: calc(var(--vh, 1svw) * -80);
+}
+
+.row-4 {
+  margin-bottom: initial;
+}
+
+.row > div {
+  position: sticky;
+  top: 0;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: flex-start;
+  translate: 0 calc(var(--vh, 1vh) * 40);
+}
+
+.row > div > span {
+  display: inline-flex;
+  font-family: "Climate Crisis", sans-serif;
+  font-weight: 700;
+  line-height: 0.82;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: transparent;
+  transform: translateZ(0);
+}
+
+
+.row > div > span .-s-char {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: visible;
+  transform: translateZ(0);
+  will-change: scale;
+  transform-origin: 50% 0%;
+  font-size: calc(var(--fit-font-size, 1) * 1px);
+
+  --char-step: calc(0.5 / (var(--char-global-total) + 1));
+  --char-begin: calc(0.5 + var(--char-index) * var(--char-step));
+  --char-local: calc((var(--progress, 0) - var(--char-begin)) / var(--char-step));
+  --char-t: min(1, max(0, var(--char-local)));
+  scale: 1 calc(1 - var(--char-t));
+}
+
+.row > div > span .-s-char::after {
+  content: attr(data-split-content);
+  position: absolute;
+  line-height: inherit;
+
+  translate: 0 -6.25%;
+  transform: translateZ(0);
+  will-change: scale, opacity;
+  transform-origin: 50% 99.5%;
+  color: #f4c7a7;
+
+  font-size: calc( var(--fit-font-size, 1) * 1px * (var(--fit-scale-y) * 0.2) );
+
+
+  --after-char-step: calc( 0.5 / var(--char-global-total) );
+  --after-char-begin: calc( var(--char-index) * var(--after-char-step) );
+  --after-char-local: calc( (var(--progress, 0) - var(--after-char-begin)) / var(--after-char-step) );
+  --after-char-t: min(1, max(0, var(--after-char-local)));
+
+  scale:
+    calc( 1 / (var(--fit-scale-y) * 0.2) )
+    min(var(--after-char-t), 0.9375);
+  ;
+  opacity: calc( var(--after-char-t) * 2 - var(--char-t) * 2 );
+}
+
+.sun,
+.balloon,
+.cloud,
+.fly {
+  position: absolute;
+  z-index: 20;
+  width: 40%;
+  pointer-events: none;
+}
+
+.sun > div > svg,
+.balloon > div > svg,
+.cloud > div > svg,
+.fly > div > svg {
+  aspect-ratio: 1 / 1;
+  transform-origin: 50% 100%;
+}
+
+.sun {
+  top: calc(var(--vh, 1vg) * 50);
+  left: 5%;
+}
+
+.sun > div {
+  transform-origin: -50% 100%;
+  scale: calc(0.5 + var(--progress));
+}
+
+.sun > div > svg {
+  animation: cartoon-bounce 1.2s infinite ease-in-out;
+}
+
+.balloon {
+  top: 20%;
+  left: 60%;
+}
+
+.balloon > div {
+  transform-origin: 150% 100%;
+  scale: calc(0.5 + var(--progress));
+}
+
+.balloon > div > svg {
+  animation: cartoon-bounce 1.5s infinite ease-in-out;
+}
+
+.cloud {
+  top: 30%;
+  left: 30%;
+  width: 40%;
+}
+
+.cloud > div {
+  transform-origin: -50% 100%;
+  scale: calc(0.5 + var(--progress));
+}
+
+.cloud > div > svg {
+  animation: cartoon-bounce 1.05s infinite ease-in-out;
+}
+
+.fly {
+  top: 60%;
+  left: 40%;
+}
+
+.fly > div {
+  transform-origin: 50% -100%;
+  translate: calc(-50% + 100% * var(--progress));
+  rotate: calc(30deg - 45deg * var(--progress));
+}
+
+.fly > div > svg {
+  animation: cartoon-bounce 1.35s infinite ease-in-out;
+}
+
+@keyframes cartoon-bounce {
+  0% {
+    transform: skewX(0deg);
+    scale: 1 1;
+  }
+
+  25% {
+    scale: 1 0.95;
+  }
+
+  50% {
+    transform: skewX(2deg);
+    scale: 1 1;
+  }
+
+  75% {
+    scale: 1 0.95;
+  }
+
+  100% {
+    transform: skewX(0deg);
+    scale: 1 1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .row {
+    height: calc(var(--vw, 1vw) * 200);
+    margin-bottom: calc(var(--vw, 1vw) * -90);
+  }
+
+  .row-4 {
+    margin-bottom: initial;
+  }
+
+  .row > div {
+    translate: 0 var(--h5);
+  }
+  .row > div > span .-s-char {}
+  .row > div > span .-s-char::after {
+    font-size: calc( var(--fit-font-size, 1) * 1px * (var(--fit-scale-y) * 0.9) );
+
+    scale:
+      calc( 1 / (var(--fit-scale-y) * 0.9) )
+      min(var(--after-char-t), 0.9375);
+    ;
+  }
+
+  .sun,
+  .balloon,
+  .cloud,
+  .fly {
+    width: 25%;
+  }
+}
+</style>
+<script src="/string-tune/replica-forms.js" defer></script></head>
+
+<body>
+  <svg class="d-line d-line-1" viewBox="0 0 2 2" preserveAspectRatio="none">
+  <line x1="0" y1="2" x2="2" y2="0" vector-effect="non-scaling-stroke" />
+</svg>
+<svg class="d-line d-line-2" viewBox="0 0 2 2" preserveAspectRatio="none">
+  <line x1="0" y1="0" x2="2" y2="2" vector-effect="non-scaling-stroke" />
+</svg>
+
+<div class="-w">
+  <div class="start">
+    <span class="-mm -up">please scroll :)</span>
+  </div>
+  <div class="row row-1" string="progress" string-enter-vp="top" string-exit-vp="top">
+    <div>
+      <span string="split" string-split="char|fit">Sunshine</span>
+    </div>
+  </div>
+  <div class="row row-2" string="progress" string-enter-vp="top" string-exit-vp="top">
+    <div>
+      <span string="split" string-split="char|fit">Playtime</span>
+    </div>
+  </div>
+  <div class="row row-3" string="progress" string-enter-vp="top" string-exit-vp="top">
+    <div>
+      <span string="split" string-split="char|fit">Giggles</span>
+    </div>
+  </div>
+  <div class="row row-4" string="progress" string-enter-vp="top" string-exit-vp="top">
+    <div>
+      <span string="split" string-split="char|fit">Wonder</span>
+    </div>
+  </div>
+  <div class="end">
+    <span class="-mm -up">the end ;)</span>
+  </div>
+</div>
+
+<div class="sun" string="progress">
+  <div>
+    <svg viewBox="0 0 520 520">
+      <path
+        d="M101,137 C142.604748,151.689093 168.271414,155.35576 178,148 C187.728586,140.64424 189.395252,116.310907 183,75 C212.441925,110.564646 232.775259,127.897979 244,127 C255.224741,126.102021 268.224741,106.102021 283,67 C289.445528,106.873403 298.445528,128.873403 310,133 C321.554472,137.126597 345.221139,126.793264 381,102 C367.256289,139.5327 364.256289,163.199366 372,173 C379.743711,182.800634 404.077044,186.133967 445,183 C415.781311,211.42245 401.781311,231.42245 403,243 C404.218689,254.57755 421.552023,266.244216 455,278 C418.868925,287.292844 399.202258,297.95951 396,310 C392.797742,322.04049 404.131075,342.707156 430,372 C387.171441,362.647165 360.171441,362.647165 349,372 C337.828559,381.352835 336.161892,405.352835 344,444 C309.295104,409.553106 285.295104,392.553106 272,393 C258.704896,393.446894 243.038229,411.780228 225,448 C218.114159,407.593562 209.114159,384.926895 198,380 C186.885841,375.073105 163.552508,383.406438 128,405 C147.45223,369.809724 153.785564,347.476391 147,338 C140.214436,328.523609 114.54777,323.856943 70,324 C106.559406,303.178871 124.559406,287.845538 124,278 C123.440594,268.154462 103.773928,254.154462 65,236 C106.993718,229.017274 129.993718,220.017274 134,209 C138.006282,197.982726 127.006282,173.982726 101,137 Z"
+        fill="none" stroke="#FFFFFF" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path
+        d="M101,137 C142.604748,151.689093 168.271414,155.35576 178,148 C187.728586,140.64424 189.395252,116.310907 183,75 C212.441925,110.564646 232.775259,127.897979 244,127 C255.224741,126.102021 268.224741,106.102021 283,67 C289.445528,106.873403 298.445528,128.873403 310,133 C321.554472,137.126597 345.221139,126.793264 381,102 C367.256289,139.5327 364.256289,163.199366 372,173 C379.743711,182.800634 404.077044,186.133967 445,183 C415.781311,211.42245 401.781311,231.42245 403,243 C404.218689,254.57755 421.552023,266.244216 455,278 C418.868925,287.292844 399.202258,297.95951 396,310 C392.797742,322.04049 404.131075,342.707156 430,372 C387.171441,362.647165 360.171441,362.647165 349,372 C337.828559,381.352835 336.161892,405.352835 344,444 C309.295104,409.553106 285.295104,392.553106 272,393 C258.704896,393.446894 243.038229,411.780228 225,448 C218.114159,407.593562 209.114159,384.926895 198,380 C186.885841,375.073105 163.552508,383.406438 128,405 C147.45223,369.809724 153.785564,347.476391 147,338 C140.214436,328.523609 114.54777,323.856943 70,324 C106.559406,303.178871 124.559406,287.845538 124,278 C123.440594,268.154462 103.773928,254.154462 65,236 C106.993718,229.017274 129.993718,220.017274 134,209 C138.006282,197.982726 127.006282,173.982726 101,137 Z"
+        fill="#FFD23F" fill-rule="evenodd"></path>
+      <path
+        d="M114.422398,219.438335 C121.538525,233.248604 130.212855,246.33289 140.247975,258.222616 C171.995187,295.83708 214.169235,318 258.635945,318 C307.586334,318 353.190692,304.905683 386.745648,279.501617 C397.020204,271.72287 406.058828,262.899689 413.781876,253.06346 C421.462785,259.768081 435.623542,266.949996 456.326325,274.226293 C460.05671,275.537392 459.825813,280.888993 455.996365,281.87392 C421.255511,290.809201 402.543866,300.95789 399.865621,311.028091 C397.149592,321.240361 408.027399,341.076361 432.998219,369.35223 C435.557694,372.250469 432.924186,376.732847 429.146598,375.907903 C387.522103,366.81801 361.420744,366.81801 351.567747,375.067031 C341.944119,383.124021 340.360374,405.929949 347.920188,443.204939 C348.706406,447.081521 343.989526,449.62547 341.182145,446.83896 C307.337676,413.246096 283.84319,396.604169 272.134378,396.997742 C260.921361,397.37465 245.964244,414.877659 228.580538,449.783185 C226.855428,453.24711 221.706932,452.4867 221.056847,448.67197 C214.407534,409.653491 205.731519,387.802786 196.378945,383.656799 C186.987631,379.49364 164.444138,387.544887 130.076482,408.418804 C126.572184,410.547213 122.515728,406.653178 124.499243,403.064877 C143.156327,369.313069 149.211805,347.959541 143.747781,340.328749 C138.071727,332.401846 113.100437,327.861611 70.0128452,327.999979 C65.9011283,328.013183 64.4475305,322.559003 68.0204604,320.524166 C102.970249,300.619737 120.433527,285.743613 120.006441,278.226907 C119.57495,270.632672 100.436017,257.008347 63.3038591,239.622583 C59.7470346,237.957231 60.4696907,232.69838 64.3438876,232.054177 C86.5822016,228.356385 103.300336,224.066377 114.38892,219.453987 Z M447.78909,185.867225 C445.767418,187.833804 443.820931,189.758861 441.949589,191.641873 C442.823638,187.536396 443.557056,183.339682 444.149714,179.05286 L444.694566,179.011678 C448.424009,178.72607 450.470205,183.259172 447.78909,185.867225 Z"
+        fill="#FDB006" fill-rule="evenodd"></path>
+      <path
+        d="M101,137 C142.604748,151.689093 168.271414,155.35576 178,148 C187.728586,140.64424 189.395252,116.310907 183,75 C212.441925,110.564646 232.775259,127.897979 244,127 C255.224741,126.102021 268.224741,106.102021 283,67 C289.445528,106.873403 298.445528,128.873403 310,133 C321.554472,137.126597 345.221139,126.793264 381,102 C367.256289,139.5327 364.256289,163.199366 372,173 C379.743711,182.800634 404.077044,186.133967 445,183 C415.781311,211.42245 401.781311,231.42245 403,243 C404.218689,254.57755 421.552023,266.244216 455,278 C418.868925,287.292844 399.202258,297.95951 396,310 C392.797742,322.04049 404.131075,342.707156 430,372 C387.171441,362.647165 360.171441,362.647165 349,372 C337.828559,381.352835 336.161892,405.352835 344,444 C309.295104,409.553106 285.295104,392.553106 272,393 C258.704896,393.446894 243.038229,411.780228 225,448 C218.114159,407.593562 209.114159,384.926895 198,380 C186.885841,375.073105 163.552508,383.406438 128,405 C147.45223,369.809724 153.785564,347.476391 147,338 C140.214436,328.523609 114.54777,323.856943 70,324 C106.559406,303.178871 124.559406,287.845538 124,278 C123.440594,268.154462 103.773928,254.154462 65,236 C106.993718,229.017274 129.993718,220.017274 134,209 C138.006282,197.982726 127.006282,173.982726 101,137 Z"
+        fill="none" stroke="#FF4F36" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path
+        d="M257,366 C313.885329,366 372,337 372,264 C372,191 320.885329,156 264,156 C207.114671,156 155,195.21924 155,251 C155,306.78076 200.114671,366 257,366 Z"
+        fill="#FFD23F" fill-rule="evenodd"></path>
+      <path
+        d="M262.16129,349 C298.198378,349 334.672449,338.695826 359.7473,315.09694 C339.711055,350.908918 298.035664,366 257,366 C205.36163,366 163.422668,317.201403 156.125307,266.47382 C173.551628,311.639725 214.142002,349 262.16129,349 Z"
+        fill="#FDB006" fill-rule="evenodd"></path>
+      <path
+        d="M257,366 C313.885329,366 372,337 372,264 C372,191 320.885329,156 264,156 C207.114671,156 155,195.21924 155,251 C155,306.78076 200.114671,366 257,366 Z"
+        fill="none" stroke="#FF4F36" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path
+        d="M232,267 C235.475049,264.021387 251.740629,273.161452 268,275 C284.492859,276.864949 300.978613,271.475049 304,275 C310,282 288,309 264,307 C240,305 225,273 232,267 Z"
+        fill="#544D56" fill-rule="evenodd"></path>
+      <path
+        d="M260.5,289 C272.099861,289 281.890698,294.467308 284.982977,301.950487 C278.69862,305.449863 271.445554,307.620463 264,307 C254.989178,306.249098 247.247027,301.269295 241.461569,295.024381 C246.132318,291.327763 252.931053,289 260.5,289 Z"
+        fill="#FF4F36" fill-rule="evenodd"></path>
+      <ellipse fill="#544D56" fill-rule="evenodd"
+        transform="translate(244.6153, 231.9877) rotate(13) translate(-244.6153, -231.9877)" cx="244.615335"
+        cy="231.98772" rx="12.5" ry="21"></ellipse>
+      <ellipse fill="#544D56" fill-rule="evenodd"
+        transform="translate(299.6153, 237.9877) rotate(11) translate(-299.6153, -237.9877)" cx="299.615335"
+        cy="237.98772" rx="12.5" ry="21"></ellipse>
+      <path d="M187,232 C197,195 219,186 235,182" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"
+        stroke-linejoin="round"></path>
+    </svg>
+  </div>
+</div>
+
+<div class="balloon" string="progress">
+  <div>
+    <svg viewBox="0 0 520 520">
+      <path d="M283.160848,304.310118 C317.768691,355.736596 294.624746,447.583352 237.761982,474.308821" fill="none"
+        stroke="#FFFFFF" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path
+        d="M271.663105,275.205337 C258.731796,288.912709 255.958917,297.73285 263.344471,301.665762 C274.422801,307.565129 299.961653,302.519692 305.867505,297 C309.804739,293.320205 303.515571,285.45774 287,273.412604 L271.663105,275.205337 Z"
+        stroke="#FFFFFF" stroke-width="32" fill="#ECE7E3" fill-rule="evenodd" stroke-linecap="round"
+        stroke-linejoin="round"></path>
+      <path d="M283.160848,304.310118 C317.768691,355.736596 294.624746,447.583352 237.761982,474.308821" fill="none"
+        stroke="#544D56" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M211,56 C345,-2 434,211 312,266 C190,321 77,114 211,56 Z" stroke="#FFFFFF" stroke-width="32"
+        fill="#ECE7E3" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M211,56 C345,-2 434,211 312,266 C190,321 77,114 211,56 Z" fill="#FF4F36" fill-rule="evenodd"></path>
+      <path
+        d="M312,266 C227.147898,304.252997 146.649391,215.767995 150.577329,138.82206 C154.175964,204.640641 223.440645,274.270739 296.257645,241.887328 C391.66182,199.458877 344.103835,51.4258628 251.03279,46.2239737 C361.183249,40.4585978 421.354345,216.70091 312,266 Z"
+        fill="#D98C75" fill-rule="evenodd"></path>
+      <path d="M211,56 C345,-2 434,211 312,266 C190,321 77,114 211,56 Z" fill="none" stroke="#101214" stroke-width="8"
+        stroke-linecap="round" stroke-linejoin="round"></path>
+      <path
+        d="M240,185 C242.507618,183.996953 252.937163,189.116986 263.344471,190 C273.688545,190.877649 284.009142,187.507618 287,190 C293,195 280.254296,211.191102 260.127148,209.379096 C240,207.567089 235,187 240,185 Z"
+        fill="#544D56" fill-rule="evenodd"></path>
+      <ellipse fill="#544D56" fill-rule="evenodd" transform="translate(247, 164.5) rotate(12) translate(-247, -164.5)"
+        cx="247" cy="164.5" rx="7" ry="11.5"></ellipse>
+      <ellipse fill="#544D56" fill-rule="evenodd" transform="translate(287, 170.5) rotate(12) translate(-287, -170.5)"
+        cx="287" cy="170.5" rx="7" ry="11.5"></ellipse>
+      <path d="M193.63,160.644344 C187.781218,154.745395 185.321847,146.108751 186.251889,134.734412" fill="none"
+        stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M191.799769,120.5 C193.63,106.205218 206.176096,80.4065839 236.027623,74.6385677" fill="none"
+        stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path
+        d="M271.663105,275.205337 C258.731796,288.912709 255.958917,297.73285 263.344471,301.665762 C274.422801,307.565129 299.961653,302.519692 305.867505,297 C309.804739,293.320205 303.515571,285.45774 287,273.412604 L271.663105,275.205337 Z"
+        stroke="#101214" stroke-width="8" fill="#FF4F36" fill-rule="evenodd" stroke-linecap="round"
+        stroke-linejoin="round"></path>
+    </svg>
+  </div>
+</div>
+
+<div class="cloud" string="progress">
+  <div>
+    <svg viewBox="0 0 520 520">
+      <path
+        d="M235.205939,365.19171 C-12.8973148,365.19171 4.65339773,244.106762 136.283742,294.293286 C114.744231,210.649078 184.947081,169.22528 241.588017,227.37792 C268.711845,115.85231 461.769683,147.71677 385.982515,227.37792 C554.309803,236.140647 483.309193,365.19171 235.205939,365.19171 Z"
+        id="Path-2" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+        stroke="#FFFFFF" fill="#ECE7E3"></path>
+    </svg>
+  </div>
+</div>
+
+<div class="fly" string="progress">
+  <div>
+    <svg viewBox="0 0 520 520">
+      <path
+        d="M211,209 C215.666667,215.666667 234.666667,224.666667 268,236 C282.666667,284 291.666667,309 295,311 C298.333333,313 314,302 342,278 C374.666667,295.333333 395.666667,308 405,316 C419,328 502,135 498,132 C494,129 204,199 211,209 Z"
+        fill="none" stroke="#FFFFFF" stroke-width="32"></path>
+      <path d="M289,329 C113.842857,502 13.3428571,244 187.542857,260 C361.742857,276 84.1714286,376 21,278" fill="none"
+        stroke="#FFFFFF" stroke-width="32"></path>
+      <path
+        d="M211,209 C215.666667,215.666667 234.666667,224.666667 268,236 C282.666667,284 291.666667,309 295,311 C298.333333,313 314,302 342,278 C374.666667,295.333333 395.666667,308 405,316 C419,328 502,135 498,132 C494,129 204,199 211,209 Z"
+        id="Path-2" stroke="#101214" stroke-width="8" fill="#B3C5BC" fill-rule="evenodd"></path>
+      <path
+        d="M268,236 C282.666667,284 291.666667,309 295,311 C298.333333,313 314,302 342,278 L309,255 C436.68564,174.26423 499.68564,133.26423 498,132 C472.666667,144 396,178.666667 268,236 Z"
+        id="Path-2" stroke="#101214" stroke-width="8" fill="#4DBF9D" fill-rule="evenodd"></path>
+      <path d="M295,311 C298.333333,313 314,302 342,278 L307,255 L295,311 Z" id="Path-2" stroke="#101214"
+        stroke-width="8" fill="#65AFA0" fill-rule="evenodd"></path>
+      <polyline fill="none" stroke="#101214" stroke-width="8" points="268 236 498 132 307 255 295 311"></polyline>
+      <line x1="307" y1="255" x2="342" y2="278" fill="none" stroke="#101214" stroke-width="8"></line>
+      <path d="M289,329 C113.842857,502 13.3428571,244 187.542857,260 C361.742857,276 84.1714286,376 21,278" fill="none"
+        stroke="#4DBF9D" stroke-width="8" stroke-dasharray="10"></path>
+    </svg>
+  </div>
+</div>
+  <script>
+    const stringTune = StringTune.StringTune.getInstance();
+    window.StringTuneContext = stringTune;
+      // No additional StringTune modules configured for this tutorial.
+
+    stringTune.start(0);
+  </script>
+  
+
+</body>
+
+</html>
+
+</body>
+
+</html>
